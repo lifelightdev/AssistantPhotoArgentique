@@ -4,31 +4,30 @@
 
 <!--First level Menu-->
 <mat-menu #menu="matMenu">
-  <button mat-menu-item><mat-icon>home</mat-icon><span>Home</span></button>
-  <button mat-menu-item [matMenuTriggerFor]="referentiel">Référentiel</button>
-  <button mat-menu-item [matMenuTriggerFor]="prise_de_vue">Prise de vue</button>
-  <button mat-menu-item [matMenuTriggerFor]="developpement">Développement</button>
-  <button mat-menu-item [matMenuTriggerFor]="tirage">Tirage</button>
+  <button mat-menu-item [matMenuTriggerFor]="referentiel"><mat-icon>apps</mat-icon><span>Référentiel</span></button>
+  <button mat-menu-item [matMenuTriggerFor]="prise_de_vue"><mat-icon>local_see</mat-icon><span>Prise de vue</span></button>
+  <button mat-menu-item [matMenuTriggerFor]="developpement"><mat-icon>camera_rear</mat-icon><span>Développement</span></button>
+  <button mat-menu-item [matMenuTriggerFor]="tirage"><mat-icon>panorama</mat-icon><span>Tirage</span></button>
 </mat-menu>
 
 <!--Second level Menu-->
 <mat-menu #referentiel="matMenu">
-  <button mat-menu-item>Liste du matériel</button>
-  <button mat-menu-item>Recherche</button>
-  <button mat-menu-item>Ajout</button>
+  <button mat-menu-item routerLink="/referentiel.list" routerLinkActive="active-link"><mat-icon>format_list_bulleted</mat-icon><span>Liste du matériel</span></button>
+  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche du matériel</span></button>
+  <button mat-menu-item><mat-icon>add</mat-icon><span>Ajout d'un matériel</span></button>
 </mat-menu>
 <mat-menu #prise_de_vue="matMenu">
-  <button mat-menu-item>Liste</button>
-  <button mat-menu-item>Recherche</button>
-  <button mat-menu-item>Ajout</button>
+  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des prises de vue</span></button>
+  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'une prise de vue</span></button>
+  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'une prise de vue</span></button>
 </mat-menu>
 <mat-menu #developpement="matMenu">
-  <button mat-menu-item>Liste</button>
-  <button mat-menu-item>Recherche</button>
-  <button mat-menu-item>Ajout</button>
+  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des développements</span></button>
+  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'un développement</span></button>
+  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'un développement</span></button>
 </mat-menu>
 <mat-menu #tirage="matMenu">
-  <button mat-menu-item>Liste</button>
-  <button mat-menu-item>Recherche</button>
-  <button mat-menu-item>Ajout</button>
+  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des tirages</span></button>
+  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'un tirage</span></button>
+  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'un tirage</span></button>
 </mat-menu>

@@ -10,11 +10,15 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCardModule} from "@angular/material/card";
 import { HeaderComponent } from './header/header.component';
+import { ReferentielListComponent } from './referentiel/referentiel.list.component';
+import {HttpClientModule} from "@angular/common/http";
+import {MaterielService} from "./referentiel/materiel.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    ReferentielListComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,9 +29,9 @@ import { HeaderComponent } from './header/header.component';
     MatIconModule,
     MatToolbarModule,
     MatCardModule,
-
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [MaterielService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
