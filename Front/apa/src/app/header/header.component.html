@@ -1,0 +1,34 @@
+<h2>{{ title }}</h2>
+
+<button mat-button [matMenuTriggerFor]="menu">Menu</button>
+
+<!--First level Menu-->
+<mat-menu #menu="matMenu">
+  <button mat-menu-item><mat-icon>home</mat-icon><span>Home</span></button>
+  <button mat-menu-item [matMenuTriggerFor]="referentiel">Référentiel</button>
+  <button mat-menu-item [matMenuTriggerFor]="prise_de_vue">Prise de vue</button>
+  <button mat-menu-item [matMenuTriggerFor]="developpement">Développement</button>
+  <button mat-menu-item [matMenuTriggerFor]="tirage">Tirage</button>
+</mat-menu>
+
+<!--Second level Menu-->
+<mat-menu #referentiel="matMenu">
+  <button mat-menu-item>Liste du matériel</button>
+  <button mat-menu-item>Recherche</button>
+  <button mat-menu-item>Ajout</button>
+</mat-menu>
+<mat-menu #prise_de_vue="matMenu">
+  <button mat-menu-item>Liste</button>
+  <button mat-menu-item>Recherche</button>
+  <button mat-menu-item>Ajout</button>
+</mat-menu>
+<mat-menu #developpement="matMenu">
+  <button mat-menu-item>Liste</button>
+  <button mat-menu-item>Recherche</button>
+  <button mat-menu-item>Ajout</button>
+</mat-menu>
+<mat-menu #tirage="matMenu">
+  <button mat-menu-item>Liste</button>
+  <button mat-menu-item>Recherche</button>
+  <button mat-menu-item>Ajout</button>
+</mat-menu>

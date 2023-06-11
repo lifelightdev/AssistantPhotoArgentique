@@ -1,53 +1,6 @@
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card bg-dark my-5">
-        <div class="card-body">
-          <h2 class="card-title text-center text-white py-3">{{ title }}</h2>
-
-
-          <button mat-button [matMenuTriggerFor]="menu">Menu</button>
-
-          <!--First level Menu-->
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item><mat-icon>home</mat-icon><span>Home</span></button>
-            <button mat-menu-item [matMenuTriggerFor]="referentiel">Référentiel</button>
-            <button mat-menu-item [matMenuTriggerFor]="prise_de_vue">Prise de vue</button>
-            <button mat-menu-item [matMenuTriggerFor]="developpement">Développement</button>
-            <button mat-menu-item [matMenuTriggerFor]="tirage">Tirage</button>
-          </mat-menu>
-
-          <!--Second level Menu-->
-          <mat-menu #referentiel="matMenu">
-            <button mat-menu-item>Liste du matériel</button>
-            <button mat-menu-item>Recherche</button>
-            <button mat-menu-item>Ajout</button>
-          </mat-menu>
-          <mat-menu #prise_de_vue="matMenu">
-            <button mat-menu-item>Liste</button>
-            <button mat-menu-item>Recherche</button>
-            <button mat-menu-item>Ajout</button>
-          </mat-menu>
-          <mat-menu #developpement="matMenu">
-            <button mat-menu-item>Liste</button>
-            <button mat-menu-item>Recherche</button>
-            <button mat-menu-item>Ajout</button>
-          </mat-menu>
-          <mat-menu #tirage="matMenu">
-            <button mat-menu-item>Liste</button>
-            <button mat-menu-item>Recherche</button>
-            <button mat-menu-item>Ajout</button>
-          </mat-menu>
-
-          <ul class="text-center list-inline py-3">
-            <li class="list-inline-item">
-              <a routerLink="/referential" class="btn btn-info">Référentiel</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
+<app-header></app-header>
+<ul class="text-center list-inline py-3">
+  <li class="list-inline-item">
+    <a routerLink="/referential" class="btn btn-info">Référentiel</a>
+  </li>
+</ul>
