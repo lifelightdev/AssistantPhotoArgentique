@@ -1,0 +1,31 @@
+<table>
+  <caption>Liste du matériel</caption>
+  <thead>
+  <tr>
+    <th scope="col">Identifiant</th>
+    <th scope="col">Nom</th>
+    <th scope="col">Type</th>
+    <th scope="col">Sous type</th>
+    <th scope="col">Status</th>
+    <th scope="col">Marque</th>
+    <th scope="col">Modéle</th>
+    <th scope="col">Photo</th>
+    <th scope="col">Mode d'emploie</th>
+    <th scope="col">Remarque</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let materiel of materiels">
+    <td>{{ materiel.id}}</td>
+    <td>{{ materiel.name}}</td>
+    <td>{{ materiel.type?.nom}}</td>
+    <td>{{ materiel.sousType?.nom}}</td>
+    <td>{{ materiel.status?.nom}}</td>
+    <td>{{ materiel.marque?.nom}}</td>
+    <td>{{ materiel.modele}}</td>
+    <td>{{ materiel.photo}}</td>
+    <td>{{ materiel.modeEmploie}}</td>
+    <td>{{ materiel.remarque}}</td>
+  </tr>
+  </tbody>
+</table>
