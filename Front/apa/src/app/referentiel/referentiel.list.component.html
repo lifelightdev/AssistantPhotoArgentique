@@ -36,9 +36,9 @@
       <td mat-cell *matCellDef="let materiel"> {{materiel.sousType?.nom}} </td>
     </ng-container>
 
-    <ng-container matColumnDef="Status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.status?.nom}} </td>
+    <ng-container matColumnDef="Statut">
+      <th mat-header-cell *matHeaderCellDef>Statut</th>
+      <td mat-cell *matCellDef="let materiel"> {{materiel.statut?.nom}} </td>
     </ng-container>
 
     <ng-container matColumnDef="Marque">
@@ -90,7 +90,7 @@
   <label>Sous type: </label> {{materiel.sousType?.nom}}
 </div>
 <div>
-  <label>Status: </label> {{materiel.status?.nom}}
+  <label>Statut: </label> {{materiel.statut?.nom}}
 </div>
 <div>
   <label>Marque: </label> {{materiel.modele?.marque?.nom}}

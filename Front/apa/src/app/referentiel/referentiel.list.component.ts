@@ -35,7 +35,7 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  displayedColumns = ["Identifiant", "Nom", "Type", "Sous type", "Status", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque"];
+  displayedColumns = ["Identifiant", "Nom", "Type", "Sous type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque"];
   dataSource = new MatTableDataSource<Materiel>();
 
   onSelect(materiel: Materiel): void {
@@ -48,7 +48,7 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     photo: undefined,
     remarque: undefined,
     sousType: undefined,
-    status: undefined,
+    statut: undefined,
     type: undefined,
     id: undefined,
     nom: undefined

@@ -3,7 +3,7 @@ export class Materiel {
   nom: string | undefined;
   type: Type | undefined;
   sousType: SousType | undefined;
-  status: Status | undefined;
+  statut: Statut | undefined;
   modele: Modele | undefined;
   photo: undefined;
   modeEmploie: undefined;
@@ -18,7 +18,7 @@ export class SousType{
   id: number | undefined;
   nom: string | undefined;
 }
-export class Status{
+export class Statut{
   id: number | undefined;
   nom: string | undefined;
 }
