@@ -3,6 +3,8 @@ import {Materiel} from "./materiel";
 import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
+import {MarqueService} from "./marque.service";
+import {Marque} from "./marque";
 
 @Component({
   selector: 'app-referentiel.list',
@@ -11,12 +13,18 @@ import {MatPaginator} from "@angular/material/paginator";
 })
 export class ReferentielListComponent implements OnInit, AfterViewInit {
 
-  constructor(private materielService: MaterielService) { }
+  constructor(
+    private materielService: MaterielService,
+    private marqueService: MarqueService) { }
 
   materiels: Materiel[] = [];
+  marques: Marque[] = [];
   ngOnInit(): void {
     this.materielService.findAll().subscribe(data => {
       this.dataSource.data = data;
+    });
+    this.marqueService.findAll().subscribe(data => {
+      this.marques = data;
     });
   }
 
@@ -29,5 +37,22 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
 
   displayedColumns = ["Identifiant", "Nom", "Type", "Sous type", "Status", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque"];
   dataSource = new MatTableDataSource<Materiel>();
+
+  onSelect(materiel: Materiel): void {
+    this.materiel = materiel;
+  }
+
+  materiel: Materiel = {
+    marque: undefined,
+    modeEmploie: undefined,
+    modele: undefined,
+    photo: undefined,
+    remarque: undefined,
+    sousType: undefined,
+    status: undefined,
+    type: undefined,
+    id: undefined,
+    nom: undefined
+  };
 
 }

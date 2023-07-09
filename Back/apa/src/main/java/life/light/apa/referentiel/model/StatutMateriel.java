@@ -3,8 +3,8 @@ package life.light.apa.referentiel.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "status_materiel")
-public class StatusMateriel {
+@Table(name = "statut_materiel")
+public class StatutMateriel {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)

@@ -1,6 +1,6 @@
 export class Materiel {
   id: number | undefined;
-  name: string | undefined;
+  nom: string | undefined;
   type: Type | undefined;
   sousType: SousType | undefined;
   status: Status | undefined;

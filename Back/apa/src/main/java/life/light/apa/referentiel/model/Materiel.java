@@ -11,7 +11,7 @@ public class Materiel {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
-    private String name;
+    private String nom;
     @ManyToOne
     @JoinColumn(name = "type_id")
     private TypeMateriel type;
@@ -20,7 +20,7 @@ public class Materiel {
     private SousTypeMateriel sousType;
     @ManyToOne
     @JoinColumn(name = "status_id")
-    private StatusMateriel status;
+    private StatutMateriel status;
     @ManyToOne
     @JoinColumn(name = "marque_id")
     private Marque marque;
@@ -29,19 +29,19 @@ public class Materiel {
     private File modeEmploie;
     private String remarque;
 
-    public String getName() {
-        return name;
+    public String getNom() {
+        return nom;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public StatusMateriel getStatus() {
+    public StatutMateriel getStatus() {
         return status;
     }
 
-    public void setStatus(StatusMateriel status) {
+    public void setStatus(StatutMateriel status) {
         this.status = status;
     }
 
