@@ -4,7 +4,7 @@ import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MarqueService} from "./marque.service";
-import {Marque} from "./marque";
+import {Marque} from "./materiel";
 
 @Component({
   selector: 'app-referentiel.list',
@@ -43,7 +43,6 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
   }
 
   materiel: Materiel = {
-    marque: undefined,
     modeEmploie: undefined,
     modele: undefined,
     photo: undefined,

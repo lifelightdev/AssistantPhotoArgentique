@@ -22,9 +22,8 @@ public class Materiel {
     @JoinColumn(name = "status_id")
     private StatutMateriel status;
     @ManyToOne
-    @JoinColumn(name = "marque_id")
-    private Marque marque;
-    private String modele;
+    @JoinColumn(name = "modele_id")
+    private Modele modele;
     private File photo;
     private File modeEmploie;
     private String remarque;
@@ -43,22 +42,6 @@ public class Materiel {
 
     public void setStatus(StatutMateriel status) {
         this.status = status;
-    }
-
-    public Marque getMarque() {
-        return marque;
-    }
-
-    public void setMarque(Marque marque) {
-        this.marque = marque;
-    }
-
-    public String getModele() {
-        return modele;
-    }
-
-    public void setModele(String modele) {
-        this.modele = modele;
     }
 
     public File getPhoto() {
@@ -101,12 +84,19 @@ public class Materiel {
         this.type = type;
     }
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Modele getModele() {
+        return modele;
+    }
+
+    public void setModele(Modele modele) {
+        this.modele = modele;
     }
 }
