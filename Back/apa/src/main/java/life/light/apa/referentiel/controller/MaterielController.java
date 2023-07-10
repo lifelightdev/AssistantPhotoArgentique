@@ -1,7 +1,7 @@
 package life.light.apa.referentiel.controller;
 
-import life.light.apa.referentiel.dao.MaterielRepository;
-import life.light.apa.referentiel.model.Materiel;
+import life.light.apa.referentiel.dao.*;
+import life.light.apa.referentiel.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +14,41 @@ public class MaterielController {
     @Autowired
     private MaterielRepository materiel;
 
-    //Liste des matériels
     @GetMapping (value = "/materiel")
     public Iterable<Materiel> listeMateriel(){
         return materiel.findAll();
     }
+
+    @Autowired
+    private TypeMaterielRepository typeMateriel;
+
+    @GetMapping (value = "/typeMateriel")
+    public Iterable<TypeMateriel> listeTypeMateriel(){
+        return typeMateriel.findAll();
+    }
+
+    @Autowired
+    private SousTypeMaterielRepository sousTypeMateriel;
+
+    @GetMapping (value = "/sousTypeMateriel")
+    public Iterable<SousTypeMateriel> listeSousTypeMateriel(){
+        return sousTypeMateriel.findAll();
+    }
+
+    @Autowired
+    private ModeleRepository modele;
+
+    @GetMapping (value = "/modele")
+    public Iterable<Modele> listeModele(){
+        return modele.findAll();
+    }
+
+    @Autowired
+    private MarqueRepository marque;
+
+    @GetMapping (value = "/marque")
+    public Iterable<Marque> listeMarque(){
+        return marque.findAll();
+    }
+
 }

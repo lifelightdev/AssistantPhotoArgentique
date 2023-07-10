@@ -4,7 +4,6 @@ import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {Marque, Modele, TypeMateriel, SousType} from "./materiel";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-referentiel.list',
@@ -13,17 +12,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class ReferentielListComponent implements OnInit, AfterViewInit {
 
-  options: FormGroup;
-
   constructor(
-    private materielService: MaterielService,
-    fb: FormBuilder) {
-    this.options = fb.group({
-      hideRequired: false,
-      floatLabel: 'auto',
-      name: ['', Validators.required]
-    });
-  }
+    private materielService: MaterielService) { }
 
   marques: Marque[] = [];
   modeles: Modele[] = [];
@@ -68,7 +58,6 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
   submitted = false;
 
   onSubmit() { this.submitted = true;
-    console.log(this.options.getRawValue());
     console.log(this.model);
   }
 
