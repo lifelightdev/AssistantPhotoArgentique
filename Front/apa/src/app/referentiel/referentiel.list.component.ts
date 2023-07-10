@@ -3,7 +3,7 @@ import {Materiel} from "./materiel";
 import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {Marque, Modele, TypeMateriel, SousType} from "./materiel";
+import {Marque, Modele, TypeMateriel, SousType, StatutMateriel} from "./materiel";
 
 @Component({
   selector: 'app-referentiel.list',
@@ -19,6 +19,7 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
   modeles: Modele[] = [];
   types: TypeMateriel[] = [];
   sousTypes: SousType[] = [];
+  statuts: StatutMateriel[] = [];
   ngOnInit(): void {
     this.materielService.findAllMateriel().subscribe(data => {
       this.dataSource.data = data;
@@ -34,6 +35,9 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     });
     this.materielService.findAllSousType().subscribe(data => {
       this.sousTypes = data;
+    });
+    this.materielService.findAllStatut().subscribe(data => {
+      this.statuts = data;
     });
   }
 

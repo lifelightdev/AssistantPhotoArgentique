@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {Marque, Materiel, Modele, SousType, TypeMateriel} from './materiel';
+import {Marque, Materiel, Modele, SousType, StatutMateriel, TypeMateriel} from './materiel';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 const optionRequete = {
@@ -14,6 +14,7 @@ export const sousTypeUrl = `http://localhost:8081/sousTypeMateriel`;
 export const marqueUrl = `http://localhost:8081/marque`;
 export const modeleUrl = `http://localhost:8081/modele`;
 export const typeUrl = `http://localhost:8081/typeMateriel`;
+export const statutUrl = `http://localhost:8081/statut`;
 
 @Injectable({
   providedIn: 'root'
@@ -42,4 +43,7 @@ export class MaterielService {
     return this.http.get<TypeMateriel[]>(typeUrl, optionRequete);
   }
 
+  findAllStatut(): Observable<StatutMateriel[]> {
+    return this.http.get<StatutMateriel[]>(statutUrl, optionRequete);
+  }
 }

@@ -51,4 +51,12 @@ public class MaterielController {
         return marque.findAll();
     }
 
+    @Autowired
+    private StatutMaterielRepository statutMateriel;
+
+    @GetMapping (value = "/statut")
+    public Iterable<StatutMateriel> listeStatutMateriel(){
+        return statutMateriel.findAll();
+    }
+
 }
