@@ -3,11 +3,8 @@ import {Materiel} from "./materiel";
 import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {MarqueService} from "./marque.service";
 import {Marque, Modele, TypeMateriel, SousType} from "./materiel";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ModeleService} from "./modele.service";
-import {TypeMaterielService} from "./typeMateriel.service";
 
 @Component({
   selector: 'app-referentiel.list',
@@ -20,9 +17,6 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
 
   constructor(
     private materielService: MaterielService,
-    private marqueService: MarqueService,
-    private modeleService: ModeleService,
-    private typeMaterielService: TypeMaterielService,
     fb: FormBuilder) {
     this.options = fb.group({
       hideRequired: false,
@@ -39,16 +33,16 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     this.materielService.findAllMateriel().subscribe(data => {
       this.dataSource.data = data;
     });
-    this.marqueService.findAll().subscribe(data => {
+    this.materielService.findAllMarque().subscribe(data => {
       this.marques = data;
     });
-    this.modeleService.findAll().subscribe(data => {
+    this.materielService.findAllModele().subscribe(data => {
       this.modeles = data;
     });
-    this.typeMaterielService.findAll().subscribe(data => {
+    this.materielService.findAllType().subscribe(data => {
       this.types = data;
     });
-    this.materielService.findAllSousTypeMateriel().subscribe(data => {
+    this.materielService.findAllSousType().subscribe(data => {
       this.sousTypes = data;
     });
   }

@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Materiel, SousType } from './materiel';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {Marque, Materiel, Modele, SousType, TypeMateriel} from './materiel';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 const optionRequete = {
@@ -9,8 +9,11 @@ const optionRequete = {
   })
 };
 
-export const materielsUrl = `http://localhost:8081/materiel`;
-export const sousTypeMaterielsUrl = `http://localhost:8081/sousTypeMateriel`;
+export const materielUrl = `http://localhost:8081/materiel`;
+export const sousTypeUrl = `http://localhost:8081/sousTypeMateriel`;
+export const marqueUrl = `http://localhost:8081/marque`;
+export const modeleUrl = `http://localhost:8081/modele`;
+export const typeUrl = `http://localhost:8081/typeMateriel`;
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +24,22 @@ export class MaterielService {
   }
 
   findAllMateriel(): Observable<Materiel[]> {
-    return this.http.get<Materiel[]>(materielsUrl, optionRequete);
+    return this.http.get<Materiel[]>(materielUrl, optionRequete);
   }
 
-  findAllSousTypeMateriel(): Observable<SousType[]> {
-    return this.http.get<SousType[]>(sousTypeMaterielsUrl, optionRequete);
+  findAllSousType(): Observable<SousType[]> {
+    return this.http.get<SousType[]>(sousTypeUrl, optionRequete);
+  }
+
+  findAllMarque(): Observable<Marque[]> {
+    return this.http.get<Marque[]>(marqueUrl, optionRequete);
+  }
+
+  findAllModele(): Observable<Modele[]> {
+    return this.http.get<Modele[]>(modeleUrl, optionRequete);
+  }
+  findAllType(): Observable<TypeMateriel[]> {
+    return this.http.get<TypeMateriel[]>(typeUrl, optionRequete);
   }
 
 }
