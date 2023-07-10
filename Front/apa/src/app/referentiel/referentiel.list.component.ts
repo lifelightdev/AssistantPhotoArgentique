@@ -21,24 +21,12 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
   sousTypes: SousType[] = [];
   statuts: StatutMateriel[] = [];
   ngOnInit(): void {
-    this.materielService.findAllMateriel().subscribe(data => {
-      this.dataSource.data = data;
-    });
-    this.materielService.findAllMarque().subscribe(data => {
-      this.marques = data;
-    });
-    this.materielService.findAllModele().subscribe(data => {
-      this.modeles = data;
-    });
-    this.materielService.findAllType().subscribe(data => {
-      this.types = data;
-    });
-    this.materielService.findAllSousType().subscribe(data => {
-      this.sousTypes = data;
-    });
-    this.materielService.findAllStatut().subscribe(data => {
-      this.statuts = data;
-    });
+    this.materielService.findAllMateriel().subscribe(data => { this.dataSource.data = data; });
+    this.materielService.findAllMarque().subscribe(data => { this.marques = data; });
+    this.materielService.findAllModele().subscribe(data => { this.modeles = data; });
+    this.materielService.findAllType().subscribe(data => { this.types = data; });
+    this.materielService.findAllSousType().subscribe(data => { this.sousTypes = data; });
+    this.materielService.findAllStatut().subscribe(data => { this.statuts = data; });
   }
 
   // @ts-ignore
@@ -56,13 +44,19 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
   }
 
   materiel= new Materiel ();
-
-  model = this.materiel;
-
+  modelRecherche = {
+    marque: Marque,
+    modele: Modele,
+    remarque: String(''),
+    sousType: SousType,
+    statutMateriel: StatutMateriel,
+    typeMateriel: TypeMateriel,
+    nom: String('')
+  }
   submitted = false;
 
   onSubmit() { this.submitted = true;
-    console.log(this.model);
+    console.log(this.modelRecherche);
   }
 
 }
