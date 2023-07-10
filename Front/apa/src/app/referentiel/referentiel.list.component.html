@@ -17,6 +17,13 @@
     </div>
 
     <div class="form-group">
+      <label>Sous type</label>
+      <select class="form-control" id="sousType" required [(ngModel)]="model.sousType" name="sousType">
+        <option *ngFor="let type of sousTypes" [value]="type">{{type.nom}}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
       <label for="marque">Marque</label>
       <select class="form-control" id="marque" required [(ngModel)]="model.remarque" name="marque">
         <option *ngFor="let marque of marques" [value]="marque">{{marque.nom}}</option>
@@ -26,7 +33,7 @@
     <div class="form-group">
       <label for="modele">Modéle</label>
       <select class="form-control" id="modele" required [(ngModel)]="model.modele" name="modele">
-        <option *ngFor="let modele of modeles" [value]="modeles">{{modele.nom}}</option>
+        <option *ngFor="let modele of modeles" [value]="modele">{{modele.nom}}</option>
       </select>
     </div>
 

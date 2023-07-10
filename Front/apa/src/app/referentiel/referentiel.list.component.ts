@@ -4,7 +4,7 @@ import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MarqueService} from "./marque.service";
-import {Marque, Modele, TypeMateriel} from "./materiel";
+import {Marque, Modele, TypeMateriel, SousType} from "./materiel";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ModeleService} from "./modele.service";
 import {TypeMaterielService} from "./typeMateriel.service";
@@ -34,8 +34,9 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
   marques: Marque[] = [];
   modeles: Modele[] = [];
   types: TypeMateriel[] = [];
+  sousTypes: SousType[] = [];
   ngOnInit(): void {
-    this.materielService.findAll().subscribe(data => {
+    this.materielService.findAllMateriel().subscribe(data => {
       this.dataSource.data = data;
     });
     this.marqueService.findAll().subscribe(data => {
@@ -46,6 +47,9 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     });
     this.typeMaterielService.findAll().subscribe(data => {
       this.types = data;
+    });
+    this.materielService.findAllSousTypeMateriel().subscribe(data => {
+      this.sousTypes = data;
     });
   }
 
