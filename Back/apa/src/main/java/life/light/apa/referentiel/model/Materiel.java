@@ -14,19 +14,27 @@ public class Materiel {
     private String nom;
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private TypeMateriel type;
+    private TypeMateriel typeMateriel;
     @ManyToOne
     @JoinColumn(name = "sous_type_id")
     private SousTypeMateriel sousType;
     @ManyToOne
-    @JoinColumn(name = "status_id")
-    private StatutMateriel status;
+    @JoinColumn(name = "statut_id")
+    private StatutMateriel statutMateriel;
     @ManyToOne
     @JoinColumn(name = "modele_id")
     private Modele modele;
     private File photo;
     private File modeEmploie;
     private String remarque;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNom() {
         return nom;
@@ -36,12 +44,36 @@ public class Materiel {
         this.nom = nom;
     }
 
-    public StatutMateriel getStatus() {
-        return status;
+    public TypeMateriel getTypeMateriel() {
+        return typeMateriel;
     }
 
-    public void setStatus(StatutMateriel status) {
-        this.status = status;
+    public void setTypeMateriel(TypeMateriel typeMateriel) {
+        this.typeMateriel = typeMateriel;
+    }
+
+    public SousTypeMateriel getSousType() {
+        return sousType;
+    }
+
+    public void setSousType(SousTypeMateriel sousType) {
+        this.sousType = sousType;
+    }
+
+    public StatutMateriel getStatutMateriel() {
+        return statutMateriel;
+    }
+
+    public void setStatutMateriel(StatutMateriel statutMateriel) {
+        this.statutMateriel = statutMateriel;
+    }
+
+    public Modele getModele() {
+        return modele;
+    }
+
+    public void setModele(Modele modele) {
+        this.modele = modele;
     }
 
     public File getPhoto() {
@@ -66,37 +98,5 @@ public class Materiel {
 
     public void setRemarque(String remarque) {
         this.remarque = remarque;
-    }
-
-    public SousTypeMateriel getSousType() {
-        return sousType;
-    }
-
-    public void setSousType(SousTypeMateriel sousType) {
-        this.sousType = sousType;
-    }
-
-    public TypeMateriel getType() {
-        return type;
-    }
-
-    public void setType(TypeMateriel type) {
-        this.type = type;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Modele getModele() {
-        return modele;
-    }
-
-    public void setModele(Modele modele) {
-        this.modele = modele;
     }
 }

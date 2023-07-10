@@ -14,11 +14,12 @@ import { MatListModule }    from "@angular/material/list";
 import { HeaderComponent } from './header/header.component';
 import { ReferentielListComponent } from './referentiel/referentiel.list.component';
 import { MaterielService } from "./referentiel/materiel.service";
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatTableModule} from "@angular/material/table";
-import {MatInputModule} from "@angular/material/input";
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
-import {MatSelectModule} from "@angular/material/select";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatTableModule } from "@angular/material/table";
+import { MatInputModule } from "@angular/material/input";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { MatSelectModule } from "@angular/material/select";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,9 @@ import {MatSelectModule} from "@angular/material/select";
     MatTableModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [MaterielService],
   bootstrap: [AppComponent]
