@@ -1,57 +1,53 @@
 <hr>
 <h1>Recherche de matériel</h1>
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label>Nom</label>
+    <input type="text" class="form-control" [(ngModel)]="modelRecherche.nom" name="Nom">
+  </div>
 
-<div class="container">
-  <h1>Hero Form</h1>
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label>Nom</label>
-      <input type="text" class="form-control" id="nom" [(ngModel)]="modelRecherche.nom" name="Nom">
-    </div>
+  <div class="form-group">
+    <label>Type</label>
+    <select class="form-control" [(ngModel)]="modelRecherche.typeMateriel" name="type">
+      <option *ngFor="let type of types" [value]="type">{{type.nom}}</option>
+    </select>
+  </div>
 
-    <div class="form-group">
-      <label>Type</label>
-      <select class="form-control" id="type" [(ngModel)]="modelRecherche.typeMateriel" name="type">
-        <option *ngFor="let type of types" [value]="type">{{type.nom}}</option>
-      </select>
-    </div>
+  <div class="form-group">
+    <label>Sous type</label>
+    <select class="form-control" [(ngModel)]="modelRecherche.sousType" name="sousType">
+      <option *ngFor="let type of sousTypes" [value]="type">{{type.nom}}</option>
+    </select>
+  </div>
 
-    <div class="form-group">
-      <label>Sous type</label>
-      <select class="form-control" id="sousType" [(ngModel)]="modelRecherche.sousType" name="sousType">
-        <option *ngFor="let type of sousTypes" [value]="type">{{type.nom}}</option>
-      </select>
-    </div>
+  <div class="form-group">
+    <label>Statut</label>
+    <select class="form-control" [(ngModel)]="modelRecherche.statutMateriel" name="statut">
+      <option *ngFor="let statut of statuts" [value]="statut">{{statut.nom}}</option>
+    </select>
+  </div>
 
-    <div class="form-group">
-      <label>Statut</label>
-      <select class="form-control" id="statut" [(ngModel)]="modelRecherche.statutMateriel" name="statut">
-        <option *ngFor="let statut of statuts" [value]="statut">{{statut.nom}}</option>
-      </select>
-    </div>
+  <div class="form-group">
+    <label>Marque</label>
+    <select class="form-control" [(ngModel)]="modelRecherche.marque" name="marque">
+      <option *ngFor="let marque of marques" [value]="marque">{{marque.nom}}</option>
+    </select>
+  </div>
 
-    <div class="form-group">
-      <label for="marque">Marque</label>
-      <select class="form-control" id="marque" [(ngModel)]="modelRecherche.marque" name="marque">
-        <option *ngFor="let marque of marques" [value]="marque">{{marque.nom}}</option>
-      </select>
-    </div>
+  <div class="form-group">
+    <label>Modéle</label>
+    <select class="form-control" [(ngModel)]="modelRecherche.modele" name="modele">
+      <option *ngFor="let modele of modeles" [value]="modele">{{modele.nom}}</option>
+    </select>
+  </div>
 
-    <div class="form-group">
-      <label for="modele">Modéle</label>
-      <select class="form-control" id="modele" [(ngModel)]="modelRecherche.modele" name="modele">
-        <option *ngFor="let modele of modeles" [value]="modele">{{modele.nom}}</option>
-      </select>
-    </div>
+  <div class="form-group">
+    <label>Remarque</label>
+    <input type="text" class="form-control" [(ngModel)]="modelRecherche.remarque" name="remarque">
+  </div>
 
-    <div class="form-group">
-      <label>Remarque</label>
-      <input type="text" class="form-control" id="remarque" [(ngModel)]="modelRecherche.remarque" name="remarque">
-    </div>
-
-    <button type="submit" class="btn btn-success">Submit</button>
-  </form>
-</div>
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
 
 <hr>
 <h1>Liste des matériels</h1>
@@ -112,40 +108,27 @@
     <tr mat-row (click)="onSelect(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Select page of periodic elements">
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
   </mat-paginator>
 </div>
 <hr>
 <h1>Détail du matériel</h1>
-<div>
-  <label>Identifiant: </label> {{materiel.id}}
-</div>
-<div>
-  <label>Nom: </label> {{materiel.nom}}
-</div>
-<div>
-  <label>Type: </label> {{materiel.typeMateriel?.nom}}
-</div>
-<div>
-  <label>Sous type: </label> {{materiel.sousType?.nom}}
-</div>
-<div>
-  <label>Statut: </label> {{materiel.statutMateriel?.nom}}
-</div>
-<div>
-  <label>Marque: </label> {{materiel.modele?.marque?.nom}}
-</div>
-<div>
-  <label>Modéle: </label> {{materiel.modele?.nom}}
-</div>
-<div>
-  <label>Photo: </label> {{materiel.photo}}
-</div>
-<div>
-  <label>Mode d'emploie: </label> {{materiel.modeEmploie}}
-</div>
-<div>
-  <label>Remarque: </label> {{materiel.remarque}}
-</div>
+<label>Identifiant: </label> {{materiel.id}}
+<br/>
+<label>Nom: </label> {{materiel.nom}}
+<br/>
+<label>Type: </label> {{materiel.typeMateriel?.nom}}
+<br/>
+<label>Sous type: </label> {{materiel.sousType?.nom}}
+<br/>
+<label>Statut: </label> {{materiel.statutMateriel?.nom}}
+<br/>
+<label>Marque: </label> {{materiel.modele?.marque?.nom}}
+<br/>
+<label>Modéle: </label> {{materiel.modele?.nom}}
+<br/>
+<label>Photo: </label> {{materiel.photo}}
+<br/>
+<label>Mode d'emploie: </label> {{materiel.modeEmploie}}
+<br/>
+<label>Remarque: </label> {{materiel.remarque}}
