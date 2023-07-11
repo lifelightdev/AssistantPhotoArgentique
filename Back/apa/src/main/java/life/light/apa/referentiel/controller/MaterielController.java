@@ -1,22 +1,50 @@
 package life.light.apa.referentiel.controller;
 
 import life.light.apa.referentiel.dao.*;
+import life.light.apa.referentiel.exceptions.MaterielIntrouvableException;
 import life.light.apa.referentiel.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.imageio.stream.FileImageOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200/")
 @RestController
 public class MaterielController {
 
     @Autowired
-    private MaterielRepository materiel;
+    private MaterielRepository materielRepository;
 
     @GetMapping (value = "/materiel")
-    public Iterable<Materiel> listeMateriel(){
-        return materiel.findAll();
+    public Iterable<Materiel> listeMateriel() throws IOException {
+        List<Materiel> liste = materielRepository.findAll();
+        for (Materiel materiel : liste) {
+            if ( null != materiel.getPhoto()) {
+                String imageFileName = materiel.getNom();
+                String extension = ".jpg";
+                File file = new File("D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Images\\" + imageFileName + extension);
+                file.createNewFile();
+                FileImageOutputStream fos = new FileImageOutputStream(file);
+                if (materiel.getPhoto() != null) {
+                    fos.write(materiel.getPhoto());
+                }
+                fos.close();
+            }
+        }
+        return liste;
+    }
+
+    @RequestMapping(value = "/materiel/{id}")
+    public Optional<Materiel> afficherUnMateriel(@PathVariable long id) throws MaterielIntrouvableException {
+        Optional<Materiel> materiel = materielRepository.findById(id);
+        if (materiel == null) {
+            throw new MaterielIntrouvableException("Le materiel photo " + id + " est introuvable.");
+        }
+        return materiel;
     }
 
     @Autowired

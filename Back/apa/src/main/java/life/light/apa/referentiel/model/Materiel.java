@@ -24,8 +24,12 @@ public class Materiel {
     @ManyToOne
     @JoinColumn(name = "modele_id")
     private Modele modele;
-    private File photo;
-    private File modeEmploie;
+    @Lob
+    @Column(name = "photo", columnDefinition="BLOB")
+    private byte[] photo;
+    @Lob
+    @Column(name = "mode_emploie", columnDefinition="BLOB")
+    private byte[] modeEmploie;
     private String remarque;
 
     public Long getId() {
@@ -76,19 +80,19 @@ public class Materiel {
         this.modele = modele;
     }
 
-    public File getPhoto() {
+    public byte[] getPhoto() {
         return photo;
     }
 
-    public void setPhoto(File photo) {
+    public void setPhoto(byte[] photo) {
         this.photo = photo;
     }
 
-    public File getModeEmploie() {
+    public byte[] getModeEmploie() {
         return modeEmploie;
     }
 
-    public void setModeEmploie(File modeEmploie) {
+    public void setModeEmploie(byte[] modeEmploie) {
         this.modeEmploie = modeEmploie;
     }
 

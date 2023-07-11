@@ -28,6 +28,12 @@ export class MaterielService {
     return this.http.get<Materiel[]>(materielUrl, optionRequete);
   }
 
+  // @ts-ignore
+  findMaterielById(id): Observable<Materiel[]> {
+    return this.http.get<Materiel[]>(materielUrl + id)
+  }
+
+
   findAllSousType(): Observable<SousType[]> {
     return this.http.get<SousType[]>(sousTypeUrl, optionRequete);
   }
