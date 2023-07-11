@@ -28,9 +28,8 @@ export class MaterielService {
     return this.http.get<Materiel[]>(materielUrl, optionRequete);
   }
 
-  // @ts-ignore
-  findMaterielById(id): Observable<Materiel[]> {
-    return this.http.get<Materiel[]>(materielUrl + id)
+  findMaterielById(id: number): Observable<Materiel> {
+    return this.http.get<Materiel>(materielUrl +'/'+ id)
   }
 
 

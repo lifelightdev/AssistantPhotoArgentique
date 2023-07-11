@@ -20,12 +20,14 @@ import { MatInputModule } from "@angular/material/input";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSelectModule } from "@angular/material/select";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import {DetailComponent} from "./referentiel/detail/detail.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     ReferentielListComponent,
+    DetailComponent,
   ],
   imports: [
     BrowserModule,

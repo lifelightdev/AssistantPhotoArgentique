@@ -112,23 +112,4 @@
   </mat-paginator>
 </div>
 <hr>
-<h1>Détail du matériel</h1>
-<label>Identifiant: </label> {{materiel.id}}
-<br/>
-<label>Nom: </label> {{materiel.nom}}
-<br/>
-<label>Type: </label> {{materiel.typeMateriel?.nom}}
-<br/>
-<label>Sous type: </label> {{materiel.sousType?.nom}}
-<br/>
-<label>Statut: </label> {{materiel.statutMateriel?.nom}}
-<br/>
-<label>Marque: </label> {{materiel.modele?.marque?.nom}}
-<br/>
-<label>Modéle: </label> {{materiel.modele?.nom}}
-<br/>
-<label>Photo: </label> <img src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo"/>
-<br/>
-<label>Mode d'emploie: </label> {{materiel.modeEmploie}}
-<br/>
-<label>Remarque: </label> {{materiel.remarque}}
+<a [routerLink]="['/referentiel/details', materiel.id]">Détail du materiel</a>
