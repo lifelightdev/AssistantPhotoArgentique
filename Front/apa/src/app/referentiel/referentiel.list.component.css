@@ -7,3 +7,10 @@ td, th {
   border: 1px solid black;
   padding: 15px;
 }
+
+@media {
+  .photo {
+    width: 25%;
+    height: 25%;
+  }
+}

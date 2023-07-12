@@ -58,7 +58,7 @@ input {
   border-bottom: solid .3px;
 }
 @media {
-  .listing-photo {
+  .photo {
     width: 25%;
     height: 25%;
   }

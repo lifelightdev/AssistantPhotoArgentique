@@ -1,8 +1,8 @@
 <article>
-  <img class="listing-photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Exterior photo of {{materiel.nom}}"/>
+  <img class="photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo de {{materiel.nom}}"/>
   <section class="listing-features">
-    <h2 class="section-heading">A propos du materiel : {{materiel.nom}}</h2>
     <ul>
+      <li>Nom : {{materiel.nom}}</li>
       <li>Type : {{materiel.typeMateriel?.nom}}</li>
       <li>Sous type : {{materiel.sousType?.nom}}</li>
       <li>Statut: {{materiel.statutMateriel?.nom}}</li>
