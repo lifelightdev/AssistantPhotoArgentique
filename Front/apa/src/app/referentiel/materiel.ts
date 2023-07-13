@@ -32,3 +32,13 @@ export class Modele{
   nom: string | undefined;
   marque: Marque | undefined;
 }
+
+export class ModelRecherche {
+  nom: string | undefined;
+  marque: Marque | undefined;
+  modele: Modele | undefined;
+  remarque: string | undefined;
+  sousType: SousType | undefined;
+  statutMateriel: StatutMateriel | undefined;
+  typeMateriel: TypeMateriel | undefined;
+}

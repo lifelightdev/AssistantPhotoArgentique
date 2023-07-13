@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {Marque, Materiel, Modele, SousType, StatutMateriel, TypeMateriel} from './materiel';
+import {Observable, of} from 'rxjs';
+import {Marque, Materiel, Modele, ModelRecherche, SousType, StatutMateriel, TypeMateriel} from './materiel';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {catchError, tap} from 'rxjs/operators';
+import {MessageService} from "../message.service";
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -9,46 +11,74 @@ const optionRequete = {
   })
 };
 
-export const materielUrl = `http://localhost:8081/materiel`;
-export const sousTypeUrl = `http://localhost:8081/sousTypeMateriel`;
-export const marqueUrl = `http://localhost:8081/marque`;
-export const modeleUrl = `http://localhost:8081/modele`;
-export const typeUrl = `http://localhost:8081/typeMateriel`;
-export const statutUrl = `http://localhost:8081/statut`;
-
 @Injectable({
   providedIn: 'root'
 })
 export class MaterielService {
 
-  constructor(private http: HttpClient) {
+  private materielUrl = `http://localhost:8081/materiel`;
+  private sousTypeUrl = `http://localhost:8081/sousTypeMateriel`;
+  private marqueUrl = `http://localhost:8081/marque`;
+  private modeleUrl = `http://localhost:8081/modele`;
+  private typeUrl = `http://localhost:8081/typeMateriel`;
+  private statutUrl = `http://localhost:8081/statut`;
+
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService) {
   }
 
   findAllMateriel(): Observable<Materiel[]> {
-    return this.http.get<Materiel[]>(materielUrl, optionRequete);
+    return this.http.get<Materiel[]>(this.materielUrl, optionRequete);
   }
 
   findMaterielById(id: number): Observable<Materiel> {
-    return this.http.get<Materiel>(materielUrl +'/'+ id)
+    return this.http.get<Materiel>(this.materielUrl +'/'+ id, optionRequete)
   }
 
+  searchMateriels(term: ModelRecherche): Observable<Materiel[]> {
+    return this.http.get<Materiel[]>(`${this.materielUrl}?typeMateriel=${term.sousType}`, optionRequete).pipe(
+      tap(x => x.length ?
+        this.log(`found materiel matching "${term}"`) :
+        this.log(`no materiels matching "${term}"`)),
+      catchError(this.handleError<Materiel[]>('searchMateriels', []))
+    );
+  }
+
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+
+      // TODO: send the error to remote logging infrastructure
+      console.error(error); // log to console instead
+
+      // TODO: better job of transforming error for user consumption
+      this.log(`${operation} failed: ${error.message}`);
+
+      // Let the app keep running by returning an empty result.
+      return of(result as T);
+    };
+  }
+
+  private log(message: string) {
+    this.messageService.add(`MaterielService: ${message}`);
+  }
 
   findAllSousType(): Observable<SousType[]> {
-    return this.http.get<SousType[]>(sousTypeUrl, optionRequete);
+    return this.http.get<SousType[]>(this.sousTypeUrl, optionRequete);
   }
 
   findAllMarque(): Observable<Marque[]> {
-    return this.http.get<Marque[]>(marqueUrl, optionRequete);
+    return this.http.get<Marque[]>(this.marqueUrl, optionRequete);
   }
 
   findAllModele(): Observable<Modele[]> {
-    return this.http.get<Modele[]>(modeleUrl, optionRequete);
+    return this.http.get<Modele[]>(this.modeleUrl, optionRequete);
   }
   findAllType(): Observable<TypeMateriel[]> {
-    return this.http.get<TypeMateriel[]>(typeUrl, optionRequete);
+    return this.http.get<TypeMateriel[]>(this.typeUrl, optionRequete);
   }
 
   findAllStatut(): Observable<StatutMateriel[]> {
-    return this.http.get<StatutMateriel[]>(statutUrl, optionRequete);
+    return this.http.get<StatutMateriel[]>(this.statutUrl, optionRequete);
   }
 }

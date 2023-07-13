@@ -2,51 +2,51 @@
 <h1>Recherche de matériel</h1>
 <form (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <label>Nom</label>
+    <label>Nom : </label>
     <input type="text" class="form-control" [(ngModel)]="modelRecherche.nom" name="Nom">
   </div>
 
   <div class="form-group">
-    <label>Type</label>
+    <label>Type : </label>
     <select class="form-control" [(ngModel)]="modelRecherche.typeMateriel" name="type">
-      <option *ngFor="let type of types" [value]="type">{{type.nom}}</option>
+      <option *ngFor="let type of types" [value]="type.id">{{type.nom}}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label>Sous type</label>
+    <label>Sous type : </label>
     <select class="form-control" [(ngModel)]="modelRecherche.sousType" name="sousType">
-      <option *ngFor="let type of sousTypes" [value]="type">{{type.nom}}</option>
+      <option *ngFor="let type of sousTypes" [value]="type.id">{{type.nom}}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label>Statut</label>
+    <label>Statut : </label>
     <select class="form-control" [(ngModel)]="modelRecherche.statutMateriel" name="statut">
-      <option *ngFor="let statut of statuts" [value]="statut">{{statut.nom}}</option>
+      <option *ngFor="let statut of statuts" [value]="statut.id">{{statut.nom}}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label>Marque</label>
+    <label>Marque : </label>
     <select class="form-control" [(ngModel)]="modelRecherche.marque" name="marque">
-      <option *ngFor="let marque of marques" [value]="marque">{{marque.nom}}</option>
+      <option *ngFor="let marque of marques" [value]="marque.id">{{marque.nom}}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label>Modéle</label>
+    <label>Modéle : </label>
     <select class="form-control" [(ngModel)]="modelRecherche.modele" name="modele">
-      <option *ngFor="let modele of modeles" [value]="modele">{{modele.nom}}</option>
+      <option *ngFor="let modele of modeles" [value]="modele.id">{{modele.nom}}</option>
     </select>
   </div>
 
   <div class="form-group">
-    <label>Remarque</label>
+    <label>Remarque : </label>
     <input type="text" class="form-control" [(ngModel)]="modelRecherche.remarque" name="remarque">
   </div>
 
-  <button type="submit" class="btn btn-success">Submit</button>
+  <button type="submit" class="btn btn-success">Rechercher</button>
 </form>
 
 <hr>

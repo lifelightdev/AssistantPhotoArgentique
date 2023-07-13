@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Materiel} from "./materiel";
+import {Materiel, ModelRecherche} from "./materiel";
 import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
@@ -15,11 +15,14 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
   constructor(
     private materielService: MaterielService) { }
 
+  materiel = new Materiel();
+  modelRecherche: ModelRecherche = new ModelRecherche();
   marques: Marque[] = [];
   modeles: Modele[] = [];
   types: TypeMateriel[] = [];
   sousTypes: SousType[] = [];
   statuts: StatutMateriel[] = [];
+
   ngOnInit(): void {
     this.materielService.findAllMateriel().subscribe(data => { this.dataSource.data = data; });
     this.materielService.findAllMarque().subscribe(data => { this.marques = data; });
@@ -29,6 +32,17 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     this.materielService.findAllStatut().subscribe(data => { this.statuts = data; });
   }
 
+  submitted = false;
+
+  onSubmit() {
+    this.submitted = true;
+    console.log(this.modelRecherche);
+    this.materielService.searchMateriels(this.modelRecherche).subscribe(data => { this.dataSource.data = data; });
+  }
+
+  displayedColumns = ["Identifiant", "Nom", "Type", "Sous type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque"];
+  dataSource = new MatTableDataSource<Materiel>();
+
   // @ts-ignore
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -36,27 +50,7 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  displayedColumns = ["Identifiant", "Nom", "Type", "Sous type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque"];
-  dataSource = new MatTableDataSource<Materiel>();
-
   onSelect(materiel: Materiel): void {
     this.materiel = materiel;
   }
-
-  materiel= new Materiel ();
-  modelRecherche = {
-    marque: Marque,
-    modele: Modele,
-    remarque: String(''),
-    sousType: SousType,
-    statutMateriel: StatutMateriel,
-    typeMateriel: TypeMateriel,
-    nom: String('')
-  }
-  submitted = false;
-
-  onSubmit() { this.submitted = true;
-    console.log(this.modelRecherche);
-  }
-
 }

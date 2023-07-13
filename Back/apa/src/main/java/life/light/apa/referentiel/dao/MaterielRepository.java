@@ -15,4 +15,8 @@ public interface MaterielRepository extends JpaRepository<Materiel, Long> {
     @Query("select m from Materiel m")
     List<Materiel> findAll();
 
+    @Query("SELECT m FROM Materiel m WHERE m.nom like %:nom% OR m.typeMateriel.id = :idType " +
+            "OR m.sousType.id = :idSousType OR m.statutMateriel.id = :idStatut " +
+            "OR m.remarque like  %:remarque% ")
+    List<Materiel> search(String nom, Long idType, Long idSousType, Long idStatut, String remarque);
 }
