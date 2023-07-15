@@ -3,15 +3,20 @@ package life.light.apa.referentiel.controller;
 import life.light.apa.referentiel.dao.*;
 import life.light.apa.referentiel.exceptions.MaterielIntrouvableException;
 import life.light.apa.referentiel.model.*;
+import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.stream.FileImageOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static life.light.apa.referentiel.dao.MaterielSpecification.*;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -32,32 +37,32 @@ public class MaterielController {
     @GetMapping(value = "/materiel")
     @ResponseBody
     public Iterable<Materiel> rechercheMateriels(@RequestParam Map<String, String> allParams) throws IOException {
-        System.out.println("Parameters are " + allParams.entrySet());
-        List<Materiel> liste;
+        System.out.println("--------------Parameters are " + allParams);
+        List<Materiel> liste = new ArrayList<>();
         if (allParams.entrySet().isEmpty()) {
             liste = materielRepository.findAll();
         } else {
-            String nom = null;
-            if (allParams.containsKey("nom")){
-                nom = allParams.get("nom");
+            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!"".equals(allParams.get("nom").trim()))){
+                liste = ListUtils.union(liste, materielRepository.findAll(where(nomLike(allParams.get("nom")))));
             }
-            Long idType = null;
-            if (allParams.containsKey("typeMateriel")){
-                idType = Long.valueOf(allParams.get("typeMateriel"));
+            if ((allParams.containsKey("typeMateriel")) && (!"undefined".equals(allParams.get("typeMateriel"))) && (!"0".equals(allParams.get("typeMateriel").trim()))){
+                liste = ListUtils.union(liste, materielRepository.findAll(where(idTypeLike(Long.valueOf(allParams.get("typeMateriel"))))));
             }
-            Long idSousType = null;
-            if (allParams.containsKey("soustype")){
-                idSousType = Long.valueOf(allParams.get("soustype"));
+            if ((allParams.containsKey("sousType")) && (!"undefined".equals(allParams.get("sousType"))) && (!"0".equals(allParams.get("sousType").trim()))){
+                liste = ListUtils.union(liste, materielRepository.findAll(where(idSousTypeLike(Long.valueOf(allParams.get("sousType"))))));
             }
-            Long idStatut = null;
-            if (allParams.containsKey("statutMateriel")){
-                idStatut = Long.valueOf(allParams.get("statutMateriel"));
+            if ((allParams.containsKey("statutMateriel")) && (!"undefined".equals(allParams.get("statutMateriel"))) && (!"0".equals(allParams.get("statutMateriel").trim()))){
+                liste = ListUtils.union(liste, materielRepository.findAll(where(idStatutLike(Long.valueOf(allParams.get("statutMateriel"))))));
             }
-            String remarque = null;
-            if (allParams.containsKey("remarque")){
-                remarque = allParams.get("remarque");
+            if ((allParams.containsKey("marque")) && (!"undefined".equals(allParams.get("marque"))) && (!"0".equals(allParams.get("marque").trim()))){
+                liste = ListUtils.union(liste, materielRepository.findAll(where(idMarqueLike(Long.valueOf(allParams.get("marque"))))));
             }
-            liste = materielRepository.search(nom, idType, idSousType, idStatut, remarque);
+            if ((allParams.containsKey("modele")) && (!"undefined".equals(allParams.get("modele"))) && (!"0".equals(allParams.get("modele").trim()))){
+                liste = ListUtils.union(liste, materielRepository.findAll(where(idModeleLike(Long.valueOf(allParams.get("modele"))))));
+            }
+            if ((allParams.containsKey("remarque")) && (!"undefined".equals(allParams.get("remarque")))){
+                liste = ListUtils.union(liste, materielRepository.findAll(where(remarqueLike(allParams.get("remarque")))));
+            }
         }
         for (Materiel materiel : liste) {
             if (null != materiel.getPhoto()) {

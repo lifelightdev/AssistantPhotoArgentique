@@ -37,7 +37,7 @@ export class MaterielService {
   }
 
   searchMateriels(term: ModelRecherche): Observable<Materiel[]> {
-    return this.http.get<Materiel[]>(`${this.materielUrl}?typeMateriel=${term.sousType}`, optionRequete).pipe(
+    return this.http.get<Materiel[]>(`${this.materielUrl}?nom=${term.nom}&typeMateriel=${term.typeMateriel}&sousType=${term.sousType}&statutMateriel=${term.statutMateriel}&marque=${term.marque}&modele=${term.modele}&remarque=${term.remarque}`, optionRequete).pipe(
       tap(x => x.length ?
         this.log(`found materiel matching "${term}"`) :
         this.log(`no materiels matching "${term}"`)),
