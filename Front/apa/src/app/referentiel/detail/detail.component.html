@@ -1,5 +1,4 @@
 <article>
-  <section class="listing-features">
     <ul>
       <li>Nom : {{materiel.nom}}</li>
       <li>Type : {{materiel.typeMateriel?.nom}}</li>
@@ -8,8 +7,14 @@
       <li>Marque : {{materiel.modele?.marque?.nom}}</li>
       <li>Modéle : {{materiel.modele?.nom}}</li>
       <li>Remaque : {{materiel.remarque}}</li>
-      <li>Mode d'emploie : {{materiel.modeEmploie}}</li>
+      <li>Mode d'emploie :
+        <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{materiel.nom}}.pdf">
+          Afficher le mode d'emploie
+        </a>
+      </li>
+      <li>Photo :
+        <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{materiel.nom}}.jpg"
+             alt="Photo de {{materiel.nom}}"/>
+      </li>
     </ul>
-  </section>
-  <img class="photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo de {{materiel.nom}}"/>
 </article>

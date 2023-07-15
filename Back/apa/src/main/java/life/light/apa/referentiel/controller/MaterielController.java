@@ -76,6 +76,17 @@ public class MaterielController {
                 }
                 fos.close();
             }
+            if (null != materiel.getModeEmploie()) {
+                String modeEmploieFileName = materiel.getNom();
+                String extension = ".pdf";
+                File file = new File("D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\ModeEmploie\\" + modeEmploieFileName + extension);
+                file.createNewFile();
+                FileImageOutputStream fos = new FileImageOutputStream(file);
+                if (materiel.getModeEmploie() != null) {
+                    fos.write(materiel.getModeEmploie());
+                }
+                fos.close();
+            }
         }
         return liste;
     }
