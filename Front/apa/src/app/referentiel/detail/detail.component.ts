@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Materiel} from "../materiel";
+import {AppareilPhoto, Materiel} from "../materiel";
 
 @Component({
   selector: 'app-detail',
@@ -8,4 +8,5 @@ import {Materiel} from "../materiel";
 })
 export class DetailComponent {
   @Input() materiel!: Materiel;
+  @Input() appareilPhoto!: AppareilPhoto;
 }

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {Materiel, ModelRecherche} from "./materiel";
+import {AppareilPhoto, Materiel, ModelRecherche} from "./materiel";
 import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
@@ -50,7 +50,15 @@ export class ReferentielListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
+  appareilPhoto = new AppareilPhoto();
+
   onSelect(materiel: Materiel): void {
     this.materiel = materiel;
+    console.log('matériel ' + this.materiel.nom);
+    console.log('Id du matériel de l appareil photo ' + this.materiel.id);
+    this.materielService.findAppareilPhoto(this.materiel.id).subscribe(data => {
+      this.appareilPhoto = data;
+    });
+    console.log('type de l appareil photo ' + this.appareilPhoto.typeAppareilPhoto?.nom);
   }
 }

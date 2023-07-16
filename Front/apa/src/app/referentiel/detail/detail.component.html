@@ -1,20 +1,32 @@
-<article>
-    <ul>
-      <li>Nom : {{materiel.nom}}</li>
-      <li>Type : {{materiel.typeMateriel?.nom}}</li>
-      <li>Sous type : {{materiel.sousType?.nom}}</li>
-      <li>Statut : {{materiel.statutMateriel?.nom}}</li>
-      <li>Marque : {{materiel.modele?.marque?.nom}}</li>
-      <li>Modéle : {{materiel.modele?.nom}}</li>
-      <li>Remaque : {{materiel.remarque}}</li>
-      <li>Mode d'emploie :
-        <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{materiel.nom}}.pdf">
-          Afficher le mode d'emploie
-        </a>
-      </li>
-      <li>Photo :
-        <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{materiel.nom}}.jpg"
-             alt="Photo de {{materiel.nom}}"/>
-      </li>
-    </ul>
-</article>
+<h1>Détail du matériel</h1>
+<ul>
+  <li>Nom : {{materiel.nom}}</li>
+  <li>Type : {{materiel.typeMateriel?.nom}}</li>
+  <li>Sous type : {{materiel.sousType?.nom}}</li>
+  <li>Statut : {{materiel.statutMateriel?.nom}}</li>
+  <li>Marque : {{materiel.modele?.marque?.nom}}</li>
+  <li>Modéle : {{materiel.modele?.nom}}</li>
+  <li>Remaque : {{materiel.remarque}}</li>
+  <li>Mode d'emploie :
+    <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{materiel.nom}}.pdf">
+      Afficher le mode d'emploie
+    </a>
+  </li>
+  <li>Photo :
+    <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{materiel.nom}}.jpg"
+         alt="Photo de {{materiel.nom}}"/>
+  </li>
+</ul>
+<div  *ngIf="appareilPhoto">
+  <h2>Détail de l'appareil photo</h2>
+  <ul>
+    <li>Le type d'appareil photo : {{appareilPhoto.typeAppareilPhoto?.nom}}</li>
+    <li>Le type de fixation de l'objectif : {{appareilPhoto.typeFixationObjectif?.nom}}</li>
+    <li>Nom de l'objectif : {{appareilPhoto.objectif?.materiel?.nom}}</li>
+    <li>Le type de fixation du flash : {{appareilPhoto.typeFixationFlash?.nom}}</li>
+    <li>Le type de fixation du pied : {{appareilPhoto.typeFixationPied?.nom}}</li>
+    <li>Le Chassis monté : {{appareilPhoto.chassis?.materiel?.nom}}</li>
+    <li>Le film chargé : {{appareilPhoto.film?.id}}</li>
+    <li>Le type de mise au point : {{appareilPhoto.typeMiseAuPoint?.nom}}</li>
+  </ul>
+</div>

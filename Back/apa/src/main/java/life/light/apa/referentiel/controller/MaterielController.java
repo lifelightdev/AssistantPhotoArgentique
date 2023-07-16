@@ -1,7 +1,6 @@
 package life.light.apa.referentiel.controller;
 
 import life.light.apa.referentiel.dao.*;
-import life.light.apa.referentiel.exceptions.MaterielIntrouvableException;
 import life.light.apa.referentiel.model.*;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +23,14 @@ public class MaterielController {
 
     @Autowired
     private MaterielRepository materielRepository;
+    @Autowired
+    private AppareilPhotoRepository appareilPhotoRepository;
 
     @RequestMapping(value = "/materiel/{id}")
-    public Optional<Materiel> afficherUnMateriel(@PathVariable long id) throws MaterielIntrouvableException {
+    public Optional<Materiel> afficherUnMateriel(@PathVariable long id) {
         Optional<Materiel> materiel = materielRepository.findById(id);
         if (materiel.isEmpty()) {
-            throw new MaterielIntrouvableException("Le materiel photo " + id + " est introuvable.");
+            return null;
         }
         return materiel;
     }
@@ -131,4 +132,12 @@ public class MaterielController {
         return statutMateriel.findAll();
     }
 
+    @RequestMapping(value = "/appareilPhoto/{id}")
+    public Optional<AppareilPhoto> afficherUnAppareilPhoto(@PathVariable String id) {
+        Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(Long.parseLong(id));
+        if (appareilPhoto.isEmpty()) {
+            return null;
+        }
+        return appareilPhoto;
+    }
 }

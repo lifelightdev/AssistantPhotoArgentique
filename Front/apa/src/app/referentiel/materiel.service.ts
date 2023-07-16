@@ -1,6 +1,15 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {Marque, Materiel, Modele, ModelRecherche, SousType, StatutMateriel, TypeMateriel} from './materiel';
+import {
+  AppareilPhoto,
+  Marque,
+  Materiel,
+  Modele,
+  ModelRecherche,
+  SousType,
+  StatutMateriel,
+  TypeMateriel
+} from './materiel';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {MessageService} from "../message.service";
@@ -22,6 +31,7 @@ export class MaterielService {
   private modeleUrl = `http://localhost:8081/modele`;
   private typeUrl = `http://localhost:8081/typeMateriel`;
   private statutUrl = `http://localhost:8081/statut`;
+  private appareilPhotoUrl = `http://localhost:8081/appareilPhoto`;
 
   constructor(
     private http: HttpClient,
@@ -81,4 +91,9 @@ export class MaterielService {
   findAllStatut(): Observable<StatutMateriel[]> {
     return this.http.get<StatutMateriel[]>(this.statutUrl, optionRequete);
   }
+
+  findAppareilPhoto(id: number | undefined): Observable<AppareilPhoto> {
+    return this.http.get<AppareilPhoto>(this.appareilPhotoUrl +'/'+ id, optionRequete);
+  }
+
 }
