@@ -21,6 +21,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DetailMaterielComponent} from "./referentiel/materiel/detail/detail.materiel.component";
 import {MaterielListComponent} from "./referentiel/materiel/materiel.list.component";
 import {ProduitListComponent} from "./referentiel/produit/produit.list.component";
+import {DetailProduitComponent} from "./referentiel/produit/detail/detail.produit.component";
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {ProduitListComponent} from "./referentiel/produit/produit.list.component
     MaterielListComponent,
     DetailMaterielComponent,
     ProduitListComponent,
+    DetailProduitComponent,
   ],
   imports: [
     BrowserModule,

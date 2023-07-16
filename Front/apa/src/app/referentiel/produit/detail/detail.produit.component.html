@@ -1,0 +1,17 @@
+<h1>Détail du produit</h1>
+<div>
+  <ul>
+    <li>Nom : {{produit.nom}}</li>
+    <li>Type : {{produit.typeProduit?.nom}}</li>
+    <li>Statut : {{produit.statutProduit?.nom}}</li>
+    <li>Marque : {{produit.modele?.marque?.nom}}</li>
+    <li>Modéle : {{produit.modele?.nom}}</li>
+    <li>Remaque : {{produit.remarque}}</li>
+    <li>Mode d'emploie :
+      <a *ngIf="produit.modeEmploie" href="assets/ModeEmploie/{{produit.nom}}.pdf">
+        Afficher le mode d'emploie
+      </a>
+    </li>
+  </ul>
+  <img *ngIf="produit.photo" class="photo" src="assets/Images/{{produit.nom}}.jpg" alt="Photo de {{produit.nom}}"/>
+</div>
