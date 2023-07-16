@@ -26,8 +26,9 @@
   </button>
 </mat-menu>
 <mat-menu #prise_de_vue="matMenu">
-  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des prises de vue</span></button>
-  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'une prise de vue</span></button>
+  <button mat-menu-item routerLink="/priseDeVue.list" routerLinkActive="active-link">
+    <mat-icon>format_list_bulleted</mat-icon><span>Liste des prises de vue</span>
+  </button>
   <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'une prise de vue</span></button>
 </mat-menu>
 <mat-menu #developpement="matMenu">

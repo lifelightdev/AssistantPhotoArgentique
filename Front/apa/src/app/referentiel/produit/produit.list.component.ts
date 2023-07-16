@@ -49,7 +49,6 @@ export class ProduitListComponent implements OnInit, AfterViewInit {
   }
 
   onSelect(produit: Produit): void {
-    console.log(produit.statutProduit?.id)
     this.produit = produit
   }
 

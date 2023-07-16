@@ -1,0 +1,67 @@
+<hr>
+<h1>Recherche de prise de vue</h1>
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <label>Nom : </label>
+    <input type="text" [(ngModel)]="modelRecherchePriseDeVue.nom" name="Nom">
+  </div>
+  <div>
+    <label>Statut : </label>
+    <select [(ngModel)]="modelRecherchePriseDeVue.statutPriseDeVue" name="statut">
+      <option *ngFor="let statut of statuts" [value]="statut.id">{{statut.nom}}</option>
+    </select>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Date :</mat-label>
+      <input matInput [matDatepicker]="dp" [(ngModel)]="modelRecherchePriseDeVue.date">
+      <mat-hint>JJ/MM/AAAA</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+      <mat-datepicker #dp></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div>
+    <label>Position : </label>
+    <input type="text" [(ngModel)]="modelRecherchePriseDeVue.position" name="Position">
+  </div>
+  <div>
+    <label>Remarque : </label>
+    <input type="text" [(ngModel)]="modelRecherchePriseDeVue.remarque" name="remarque">
+  </div>
+  <button type="submit" class="btn btn-success">Rechercher</button>
+</form>
+<hr>
+<h1>Liste des prises de vue</h1>
+<div>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="ID">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Nom">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.nom}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Statut">
+      <th mat-header-cell *matHeaderCellDef>Statut</th>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.statutPriseDeVue?.nom}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.date}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Position">
+      <th mat-header-cell *matHeaderCellDef>Position</th>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.position}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Remarque">
+      <th mat-header-cell *matHeaderCellDef>Remarque</th>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.remarque}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row (click)="onSelect(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+<hr>

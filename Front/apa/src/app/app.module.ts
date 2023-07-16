@@ -11,7 +11,6 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatCardModule} from "@angular/material/card";
 import {MatListModule} from "@angular/material/list";
 import {HeaderComponent} from './header/header.component';
-import {MaterielService} from "./referentiel/materiel/materiel.service";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatTableModule} from "@angular/material/table";
 import {MatInputModule} from "@angular/material/input";
@@ -22,6 +21,9 @@ import {DetailMaterielComponent} from "./referentiel/materiel/detail/detail.mate
 import {MaterielListComponent} from "./referentiel/materiel/materiel.list.component";
 import {ProduitListComponent} from "./referentiel/produit/produit.list.component";
 import {DetailProduitComponent} from "./referentiel/produit/detail/detail.produit.component";
+import {PriseDeVueListComponent} from "./priseDeVue/priseDeVue.list.component";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import {DetailProduitComponent} from "./referentiel/produit/detail/detail.produi
     DetailMaterielComponent,
     ProduitListComponent,
     DetailProduitComponent,
+    PriseDeVueListComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,9 +54,11 @@ import {DetailProduitComponent} from "./referentiel/produit/detail/detail.produi
     MatProgressSpinnerModule,
     MatSelectModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
-  providers: [MaterielService],
+  providers: [ {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}, ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
