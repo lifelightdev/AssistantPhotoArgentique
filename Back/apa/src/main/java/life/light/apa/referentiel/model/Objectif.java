@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "objectif")
 public class Objectif {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne

@@ -1,3 +1,5 @@
+import {Produit} from "../produit/produit";
+
 export class Materiel {
   id: number | undefined;
   nom: string | undefined;
@@ -36,7 +38,7 @@ export class Modele {
   marque: Marque | undefined;
 }
 
-export class ModelRecherche {
+export class ModelRechercheMateriel {
   nom: string | undefined;
   marque: Marque | undefined;
   modele: Modele | undefined;
@@ -56,7 +58,8 @@ export class AppareilPhoto {
   typeFixationPied: TypeFixation | undefined;
   typeFixationFiltre: TypeFixation | undefined;
   chassis: Chassis | undefined;
-  film: Film | undefined;
+  // @ts-ignore
+  film: Produit.Film | undefined;
   typeMiseAuPoint: TypeMiseAuPoint | undefined;
 }
 
@@ -101,7 +104,8 @@ class Chassis {
   materiel: Materiel | undefined;
   statutChassis: StatutChassis | undefined;
   dimensionChassis: DimensionChassis | undefined;
-  film: Film | undefined;
+  // @ts-ignore
+  film: Produit.Film | undefined;
 }
 
 class StatutChassis {
@@ -110,35 +114,6 @@ class StatutChassis {
 }
 
 class DimensionChassis {
-  id: number | undefined;
-  nom: string | undefined;
-}
-
-class Film {
-  id: number | undefined;
-  statutFilm: StatutFilm | undefined;
-  tailleFilm: TailleFilm | undefined;
-  typeFilm: TypeFilm | undefined;
-}
-
-class TypeFilm {
-  id: number | undefined;
-  nom: string | undefined;
-}
-
-class StatutFilm {
-  id: number | undefined;
-  nom: string | undefined;
-}
-
-class TailleFilm {
-  id: number | undefined;
-  nom: string | undefined;
-  taille: string | undefined;
-  formatFilm: FormatFilm | undefined;
-}
-
-class FormatFilm {
   id: number | undefined;
   nom: string | undefined;
 }

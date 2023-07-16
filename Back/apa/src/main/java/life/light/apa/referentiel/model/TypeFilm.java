@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "type_film")
 public class TypeFilm {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     private String nom;

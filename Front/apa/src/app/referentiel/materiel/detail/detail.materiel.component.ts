@@ -2,11 +2,11 @@ import {Component, Input} from '@angular/core';
 import {AppareilPhoto, Materiel} from "../materiel";
 
 @Component({
-  selector: 'app-detail',
-  templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.css']
+  selector: 'app-detail-materiel',
+  templateUrl: './detail.materiel.component.html',
+  styleUrls: ['./detail.materiel.component.css']
 })
-export class DetailComponent {
+export class DetailMaterielComponent {
   @Input() materiel!: Materiel;
   @Input() appareilPhoto!: AppareilPhoto;
 }

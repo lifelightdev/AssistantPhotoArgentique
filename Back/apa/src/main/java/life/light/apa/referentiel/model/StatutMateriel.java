@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "statut_materiel")
 public class StatutMateriel {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     private String nom;

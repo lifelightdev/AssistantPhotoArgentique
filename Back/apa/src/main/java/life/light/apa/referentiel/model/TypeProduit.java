@@ -3,10 +3,9 @@ package life.light.apa.referentiel.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "focal")
-public class Focal {
+@Table(name = "type_produit")
+public class TypeProduit {
     @Id
-    @Column(name = "id", nullable = false)
     private Long id;
     private String nom;
 
@@ -26,4 +25,5 @@ public class Focal {
         this.nom = nom;
     }
 }
+
 

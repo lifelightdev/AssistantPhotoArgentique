@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "appareil_photo")
 public class AppareilPhoto {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne

@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "type_appareil_photo")
 public class TypeAppareilPhoto {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     private String nom;

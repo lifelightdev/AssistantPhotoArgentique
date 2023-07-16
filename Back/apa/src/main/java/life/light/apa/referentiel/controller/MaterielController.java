@@ -38,7 +38,6 @@ public class MaterielController {
     @GetMapping(value = "/materiel")
     @ResponseBody
     public Iterable<Materiel> rechercheMateriels(@RequestParam Map<String, String> allParams) throws IOException {
-        System.out.println("--------------Parameters are " + allParams);
         List<Materiel> liste = new ArrayList<>();
         if (allParams.entrySet().isEmpty()) {
             liste = materielRepository.findAll();
@@ -127,7 +126,7 @@ public class MaterielController {
     @Autowired
     private StatutMaterielRepository statutMateriel;
 
-    @GetMapping(value = "/statut")
+    @GetMapping(value = "/statutMateriel")
     public Iterable<StatutMateriel> listeStatutMateriel() {
         return statutMateriel.findAll();
     }

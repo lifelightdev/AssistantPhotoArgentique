@@ -1,4 +1,4 @@
-<h2>{{ title }}</h2>
+<h2 style="text-align:center">{{ title }}</h2>
 
 <button mat-button [matMenuTriggerFor]="menu">Menu</button>
 
@@ -12,8 +12,18 @@
 
 <!--Second level Menu-->
 <mat-menu #referentiel="matMenu">
-  <button mat-menu-item routerLink="/referentiel.list" routerLinkActive="active-link"><mat-icon>format_list_bulleted</mat-icon><span>Liste du matériel</span></button>
-  <button mat-menu-item><mat-icon>add</mat-icon><span>Ajout d'un matériel</span></button>
+  <button mat-menu-item routerLink="/materiel.list" routerLinkActive="active-link">
+    <mat-icon>format_list_bulleted</mat-icon> <span>Liste du matériel</span>
+  </button>
+  <button mat-menu-item><mat-icon>add</mat-icon>
+    <span>Ajout d'un matériel</span>
+  </button>
+  <button mat-menu-item routerLink="/produit.list" routerLinkActive="active-link">
+    <mat-icon>format_list_bulleted</mat-icon><span>Liste des produits</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>add</mat-icon><span>Ajout d'un produit</span>
+  </button>
 </mat-menu>
 <mat-menu #prise_de_vue="matMenu">
   <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des prises de vue</span></button>

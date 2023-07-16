@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "dimension_chassis")
 public class DimensionChassis {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     private String nom;

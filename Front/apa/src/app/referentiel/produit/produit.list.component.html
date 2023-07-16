@@ -1,0 +1,98 @@
+<hr>
+<h1>Recherche de produit</h1>
+<form (ngSubmit)="onSubmit()">
+
+  <label>Nom : </label>
+  <input type="text" [(ngModel)]="modelRechercheProduit.nom" name="Nom">
+
+  <div>
+    <label>Type : </label>
+    <select [(ngModel)]="modelRechercheProduit.typeProduit" name="type">
+      <option *ngFor="let type of types" [value]="type.id">{{type.nom}}</option>
+    </select>
+  </div>
+
+  <label>Statut : </label>
+  <select [(ngModel)]="modelRechercheProduit.statutProduit" name="statut">
+    <option *ngFor="let statut of statuts" [value]="statut.id">{{statut.nom}}</option>
+  </select>
+
+  <div>
+    <label>Marque : </label>
+    <select [(ngModel)]="modelRechercheProduit.marque" name="marque">
+      <option *ngFor="let marque of marques" [value]="marque.id">{{marque.nom}}</option>
+    </select>
+    <label>Modéle : </label>
+    <select [(ngModel)]="modelRechercheProduit.modele" name="modele">
+      <option *ngFor="let modele of modeles" [value]="modele.id">{{modele.nom}}</option>
+    </select>
+  </div>
+  <div>
+    <label>Remarque : </label>
+    <input type="text" [(ngModel)]="modelRechercheProduit.remarque" name="remarque">
+  </div>
+  <button type="submit" class="btn btn-success">Rechercher</button>
+</form>
+
+<hr>
+<h1>Liste des produits</h1>
+<div>
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="ID">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let produit"> {{produit.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Nom">
+      <th mat-header-cell *matHeaderCellDef>Nom</th>
+      <td mat-cell *matCellDef="let produit"> {{produit.nom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Type">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let produit"> {{produit.typeProduit?.nom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Statut">
+      <th mat-header-cell *matHeaderCellDef>Statut</th>
+      <td mat-cell *matCellDef="let produit"> {{produit.statutProduit?.nom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Marque">
+      <th mat-header-cell *matHeaderCellDef>Marque</th>
+      <td mat-cell *matCellDef="let produit"> {{produit.modele?.marque?.nom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Modéle">
+      <th mat-header-cell *matHeaderCellDef>Modéle</th>
+      <td mat-cell *matCellDef="let produit"> {{produit.modele?.nom}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Photo">
+      <th mat-header-cell *matHeaderCellDef>Photo</th>
+      <td mat-cell *matCellDef="let produit">
+        <img *ngIf="produit.photo" class="photo" src="assets/Images/{{ produit.nom }}.jpg" alt="Photo"/>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Mode d'emploie">
+      <th mat-header-cell *matHeaderCellDef>Mode d'emploie</th>
+      <td mat-cell *matCellDef="let produit">
+        <a *ngIf="produit.modeEmploie" href="assets/ModeEmploie/{{ produit.nom }}.pdf">Afficher le mode d'emploie</a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Remarque">
+      <th mat-header-cell *matHeaderCellDef>Remarque</th>
+      <td mat-cell *matCellDef="let produit"> {{produit.remarque}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row (click)="onSelect(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+<hr>

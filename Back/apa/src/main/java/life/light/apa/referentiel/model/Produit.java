@@ -2,24 +2,19 @@ package life.light.apa.referentiel.model;
 
 import jakarta.persistence.*;
 
-import java.io.File;
-
 @Entity
-@Table(name = "materiel")
-public class Materiel {
+@Table(name = "produit")
+public class Produit {
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
     private String nom;
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private TypeMateriel typeMateriel;
-    @ManyToOne
-    @JoinColumn(name = "sous_type_id")
-    private SousTypeMateriel sousType;
+    private TypeProduit typeProduit;
     @ManyToOne
     @JoinColumn(name = "statut_id")
-    private StatutMateriel statutMateriel;
+    private StatutProduit statutProduit;
     @ManyToOne
     @JoinColumn(name = "modele_id")
     private Modele modele;
@@ -47,28 +42,20 @@ public class Materiel {
         this.nom = nom;
     }
 
-    public TypeMateriel getTypeMateriel() {
-        return typeMateriel;
+    public TypeProduit getTypeProduit() {
+        return typeProduit;
     }
 
-    public void setTypeMateriel(TypeMateriel typeMateriel) {
-        this.typeMateriel = typeMateriel;
+    public void setTypeProduit(TypeProduit typeProduit) {
+        this.typeProduit = typeProduit;
     }
 
-    public SousTypeMateriel getSousType() {
-        return sousType;
+    public StatutProduit getStatutProduit() {
+        return statutProduit;
     }
 
-    public void setSousType(SousTypeMateriel sousType) {
-        this.sousType = sousType;
-    }
-
-    public StatutMateriel getStatutMateriel() {
-        return statutMateriel;
-    }
-
-    public void setStatutMateriel(StatutMateriel statutMateriel) {
-        this.statutMateriel = statutMateriel;
+    public void setStatutProduit(StatutProduit statutProduit) {
+        this.statutProduit = statutProduit;
     }
 
     public Modele getModele() {

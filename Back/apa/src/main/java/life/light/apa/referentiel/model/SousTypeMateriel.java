@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "sous_type_materiel")
 public class SousTypeMateriel {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne

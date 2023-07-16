@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "chassis")
 public class Chassis {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne
