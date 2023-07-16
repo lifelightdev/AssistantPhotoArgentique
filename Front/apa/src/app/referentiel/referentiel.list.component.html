@@ -1,58 +1,47 @@
 <hr>
 <h1>Recherche de matériel</h1>
 <form (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label>Nom : </label>
-    <input type="text" class="form-control" [(ngModel)]="modelRecherche.nom" name="Nom">
-  </div>
 
-  <div class="form-group">
+  <label>Nom : </label>
+  <input type="text" [(ngModel)]="modelRecherche.nom" name="Nom">
+
+  <div>
     <label>Type : </label>
-    <select class="form-control" [(ngModel)]="modelRecherche.typeMateriel" name="type">
+    <select [(ngModel)]="modelRecherche.typeMateriel" name="type">
       <option *ngFor="let type of types" [value]="type.id">{{type.nom}}</option>
     </select>
-  </div>
-
-  <div class="form-group">
     <label>Sous type : </label>
-    <select class="form-control" [(ngModel)]="modelRecherche.sousType" name="sousType">
+    <select [(ngModel)]="modelRecherche.sousType" name="sousType">
       <option *ngFor="let type of sousTypes" [value]="type.id">{{type.nom}}</option>
     </select>
   </div>
 
-  <div class="form-group">
-    <label>Statut : </label>
-    <select class="form-control" [(ngModel)]="modelRecherche.statutMateriel" name="statut">
-      <option *ngFor="let statut of statuts" [value]="statut.id">{{statut.nom}}</option>
-    </select>
-  </div>
+  <label>Statut : </label>
+  <select [(ngModel)]="modelRecherche.statutMateriel" name="statut">
+    <option *ngFor="let statut of statuts" [value]="statut.id">{{statut.nom}}</option>
+  </select>
 
-  <div class="form-group">
+  <div>
     <label>Marque : </label>
-    <select class="form-control" [(ngModel)]="modelRecherche.marque" name="marque">
+    <select [(ngModel)]="modelRecherche.marque" name="marque">
       <option *ngFor="let marque of marques" [value]="marque.id">{{marque.nom}}</option>
     </select>
-  </div>
-
-  <div class="form-group">
     <label>Modéle : </label>
-    <select class="form-control" [(ngModel)]="modelRecherche.modele" name="modele">
+    <select [(ngModel)]="modelRecherche.modele" name="modele">
       <option *ngFor="let modele of modeles" [value]="modele.id">{{modele.nom}}</option>
     </select>
   </div>
-
-  <div class="form-group">
+  <div>
     <label>Remarque : </label>
-    <input type="text" class="form-control" [(ngModel)]="modelRecherche.remarque" name="remarque">
+    <input type="text" [(ngModel)]="modelRecherche.remarque" name="remarque">
   </div>
-
   <button type="submit" class="btn btn-success">Rechercher</button>
 </form>
 
 <hr>
 <h1>Liste des matériels</h1>
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<div>
+  <table mat-table [dataSource]="dataSource">
 
     <ng-container matColumnDef="Identifiant">
       <th mat-header-cell *matHeaderCellDef>Identifiant</th>

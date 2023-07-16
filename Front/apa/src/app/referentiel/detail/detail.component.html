@@ -1,24 +1,23 @@
 <h1>Détail du matériel</h1>
-<ul>
-  <li>Nom : {{materiel.nom}}</li>
-  <li>Type : {{materiel.typeMateriel?.nom}}</li>
-  <li>Sous type : {{materiel.sousType?.nom}}</li>
-  <li>Statut : {{materiel.statutMateriel?.nom}}</li>
-  <li>Marque : {{materiel.modele?.marque?.nom}}</li>
-  <li>Modéle : {{materiel.modele?.nom}}</li>
-  <li>Remaque : {{materiel.remarque}}</li>
-  <li>Mode d'emploie :
-    <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{materiel.nom}}.pdf">
-      Afficher le mode d'emploie
-    </a>
-  </li>
-  <li>Photo :
-    <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{materiel.nom}}.jpg"
-         alt="Photo de {{materiel.nom}}"/>
-  </li>
-</ul>
-<div  *ngIf="appareilPhoto">
-  <h2>Détail de l'appareil photo</h2>
+<div>
+  <ul>
+    <li>Nom : {{materiel.nom}}</li>
+    <li>Type : {{materiel.typeMateriel?.nom}}</li>
+    <li>Sous type : {{materiel.sousType?.nom}}</li>
+    <li>Statut : {{materiel.statutMateriel?.nom}}</li>
+    <li>Marque : {{materiel.modele?.marque?.nom}}</li>
+    <li>Modéle : {{materiel.modele?.nom}}</li>
+    <li>Remaque : {{materiel.remarque}}</li>
+    <li>Mode d'emploie :
+      <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{materiel.nom}}.pdf">
+        Afficher le mode d'emploie
+      </a>
+    </li>
+  </ul>
+  <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{materiel.nom}}.jpg" alt="Photo de {{materiel.nom}}"/>
+</div>
+<h2 *ngIf="appareilPhoto">Détail de l'appareil photo</h2>
+<div *ngIf="appareilPhoto">
   <ul>
     <li>Le type d'appareil photo : {{appareilPhoto.typeAppareilPhoto?.nom}}</li>
     <li>Le type de fixation de l'objectif : {{appareilPhoto.typeFixationObjectif?.nom}}</li>
