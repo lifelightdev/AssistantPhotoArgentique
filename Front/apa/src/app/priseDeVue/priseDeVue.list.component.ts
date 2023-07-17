@@ -22,7 +22,6 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.priseDeVueService.findAllPriseDeVue().subscribe(data => { this.dataSource.data = data; });
     this.priseDeVueService.findAllStatutPriseDeVue().subscribe(data => { this.statuts = data; });
-    this.modelRecherchePriseDeVue.date = new Date();
   }
 
   submitted = false;
