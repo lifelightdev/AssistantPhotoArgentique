@@ -12,13 +12,10 @@
     </select>
   </div>
   <div>
-    <mat-form-field>
-      <mat-label>Date :</mat-label>
-      <input matInput [matDatepicker]="dp" [(ngModel)]="modelRecherchePriseDeVue.date">
-      <mat-hint>JJ/MM/AAAA</mat-hint>
-      <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-      <mat-datepicker #dp></mat-datepicker>
-    </mat-form-field>
+      <label>Date : </label>
+      <input matInput [matDatepicker]="dp3" >
+      <mat-datepicker-toggle matIconSuffix [for]="dp3"></mat-datepicker-toggle>
+      <mat-datepicker #dp3 ></mat-datepicker>
   </div>
   <div>
     <label>Position : </label>
@@ -65,3 +62,4 @@
   </mat-paginator>
 </div>
 <hr>
+<app-detail-priseDeVue [priseDeVue]="priseDeVue" ></app-detail-priseDeVue>

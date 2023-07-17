@@ -1,3 +1,6 @@
+import {Materiel} from "../referentiel/materiel/materiel";
+import {Produit} from "../referentiel/produit/produit";
+
 export class PriseDeVue {
   id: number | undefined;
   nom: string | undefined;
@@ -5,6 +8,8 @@ export class PriseDeVue {
   date: Date | undefined;
   position: string | undefined;
   remarque: string | undefined;
+  materiels: Materiel[] | undefined;
+  produits: Produit[] | undefined;
 }
 
 export class StatutPriseDeVue {

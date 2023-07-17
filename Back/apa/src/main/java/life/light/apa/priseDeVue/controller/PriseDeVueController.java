@@ -4,21 +4,22 @@ import life.light.apa.priseDeVue.dao.PriseDeVueRepository;
 import life.light.apa.priseDeVue.dao.StatutPriseDeVueRepository;
 import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
+import life.light.apa.referentiel.model.Materiel;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import static life.light.apa.priseDeVue.dao.PriseDeVueSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class PriseDeVueController {
+
     @Autowired
     private PriseDeVueRepository priseDeVueRepository;
 
@@ -36,7 +37,9 @@ public class PriseDeVueController {
                 liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(idStatutLike(Long.valueOf(allParams.get("statutPriseDeVue"))))));
             }
             if ((allParams.containsKey("date")) && (!"undefined".equals(allParams.get("date"))) && (!"0".equals(allParams.get("date").trim()))){
-                liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(dateLike(Date.valueOf(allParams.get("date"))))));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate localDate = LocalDate.parse(allParams.get("date"), formatter);
+                liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(dateLike(localDate))));
             }
             if ((allParams.containsKey("position")) && (!"undefined".equals(allParams.get("position"))) && (!"0".equals(allParams.get("position").trim()))){
                 liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(positionLike(allParams.get("position")))));
@@ -56,4 +59,8 @@ public class PriseDeVueController {
         return statutPriseDeVue.findAll();
     }
 
+    @RequestMapping(value = "/priseDeVue/materiel/{id}")
+    public Iterable<Materiel> afficherLesMateriels(@RequestParam Map<String, String> allParams) {
+        return priseDeVueRepository.findMaterielsById(Long.valueOf(allParams.get("id")));
+    }
 }

@@ -24,6 +24,7 @@ import {DetailProduitComponent} from "./referentiel/produit/detail/detail.produi
 import {PriseDeVueListComponent} from "./priseDeVue/priseDeVue.list.component";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
+import {DetailPriseDeVueComponent} from "./priseDeVue/detail/detail.priseDeVue.component";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
     ProduitListComponent,
     DetailProduitComponent,
     PriseDeVueListComponent,
+    DetailPriseDeVueComponent,
   ],
   imports: [
     BrowserModule,

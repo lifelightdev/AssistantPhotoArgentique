@@ -12,8 +12,7 @@ import {Marque, Modele, TypeMateriel, SousType, StatutMateriel} from "./materiel
 })
 export class MaterielListComponent implements OnInit, AfterViewInit {
 
-  constructor(
-    private materielService: MaterielService) { }
+  constructor(private materielService: MaterielService) { }
 
   materiel = new Materiel();
   modelRecherche: ModelRechercheMateriel = new ModelRechercheMateriel();

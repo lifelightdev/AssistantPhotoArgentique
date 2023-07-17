@@ -1,8 +1,11 @@
 package life.light.apa.priseDeVue.model;
 
 import jakarta.persistence.*;
-
-import java.sql.Date;
+import life.light.apa.referentiel.model.Materiel;
+import life.light.apa.referentiel.model.Produit;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "prise_de_vue")
@@ -11,12 +14,22 @@ public class PriseDeVue {
     @Column(name = "id", nullable = false)
     private Long id;
     private String nom;
-    private Date date;
+    private LocalDate date;
     private String position;
     @ManyToOne
     @JoinColumn(name = "statut_id")
     private StatutPriseDeVue statutPriseDeVue;
     private String remarque;
+    @ManyToMany
+    @JoinTable(name = "prise_de_vue_materiel",
+            joinColumns = @JoinColumn(name = "prise_de_vue_id"),
+            inverseJoinColumns = @JoinColumn(name = "materiel_id"))
+    private List<Materiel> materiels = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "prise_de_vue_produit",
+            joinColumns = @JoinColumn(name = "prise_de_vue_id"),
+            inverseJoinColumns = @JoinColumn(name = "produit_id"))
+    private List<Produit> produits = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -34,11 +47,11 @@ public class PriseDeVue {
         this.nom = nom;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -64,5 +77,21 @@ public class PriseDeVue {
 
     public void setRemarque(String remarque) {
         this.remarque = remarque;
+    }
+
+    public List<Materiel> getMateriels() {
+        return materiels;
+    }
+
+    public void setMateriels(List<Materiel> materiels) {
+        this.materiels = materiels;
+    }
+
+    public List<Produit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(List<Produit> produits) {
+        this.produits = produits;
     }
 }
