@@ -40,69 +40,65 @@
 
 <hr>
 <h1>Liste des matériels</h1>
-<div>
-  <table mat-table [dataSource]="dataSource">
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="ID">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.id}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="ID">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.id}} </td>
-    </ng-container>
+  <ng-container matColumnDef="Nom">
+    <th mat-header-cell *matHeaderCellDef>Nom</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.nom}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Nom">
-      <th mat-header-cell *matHeaderCellDef>Nom</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.nom}} </td>
-    </ng-container>
+  <ng-container matColumnDef="Type">
+    <th mat-header-cell *matHeaderCellDef>Type</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.typeMateriel?.nom}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Type">
-      <th mat-header-cell *matHeaderCellDef>Type</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.typeMateriel?.nom}} </td>
-    </ng-container>
+  <ng-container matColumnDef="Sous type">
+    <th mat-header-cell *matHeaderCellDef>Sous type</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.sousType?.nom}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Sous type">
-      <th mat-header-cell *matHeaderCellDef>Sous type</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.sousType?.nom}} </td>
-    </ng-container>
+  <ng-container matColumnDef="Statut">
+    <th mat-header-cell *matHeaderCellDef>Statut</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.statutMateriel?.nom}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Statut">
-      <th mat-header-cell *matHeaderCellDef>Statut</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.statutMateriel?.nom}} </td>
-    </ng-container>
+  <ng-container matColumnDef="Marque">
+    <th mat-header-cell *matHeaderCellDef>Marque</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.modele?.marque?.nom}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Marque">
-      <th mat-header-cell *matHeaderCellDef>Marque</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.modele?.marque?.nom}} </td>
-    </ng-container>
+  <ng-container matColumnDef="Modéle">
+    <th mat-header-cell *matHeaderCellDef>Modéle</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.modele?.nom}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Modéle">
-      <th mat-header-cell *matHeaderCellDef>Modéle</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.modele?.nom}} </td>
-    </ng-container>
+  <ng-container matColumnDef="Photo">
+    <th mat-header-cell *matHeaderCellDef>Photo</th>
+    <td mat-cell *matCellDef="let materiel">
+      <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo"/>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Photo">
-      <th mat-header-cell *matHeaderCellDef>Photo</th>
-      <td mat-cell *matCellDef="let materiel">
-        <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo"/>
-      </td>
-    </ng-container>
+  <ng-container matColumnDef="Mode d'emploie">
+    <th mat-header-cell *matHeaderCellDef>Mode d'emploie</th>
+    <td mat-cell *matCellDef="let materiel">
+      <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{ materiel.nom }}.pdf">Afficher le mode d'emploie</a>
+    </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Mode d'emploie">
-      <th mat-header-cell *matHeaderCellDef>Mode d'emploie</th>
-      <td mat-cell *matCellDef="let materiel">
-        <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{ materiel.nom }}.pdf">Afficher le mode d'emploie</a>
-      </td>
-    </ng-container>
+  <ng-container matColumnDef="Remarque">
+    <th mat-header-cell *matHeaderCellDef>Remarque</th>
+    <td mat-cell *matCellDef="let materiel"> {{materiel.remarque}} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="Remarque">
-      <th mat-header-cell *matHeaderCellDef>Remarque</th>
-      <td mat-cell *matCellDef="let materiel"> {{materiel.remarque}} </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row (click)="onSelect(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
-  </mat-paginator>
-</div>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row (click)="onSelect(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<hr>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
 <hr>
 <app-detail-materiel [materiel]="materiel" [appareilPhoto]="appareilPhoto"></app-detail-materiel>

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {
   AppareilPhoto,
   Marque,
@@ -11,8 +11,6 @@ import {
   TypeMateriel
 } from './materiel';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {catchError, tap} from 'rxjs/operators';
-import {MessageService} from "../../message.service";
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -34,8 +32,7 @@ export class MaterielService {
   private appareilPhotoUrl = `http://localhost:8081/appareilPhoto`;
 
   constructor(
-    private http: HttpClient,
-    private messageService: MessageService) {
+    private http: HttpClient) {
   }
 
   findAllMateriel(): Observable<Materiel[]> {
@@ -47,23 +44,7 @@ export class MaterielService {
   }
 
   searchMateriels(term: ModelRechercheMateriel): Observable<Materiel[]> {
-    return this.http.get<Materiel[]>(`${this.materielUrl}?nom=${term.nom}&typeMateriel=${term.typeMateriel}&sousType=${term.sousType}&statutMateriel=${term.statutMateriel}&marque=${term.marque}&modele=${term.modele}&remarque=${term.remarque}`, optionRequete).pipe(
-      tap(x => x.length ?
-        this.log(`found materiel matching "${term}"`) :
-        this.log(`no materiels matching "${term}"`)),
-      catchError(this.handleError<Materiel[]>('searchMateriels', []))
-    );
-  }
-
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
-  }
-
-  private log(message: string) {
-    this.messageService.add(`MaterielService: ${message}`);
+    return this.http.get<Materiel[]>(`${this.materielUrl}?nom=${term.nom}&typeMateriel=${term.typeMateriel}&sousType=${term.sousType}&statutMateriel=${term.statutMateriel}&marque=${term.marque}&modele=${term.modele}&remarque=${term.remarque}`, optionRequete)
   }
 
   findAllSousType(): Observable<SousType[]> {

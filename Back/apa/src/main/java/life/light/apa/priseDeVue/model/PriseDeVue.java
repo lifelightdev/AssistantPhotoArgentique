@@ -16,6 +16,9 @@ public class PriseDeVue {
     private String nom;
     private LocalDate date;
     private String position;
+    private Double latitude;
+    private Double longitude;
+    private String adresse;
     @ManyToOne
     @JoinColumn(name = "statut_id")
     private StatutPriseDeVue statutPriseDeVue;
@@ -61,6 +64,30 @@ public class PriseDeVue {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
     public StatutPriseDeVue getStatutPriseDeVue() {

@@ -3,6 +3,10 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/src/assets/**
+/Front/apa/src/assets/Images/*
+/Front/apa/src/assets/ModeEmploie/*
+/Front/apa/src/assets/Data/*
 
 ### STS ###
 .apt_generated
@@ -67,4 +71,3 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
-

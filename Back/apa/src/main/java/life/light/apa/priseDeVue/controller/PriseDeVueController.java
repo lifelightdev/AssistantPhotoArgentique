@@ -1,5 +1,6 @@
 package life.light.apa.priseDeVue.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import life.light.apa.priseDeVue.dao.PriseDeVueRepository;
 import life.light.apa.priseDeVue.dao.StatutPriseDeVueRepository;
 import life.light.apa.priseDeVue.model.PriseDeVue;
@@ -8,6 +9,8 @@ import life.light.apa.referentiel.model.Materiel;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -46,6 +49,32 @@ public class PriseDeVueController {
         }
         if (liste.isEmpty()) {
             liste = priseDeVueRepository.findAll();
+        }
+        for (PriseDeVue priseDeVue : liste) {
+            GeoJson geoJson = new GeoJson();
+            List<Feature> features = new ArrayList<>();
+            if (null != priseDeVue.getPosition()) {
+                Feature feature = new Feature();
+                List<Double> coordinates = new ArrayList<>();
+                coordinates.add(priseDeVue.getLongitude());
+                coordinates.add(priseDeVue.getLatitude());
+                Geometry geometry = new Geometry();
+                geometry.setCoordinates(coordinates);
+                feature.setGeometry(geometry);
+                FeatureProperties featureProperties = new FeatureProperties();
+                featureProperties.setNom(priseDeVue.getPosition());
+                featureProperties.setAdresse(priseDeVue.getAdresse());
+                feature.setProperties(featureProperties);
+                features.add(feature);
+            }
+            geoJson.setFeatures(features);
+            String path = "D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Data\\photo.geojson";
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.writeValue(new File(path), geoJson);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return liste;
     }

@@ -25,6 +25,9 @@ import {PriseDeVueListComponent} from "./priseDeVue/priseDeVue.list.component";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MAT_DATE_LOCALE, MatNativeDateModule} from '@angular/material/core';
 import {DetailPriseDeVueComponent} from "./priseDeVue/detail/detail.priseDeVue.component";
+import {MapComponent} from './priseDeVue/detail/map/map.component';
+import {paginationPersonnalise} from './paginationPersonnalise';
+import {MatPaginatorIntl} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import {DetailPriseDeVueComponent} from "./priseDeVue/detail/detail.priseDeVue.c
     DetailProduitComponent,
     PriseDeVueListComponent,
     DetailPriseDeVueComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,11 @@ import {DetailPriseDeVueComponent} from "./priseDeVue/detail/detail.priseDeVue.c
     MatDatepickerModule,
     MatNativeDateModule
   ],
-  providers: [ {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'}, ],
+  providers: [
+    {provide: MAT_DATE_LOCALE, useValue: 'fr-FR'},
+    {provide: MatPaginatorIntl, useClass: paginationPersonnalise}
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
