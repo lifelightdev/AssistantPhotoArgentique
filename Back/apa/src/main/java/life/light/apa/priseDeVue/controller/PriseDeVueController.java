@@ -50,9 +50,9 @@ public class PriseDeVueController {
         if (liste.isEmpty()) {
             liste = priseDeVueRepository.findAll();
         }
+        GeoJson geoJson = new GeoJson();
+        List<Feature> features = new ArrayList<>();
         for (PriseDeVue priseDeVue : liste) {
-            GeoJson geoJson = new GeoJson();
-            List<Feature> features = new ArrayList<>();
             if (null != priseDeVue.getPosition()) {
                 Feature feature = new Feature();
                 List<Double> coordinates = new ArrayList<>();
@@ -67,14 +67,14 @@ public class PriseDeVueController {
                 feature.setProperties(featureProperties);
                 features.add(feature);
             }
-            geoJson.setFeatures(features);
-            String path = "D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Data\\photo.geojson";
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.writeValue(new File(path), geoJson);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        }
+        geoJson.setFeatures(features);
+        String path = "D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Data\\photo.geojson";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(new File(path), geoJson);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return liste;
     }
