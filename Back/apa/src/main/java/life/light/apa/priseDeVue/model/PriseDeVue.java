@@ -15,7 +15,6 @@ public class PriseDeVue {
     private Long id;
     private String nom;
     private LocalDateTime date;
-    private String dateTime;
     private String position;
     private String ville;
     private String codePostal;
@@ -59,14 +58,6 @@ public class PriseDeVue {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
-    }
-
-    public String getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(String dateTime) {
-        this.dateTime = dateTime;
     }
 
     public String getPosition() {

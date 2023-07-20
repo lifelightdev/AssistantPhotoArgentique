@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,10 +69,6 @@ public class PriseDeVueController {
                 featureProperties.setAdresse(priseDeVue.getAdresse());
                 feature.setProperties(featureProperties);
                 features.add(feature);
-            }
-            if (null != priseDeVue.getDate()){
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
-                priseDeVue.setDateTime(priseDeVue.getDate().format(formatter)); // "1986-04-08 12:30"
             }
         }
         geoJson.setFeatures(features);
