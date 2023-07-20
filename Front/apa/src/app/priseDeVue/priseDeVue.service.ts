@@ -27,7 +27,7 @@ export class PriseDeVueService {
   }
 
   searchPriseDeVues(term: ModelRecherchePriseDeVue) {
-    return this.http.get<PriseDeVue[]>(`${this.priseDeVueUrl}?nom=${term.nom}&statutPriseDeVue=${term.statutPriseDeVue}&date=${term.date?.toLocaleDateString()}&remarque=${term.remarque}`, optionRequete);
+    return this.http.get<PriseDeVue[]>(`${this.priseDeVueUrl}?nom=${term.nom}&statutPriseDeVue=${term.statutPriseDeVue}&date=${term.date}&remarque=${term.remarque}`, optionRequete);
   }
 
   findAllStatutPriseDeVue(): Observable<StatutPriseDeVue[]> {

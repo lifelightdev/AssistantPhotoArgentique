@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,24 +30,28 @@ public class PriseDeVueController {
     @ResponseBody
     public Iterable<PriseDeVue> recherchePriseDeVues(@RequestParam Map<String, String> allParams) {
         List<PriseDeVue> liste = new ArrayList<>();
+        boolean trouver = false;
         if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!"".equals(allParams.get("nom").trim()))) {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(nomLike(allParams.get("nom")))));
+            trouver = true;
         }
         if ((allParams.containsKey("statutPriseDeVue")) && (!"undefined".equals(allParams.get("statutPriseDeVue"))) && (!"0".equals(allParams.get("statutPriseDeVue").trim()))) {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(idStatutLike(Long.valueOf(allParams.get("statutPriseDeVue"))))));
+            trouver = true;
         }
-        if ((allParams.containsKey("date")) && (!"undefined".equals(allParams.get("date"))) && (!"0".equals(allParams.get("date").trim()))) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate localDate = LocalDate.parse(allParams.get("date"), formatter);
-            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(dateLike(localDate))));
+        if ((allParams.containsKey("date")) && (!"undefined".equals(allParams.get("date"))) && (!"".equals(allParams.get("date").trim()))) {
+            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(dateLike(LocalDateTime.parse(allParams.get("date"))))));
+            trouver = true;
         }
         if ((allParams.containsKey("position")) && (!"undefined".equals(allParams.get("position"))) && (!"0".equals(allParams.get("position").trim()))) {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(positionLike(allParams.get("position")))));
+            trouver = true;
         }
         if ((allParams.containsKey("remarque")) && (!"undefined".equals(allParams.get("remarque")))) {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(remarqueLike(allParams.get("remarque")))));
+            trouver = true;
         }
-        if (liste.isEmpty()) {
+        if (! trouver) {
             liste = priseDeVueRepository.findAll();
         }
         GeoJson geoJson = new GeoJson();
@@ -66,6 +70,10 @@ public class PriseDeVueController {
                 featureProperties.setAdresse(priseDeVue.getAdresse());
                 feature.setProperties(featureProperties);
                 features.add(feature);
+            }
+            if (null != priseDeVue.getDate()){
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+                priseDeVue.setDateTime(priseDeVue.getDate().format(formatter)); // "1986-04-08 12:30"
             }
         }
         geoJson.setFeatures(features);

@@ -6,6 +6,7 @@ export class PriseDeVue {
   nom: string | undefined;
   statutPriseDeVue: StatutPriseDeVue | undefined;
   date: Date | undefined;
+  dateTime: string | undefined;
   position: string | undefined;
   ville: string | undefined;
   codePostal: string | undefined;
@@ -25,7 +26,7 @@ export class StatutPriseDeVue {
 export class ModelRecherchePriseDeVue {
   nom: string | undefined;
   remarque: string | undefined;
-  date: Date | undefined;
+  date: string | undefined;
   position: string | undefined;
   statutPriseDeVue: StatutPriseDeVue | undefined;
 }

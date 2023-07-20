@@ -3,7 +3,7 @@ package life.light.apa.priseDeVue.model;
 import jakarta.persistence.*;
 import life.light.apa.referentiel.model.Materiel;
 import life.light.apa.referentiel.model.Produit;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +14,8 @@ public class PriseDeVue {
     @Column(name = "id", nullable = false)
     private Long id;
     private String nom;
-    private LocalDate date;
+    private LocalDateTime date;
+    private String dateTime;
     private String position;
     private String ville;
     private String codePostal;
@@ -52,12 +53,20 @@ public class PriseDeVue {
         this.nom = nom;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getPosition() {
