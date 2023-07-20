@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {ModelRecherchePriseDeVue, PriseDeVue, StatutPriseDeVue} from "./priseDeVue";
+import {Coordonnees, ModelRecherchePriseDeVue, PositionSoleil, PriseDeVue, StatutPriseDeVue} from "./priseDeVue";
 import {PriseDeVueService} from "./priseDeVue.service";
 
 @Component({
@@ -15,7 +15,9 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
     private priseDeVueService: PriseDeVueService) {
   }
 
-  priseDeVue = new PriseDeVue();
+  priseDeVue: PriseDeVue = new PriseDeVue();
+  positionSoleil: PositionSoleil = new PositionSoleil();
+  coordonnees: Coordonnees = new Coordonnees();
   modelRecherchePriseDeVue: ModelRecherchePriseDeVue = new ModelRecherchePriseDeVue();
   statuts: StatutPriseDeVue[] = [];
 
@@ -43,6 +45,13 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
 
   onSelect(priseDeVue: PriseDeVue): void {
     this.priseDeVue = priseDeVue;
+    this.coordonnees.latitude = priseDeVue.latitude;
+    this.coordonnees.longitude = priseDeVue.longitude;
+    let date: String;
+    // @ts-ignore
+    date = priseDeVue.date
+    this.coordonnees.date = date.substr(0,10);
+    this.priseDeVueService.recherchePositionSoleil(this.coordonnees).subscribe(data => { this.positionSoleil = data; });
   }
 
 }

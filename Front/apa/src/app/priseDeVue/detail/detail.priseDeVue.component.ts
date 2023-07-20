@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {PriseDeVue} from "../priseDeVue";
+import {PositionSoleil, PriseDeVue} from "../priseDeVue";
 
 @Component({
   selector: 'app-detail-priseDeVue',
@@ -8,4 +8,5 @@ import {PriseDeVue} from "../priseDeVue";
 })
 export class DetailPriseDeVueComponent {
   @Input() priseDeVue!: PriseDeVue;
+  @Input() positionSoleil!: PositionSoleil;
 }

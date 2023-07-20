@@ -44,7 +44,7 @@
     </ng-container>
     <ng-container matColumnDef="Date">
       <th mat-header-cell *matHeaderCellDef>Date</th>
-      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.dateTime}} </td>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.date | date: 'le dd/MM/yyyy à HH:mm'}} </td>
     </ng-container>
     <ng-container matColumnDef="Position">
       <th mat-header-cell *matHeaderCellDef>Position</th>
@@ -61,4 +61,4 @@
   </mat-paginator>
 </div>
 <hr>
-<app-detail-priseDeVue [priseDeVue]="priseDeVue"></app-detail-priseDeVue>
+<app-detail-priseDeVue [priseDeVue]="priseDeVue" [positionSoleil]="positionSoleil"></app-detail-priseDeVue>
