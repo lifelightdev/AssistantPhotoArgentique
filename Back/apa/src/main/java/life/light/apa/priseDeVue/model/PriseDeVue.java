@@ -16,13 +16,15 @@ public class PriseDeVue {
     private String nom;
     private LocalDate date;
     private String position;
+    private String ville;
+    private String codePostal;
     private Double latitude;
     private Double longitude;
     private String adresse;
+    private String remarque;
     @ManyToOne
     @JoinColumn(name = "statut_id")
     private StatutPriseDeVue statutPriseDeVue;
-    private String remarque;
     @ManyToMany
     @JoinTable(name = "prise_de_vue_materiel",
             joinColumns = @JoinColumn(name = "prise_de_vue_id"),
@@ -64,6 +66,22 @@ public class PriseDeVue {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public String getCodePostal() {
+        return codePostal;
+    }
+
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
     }
 
     public Double getLatitude() {

@@ -7,6 +7,11 @@ export class PriseDeVue {
   statutPriseDeVue: StatutPriseDeVue | undefined;
   date: Date | undefined;
   position: string | undefined;
+  ville: string | undefined;
+  codePostal: string | undefined;
+  latitude : number | undefined;
+  longitude : number | undefined;
+  adresse : string | undefined;
   remarque: string | undefined;
   materiels: Materiel[] | undefined;
   produits: Produit[] | undefined;
@@ -24,3 +29,10 @@ export class ModelRecherchePriseDeVue {
   position: string | undefined;
   statutPriseDeVue: StatutPriseDeVue | undefined;
 }
+
+export class Coordonnees  {
+  latitude : number | undefined;
+  longitude : number | undefined;
+}
+
+

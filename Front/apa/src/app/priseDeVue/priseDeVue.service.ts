@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {ModelRecherchePriseDeVue, PriseDeVue, StatutPriseDeVue} from "./priseDeVue";
+import {Coordonnees, ModelRecherchePriseDeVue, PriseDeVue, StatutPriseDeVue} from "./priseDeVue";
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -32,6 +32,10 @@ export class PriseDeVueService {
 
   findAllStatutPriseDeVue(): Observable<StatutPriseDeVue[]> {
     return this.http.get<StatutPriseDeVue[]>(this.statutUrl, optionRequete);
+  }
+
+  rechercheCodePostal(coordonnees: Coordonnees) {
+    return this.http.get<PriseDeVue[]>(`https://geo.api.gouv.fr/communes?lat=${coordonnees.latitude}&lon=${coordonnees.longitude}&fields=nom,codesPostaux&format=json&geometry=centre`);
   }
 
 }
