@@ -26,7 +26,9 @@ public class MaterielController {
     @Autowired
     private AppareilPhotoRepository appareilPhotoRepository;
     @Autowired
-    private ObjectifRepository objectifPhotoRepository;
+    private ObjectifRepository objectifRepository;
+    @Autowired
+    private PiedRepository piedRepository;
 
     @RequestMapping(value = "/materiel/{id}")
     public Optional<Materiel> afficherUnMateriel(@PathVariable long id) {
@@ -143,11 +145,20 @@ public class MaterielController {
     }
 
     @RequestMapping(value = "/objectif/{id}")
-    public Optional<Objectif> afficherUnobjectif(@PathVariable String id) {
-        Optional<Objectif> objectif = objectifPhotoRepository.findObjectifByMaterielId(Long.parseLong(id));
+    public Optional<Objectif> afficherUnObjectif(@PathVariable String id) {
+        Optional<Objectif> objectif = objectifRepository.findObjectifByMaterielId(Long.parseLong(id));
         if (objectif.isEmpty()) {
             return null;
         }
         return objectif;
+    }
+
+    @RequestMapping(value = "/pied/{id}")
+    public Optional<Pied> afficherUnPied(@PathVariable String id) {
+        Optional<Pied> pied = piedRepository.findPiedByMaterielId(Long.parseLong(id));
+        if (pied.isEmpty()) {
+            return null;
+        }
+        return pied;
     }
 }

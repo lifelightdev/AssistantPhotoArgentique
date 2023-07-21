@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="appareilPhoto">
   <ul>
     <h2>Détail de l'appareil photo</h2>
     <li>Nom : {{materiel?.nom}}</li>
@@ -45,7 +45,7 @@
   <img class="photo" src="assets/Images/{{appareilPhoto?.objectif?.materiel?.nom}}.jpg"
        alt="Photo de {{appareilPhoto?.objectif?.materiel?.nom}}"/>
 </div>
-<div>
+<div *ngIf="appareilPhoto">
   <ul>
     <h2>Détail du chassi</h2>
     <li>Nom : {{appareilPhoto?.chassis?.materiel?.nom}}</li>
@@ -83,4 +83,44 @@
   </ul>
   <img class="photo" src="assets/Images/{{appareilPhoto?.chassis?.film?.produit?.nom}}.jpg"
        alt="Photo de {{appareilPhoto?.chassis?.film?.produit?.nom}}"/>
+</div>
+<div >
+  <ul>
+    <h2>Détail du pied</h2>
+    <li>Nom : {{materiel?.nom}}</li>
+    <li>Type : {{materiel?.typeMateriel?.nom}}</li>
+    <li>Sous type : {{materiel?.sousType?.nom}}</li>
+    <li>Statut : {{materiel?.statutMateriel?.nom}}</li>
+    <li>Marque : {{materiel?.modele?.marque?.nom}}</li>
+    <li>Modéle : {{materiel?.modele?.nom}}</li>
+    <li>Remaque : {{materiel?.remarque}}</li>
+    <li *ngIf="materiel?.modeEmploie">Mode d'emploie :
+      <a href="assets/ModeEmploie/{{materiel?.nom}}.pdf" target="_blank" rel="noopener noreferrer">
+        Afficher le mode d'emploie
+      </a>
+    </li>
+    <li>Dimension ouvert : {{pied?.dimensionOuvert}}</li>
+    <li>Dimension fermé : {{pied?.dimensionFerme}}</li>
+    <li>Pas de vis : {{pied?.pasDeVis}}</li>
+  </ul>
+  <img class="photo" src="assets/Images/{{materiel?.nom}}.jpg" alt="Photo de {{materiel?.nom}}"/>
+  <ul *ngIf="pied?.rotule">
+    <h2>Détail de la rotule</h2>
+    <li>Nom : {{pied?.rotule?.materiel?.nom}}</li>
+    <li>Statut : {{pied?.rotule?.materiel?.statutMateriel?.nom}}</li>
+    <li>Marque : {{pied?.rotule?.materiel?.modele?.marque?.nom}}</li>
+    <li>Modéle : {{pied?.rotule?.materiel?.modele?.nom}}</li>
+    <li>Remaque : {{pied?.rotule?.materiel?.remarque}}</li>
+    <li>Mode d'emploie :
+      <a href="assets/ModeEmploie/{{pied?.rotule?.materiel?.nom}}.pdf" target="_blank"
+         rel="noopener noreferrer">
+        Afficher le mode d'emploie
+      </a>
+    </li>
+    <li>Pas de vis du matériel : {{pied?.rotule?.pasDeVisMateriel}}</li>
+    <li>Pas de vis du pied : {{pied?.rotule?.pasDeVisPied}}</li>
+    <li>Avec fixation rapide : {{pied?.rotule?.avecFixationRapide}}</li>
+  </ul>
+  <img *ngIf="pied?.rotule" class="photo" src="assets/Images/{{pied?.rotule?.materiel?.nom}}.jpg"
+       alt="Photo de {{pied?.rotule?.materiel?.nom}}"/>
 </div>

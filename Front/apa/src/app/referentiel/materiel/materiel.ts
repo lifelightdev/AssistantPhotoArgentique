@@ -106,12 +106,29 @@ export class Chassis {
   film: Film | undefined;
 }
 
-class StatutChassis {
+export class StatutChassis {
   id: number | undefined;
   nom: string | undefined;
 }
 
-class DimensionChassis {
+export class DimensionChassis {
   id: number | undefined;
   nom: string | undefined;
+}
+
+export class Pied {
+  id: number | undefined;
+  materiel: Materiel | undefined;
+  dimensionOuvert: string | undefined;
+  dimensionFerme: string | undefined;
+  pasDeVis: string | undefined;
+  rotule: Rotule | undefined;
+}
+
+export class Rotule {
+  id: number | undefined;
+  materiel: Materiel | undefined;
+  pasDeVisMateriel: string | undefined;
+  pasDeVisPied: string | undefined;
+  avecFixationRapide: boolean | undefined;
 }

@@ -1,11 +1,21 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {AppareilPhoto, Objectif, Marque, Materiel, Modele, ModelRechercheMateriel, SousType, StatutMateriel, TypeMateriel} from './materiel';
+import {
+  AppareilPhoto,
+  Objectif,
+  Marque,
+  Materiel,
+  Modele,
+  ModelRechercheMateriel,
+  SousType,
+  StatutMateriel,
+  TypeMateriel, Pied
+} from './materiel';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 const optionRequete = {
   headers: new HttpHeaders({
-    'Access-Control-Allow-Origin':'*'
+    'Access-Control-Allow-Origin': '*'
   })
 };
 
@@ -22,6 +32,7 @@ export class MaterielService {
   private statutUrl = `http://localhost:8081/statutMateriel`;
   private appareilPhotoUrl = `http://localhost:8081/appareilPhoto`;
   private objectifUrl = `http://localhost:8081/objectif`;
+  private piedUrl = `http://localhost:8081/pied`;
 
   constructor(
     private http: HttpClient) {
@@ -32,7 +43,7 @@ export class MaterielService {
   }
 
   findMaterielById(id: number): Observable<Materiel> {
-    return this.http.get<Materiel>(this.materielUrl +'/'+ id, optionRequete)
+    return this.http.get<Materiel>(this.materielUrl + '/' + id, optionRequete)
   }
 
   searchMateriels(term: ModelRechercheMateriel): Observable<Materiel[]> {
@@ -50,6 +61,7 @@ export class MaterielService {
   findAllModele(): Observable<Modele[]> {
     return this.http.get<Modele[]>(this.modeleUrl, optionRequete);
   }
+
   findAllType(): Observable<TypeMateriel[]> {
     return this.http.get<TypeMateriel[]>(this.typeUrl, optionRequete);
   }
@@ -59,15 +71,19 @@ export class MaterielService {
   }
 
   getMateriel(id: number) {
-    return this.http.get<Materiel>(this.materielUrl +'/'+ id, optionRequete)
+    return this.http.get<Materiel>(this.materielUrl + '/' + id, optionRequete)
   }
 
   geAppareilPhoto(id: number) {
-    return this.http.get<AppareilPhoto>(this.appareilPhotoUrl +'/'+ id, optionRequete)
+    return this.http.get<AppareilPhoto>(this.appareilPhotoUrl + '/' + id, optionRequete)
   }
 
   geObjectif(id: number) {
-    return this.http.get<Objectif>(this.objectifUrl +'/'+ id, optionRequete)
+    return this.http.get<Objectif>(this.objectifUrl + '/' + id, optionRequete)
+  }
+
+  gePied(id: number) {
+    return this.http.get<Pied>(this.piedUrl + '/' + id, optionRequete)
   }
 
 }
