@@ -79,7 +79,8 @@
     <ng-container matColumnDef="Mode d'emploie">
       <th mat-header-cell *matHeaderCellDef>Mode d'emploie</th>
       <td mat-cell *matCellDef="let produit">
-        <a *ngIf="produit.modeEmploie" href="assets/ModeEmploie/{{ produit.nom }}.pdf">Afficher le mode d'emploie</a>
+        <a *ngIf="produit.modeEmploie" href="assets/ModeEmploie/{{ produit.nom }}.pdf" target="_blank"
+           rel="noopener noreferrer">Afficher le mode d'emploie</a>
       </td>
     </ng-container>
 
