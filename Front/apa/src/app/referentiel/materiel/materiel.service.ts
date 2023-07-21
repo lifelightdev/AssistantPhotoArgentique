@@ -1,15 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {
-  AppareilPhoto,
-  Marque,
-  Materiel,
-  Modele,
-  ModelRechercheMateriel,
-  SousType,
-  StatutMateriel,
-  TypeMateriel
-} from './materiel';
+import {AppareilPhoto, Marque, Materiel, Modele, ModelRechercheMateriel, SousType, StatutMateriel, TypeMateriel} from './materiel';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 const optionRequete = {
@@ -70,4 +61,7 @@ export class MaterielService {
     return this.http.get<AppareilPhoto>(this.appareilPhotoUrl +'/'+ id, optionRequete);
   }
 
+  getMateriel(id: number) {
+    return this.http.get<Materiel>(this.materielUrl +'/'+ id, optionRequete)
+  }
 }

@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {AppareilPhoto, Materiel, ModelRechercheMateriel} from "./materiel";
+import {Materiel, ModelRechercheMateriel} from "./materiel";
 import {MaterielService} from "./materiel.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
@@ -38,7 +38,7 @@ export class MaterielListComponent implements OnInit, AfterViewInit {
     this.materielService.searchMateriels(this.modelRecherche).subscribe(data => { this.dataSource.data = data; });
   }
 
-  displayedColumns = ["ID", "Nom", "Type", "Sous type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque"];
+  displayedColumns = ["ID", "Nom", "Type", "Sous type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque", "Tâche"];
   dataSource = new MatTableDataSource<Materiel>();
 
   // @ts-ignore
@@ -48,12 +48,7 @@ export class MaterielListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  appareilPhoto = new AppareilPhoto();
-
   onSelect(materiel: Materiel): void {
     this.materiel = materiel;
-    this.materielService.findAppareilPhoto(this.materiel.id).subscribe(data => {
-      this.appareilPhoto = data;
-    });
   }
 }

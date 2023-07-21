@@ -46,3 +46,12 @@
   'yyyy.MM.dd/HH:mm'}}/1/3" target="_blank" rel="noopener noreferrer"> Afficher la position de la lune</a>
   </li>
 </ul>
+
+<h1>Liste du matériel</h1>
+<ul>
+  <li *ngFor="let materiel of priseDeVue.materiels">
+    <a routerLink="/materiel/detail/{{materiel.id}}">
+      <span class="badge">{{materiel.id}}</span> {{materiel.nom}}
+    </a>
+  </li>
+</ul>
