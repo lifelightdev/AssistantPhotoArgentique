@@ -1,4 +1,4 @@
-import {Produit} from "../produit/produit";
+import {Film} from "../produit/produit";
 
 export class Materiel {
   id: number | undefined;
@@ -58,29 +58,28 @@ export class AppareilPhoto {
   typeFixationPied: TypeFixation | undefined;
   typeFixationFiltre: TypeFixation | undefined;
   chassis: Chassis | undefined;
-  // @ts-ignore
-  film: Produit.Film | undefined;
+  film: Film | undefined;
   typeMiseAuPoint: TypeMiseAuPoint | undefined;
 }
 
-class TypeAppareilPhoto {
+export class TypeAppareilPhoto {
   id: number | undefined;
   nom: string | undefined;
 }
 
-class TypeFixation {
+export class TypeFixation {
   id: number | undefined;
   nom: string | undefined;
   sousTypeMateriel: SousTypeMateriel | undefined;
 }
 
-class SousTypeMateriel {
+export class SousTypeMateriel {
   id: number | undefined;
   nom: string | undefined;
   type: TypeMateriel | undefined;
 }
 
-class Objectif {
+export class Objectif {
   id: number | undefined;
   materiel: Materiel | undefined;
   typeFixationObjectif: TypeFixation | undefined;
@@ -89,23 +88,22 @@ class Objectif {
   typeFixationFiltre: TypeFixation | undefined;
 }
 
-class Focal {
+export class Focal {
   id: number | undefined;
   nom: string | undefined;
 }
 
-class TypeMiseAuPoint {
+export class TypeMiseAuPoint {
   id: number | undefined;
   nom: string | undefined;
 }
 
-class Chassis {
+export class Chassis {
   id: number | undefined;
   materiel: Materiel | undefined;
   statutChassis: StatutChassis | undefined;
   dimensionChassis: DimensionChassis | undefined;
-  // @ts-ignore
-  film: Produit.Film | undefined;
+  film: Film | undefined;
 }
 
 class StatutChassis {

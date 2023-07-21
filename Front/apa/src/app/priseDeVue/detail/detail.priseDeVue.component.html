@@ -1,5 +1,6 @@
-<h1>Détail de la prise de vue</h1>
-<ul>
+<div>
+<ul *ngIf="priseDeVue.nom">
+  <h1>Détail de la prise de vue</h1>
   <li>Nom : {{priseDeVue.nom}}</li>
   <li>Statut : {{priseDeVue.statutPriseDeVue?.nom}}</li>
   <li>Date : {{priseDeVue.date | date: 'le dd/MM/yyyy à HH:mm'}}</li>
@@ -16,8 +17,9 @@
     </a>
   </li>
 </ul>
-<h1>Détail sur les astres</h1>
-<ul>
+
+<ul *ngIf="positionSoleil">
+  <h1>Détail sur les astres</h1>
   <li>Le lever du soleil est à {{positionSoleil.results?.sunrise | date: 'HH:mm le dd/MM/yyyy'}}</li>
   <li>Le coucher du soleil est à {{positionSoleil.results?.sunset | date: 'HH:mm le dd/MM/yyyy'}}</li>
   <li>Le midi solaire est à {{positionSoleil.results?.solar_noon | date: 'HH:mm le dd/MM/yyyy'}}</li>
@@ -46,12 +48,10 @@
   'yyyy.MM.dd/HH:mm'}}/1/3" target="_blank" rel="noopener noreferrer"> Afficher la position de la lune</a>
   </li>
 </ul>
-
-<h1>Liste du matériel</h1>
-<ul>
+</div>
+<ul *ngIf="priseDeVue.materiels">
+  <h1>Liste du matériel</h1>
   <li *ngFor="let materiel of priseDeVue.materiels">
-    <a routerLink="/materiel/detail/{{materiel.id}}">
-      <span class="badge">{{materiel.id}}</span> {{materiel.nom}}
-    </a>
+    <a routerLink="/materiel/detail/{{materiel.id}}">{{materiel.nom}}</a>
   </li>
 </ul>

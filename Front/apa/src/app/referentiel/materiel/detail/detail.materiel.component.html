@@ -1,6 +1,6 @@
-<h1>Détail du matériel</h1>
 <div>
   <ul>
+    <h2>Détail de l'appareil photo</h2>
     <li>Nom : {{materiel?.nom}}</li>
     <li>Type : {{materiel?.typeMateriel?.nom}}</li>
     <li>Sous type : {{materiel?.sousType?.nom}}</li>
@@ -13,19 +13,74 @@
         Afficher le mode d'emploie
       </a>
     </li>
+    <li>Le type d'appareil photo : {{appareilPhoto?.typeAppareilPhoto?.nom}}</li>
+    <li>Le type de fixation de l'objectif : {{appareilPhoto?.typeFixationObjectif?.nom}}</li>
+    <li>Nom de l'objectif : {{appareilPhoto?.objectif?.materiel?.nom}}</li>
+    <li>ID de l'objectif : {{appareilPhoto?.objectif?.id}}</li>
+    <li>Le type de fixation du flash : {{appareilPhoto?.typeFixationFlash?.nom}}</li>
+    <li>Le type de fixation du pied : {{appareilPhoto?.typeFixationPied?.nom}}</li>
+    <li>Le Chassis monté : {{appareilPhoto?.chassis?.materiel?.nom}}</li>
+    <li>Le film chargé : {{appareilPhoto?.film}}</li>
+    <li>Le type de mise au point : {{appareilPhoto?.typeMiseAuPoint?.nom}}</li>
   </ul>
   <img class="photo" src="assets/Images/{{materiel?.nom}}.jpg" alt="Photo de {{materiel?.nom}}"/>
-</div>
-<h2 *ngIf="appareilPhoto">Détail de l'appareil photo</h2>
-<div *ngIf="appareilPhoto">
   <ul>
-    <li>Le type d'appareil photo : {{appareilPhoto.typeAppareilPhoto?.nom}}</li>
-    <li>Le type de fixation de l'objectif : {{appareilPhoto.typeFixationObjectif?.nom}}</li>
-    <li>Nom de l'objectif : {{appareilPhoto.objectif?.materiel?.nom}}</li>
-    <li>Le type de fixation du flash : {{appareilPhoto.typeFixationFlash?.nom}}</li>
-    <li>Le type de fixation du pied : {{appareilPhoto.typeFixationPied?.nom}}</li>
-    <li>Le Chassis monté : {{appareilPhoto.chassis?.materiel?.nom}}</li>
-    <li>Le film chargé : {{appareilPhoto.film}}</li>
-    <li>Le type de mise au point : {{appareilPhoto.typeMiseAuPoint?.nom}}</li>
+    <h2>Détail de l'objectif</h2>
+    <li>Nom : {{appareilPhoto?.objectif?.materiel?.nom}}</li>
+    <li>Statut : {{appareilPhoto?.objectif?.materiel?.statutMateriel?.nom}}</li>
+    <li>Marque : {{appareilPhoto?.objectif?.materiel?.modele?.marque?.nom}}</li>
+    <li>Modéle : {{appareilPhoto?.objectif?.materiel?.modele?.nom}}</li>
+    <li>Remaque : {{appareilPhoto?.objectif?.materiel?.remarque}}</li>
+    <li>Mode d'emploie :
+      <a href="assets/ModeEmploie/{{appareilPhoto?.objectif?.materiel?.nom}}.pdf" target="_blank"
+         rel="noopener noreferrer">
+        Afficher le mode d'emploie
+      </a>
+    </li>
+    <li>Le type de fixation de l'objectif : {{appareilPhoto?.objectif?.typeFixationObjectif?.nom}}</li>
+    <li>Le type de fixation du flash : {{appareilPhoto?.objectif?.typeFixationFlash?.nom}}</li>
+    <li>Le type de fixation du pied : {{appareilPhoto?.objectif?.typeFixationPied?.nom}}</li>
+    <li>Le type de fixation du filtre : {{appareilPhoto?.objectif?.typeFixationFiltre?.nom}}</li>
   </ul>
+  <img class="photo" src="assets/Images/{{appareilPhoto?.objectif?.materiel?.nom}}.jpg"
+       alt="Photo de {{appareilPhoto?.objectif?.materiel?.nom}}"/>
+</div>
+<div>
+  <ul>
+    <h2>Détail du chassi</h2>
+    <li>Nom : {{appareilPhoto?.chassis?.materiel?.nom}}</li>
+    <li>Statut : {{appareilPhoto?.chassis?.materiel?.statutMateriel?.nom}}</li>
+    <li>Marque : {{appareilPhoto?.chassis?.materiel?.modele?.marque?.nom}}</li>
+    <li>Modéle : {{appareilPhoto?.chassis?.materiel?.modele?.nom}}</li>
+    <li>Remaque : {{appareilPhoto?.chassis?.materiel?.remarque}}</li>
+    <li *ngIf="appareilPhoto?.chassis?.materiel?.modeEmploie">
+      Mode d'emploie :
+      <a href="assets/ModeEmploie/{{appareilPhoto?.chassis?.materiel?.nom}}.pdf"
+         target="_blank" rel="noopener noreferrer">
+        Afficher le mode d'emploie
+      </a>
+    </li>
+    <li>Le Statut : {{appareilPhoto?.chassis?.statutChassis?.nom}}</li>
+    <li>La dimension : {{appareilPhoto?.chassis?.dimensionChassis?.nom}}</li>
+  </ul>
+  <img class="photo" src="assets/Images/{{appareilPhoto?.chassis?.materiel?.nom}}.jpg"
+       alt="Photo de {{appareilPhoto?.chassis?.materiel?.nom}}"/>
+  <ul>
+    <h2>Détail du film</h2>
+    <li>Nom : {{appareilPhoto?.chassis?.film?.produit?.nom}}</li>
+    <li>Statut : {{appareilPhoto?.chassis?.film?.statutFilm?.nom}}</li>
+    <li>Marque : {{appareilPhoto?.chassis?.film?.produit?.modele?.marque?.nom}}</li>
+    <li>Modéle : {{appareilPhoto?.chassis?.film?.produit?.modele?.nom}}</li>
+    <li>Remaque : {{appareilPhoto?.chassis?.film?.produit?.remarque}}</li>
+    <li *ngIf="appareilPhoto?.chassis?.film?.produit?.modeEmploie">Mode d'emploie :
+      <a href="assets/ModeEmploie/{{appareilPhoto?.chassis?.film?.produit?.nom}}.pdf" target="_blank"
+         rel="noopener noreferrer">
+        Afficher le mode d'emploie
+      </a>
+    </li>
+    <li>La taille : {{appareilPhoto?.chassis?.film?.tailleFilm?.nom}}</li>
+    <li>Le type : {{appareilPhoto?.chassis?.film?.typeFilm?.nom}}</li>
+  </ul>
+  <img class="photo" src="assets/Images/{{appareilPhoto?.chassis?.film?.produit?.nom}}.jpg"
+       alt="Photo de {{appareilPhoto?.chassis?.film?.produit?.nom}}"/>
 </div>

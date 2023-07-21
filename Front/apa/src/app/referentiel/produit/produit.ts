@@ -39,31 +39,32 @@ export class ModelRechercheProduit {
   typeProduit: TypeProduit | undefined;
 }
 
-class Film {
+export class Film {
   id: number | undefined;
+  produit: Produit | undefined;
   statutFilm: StatutFilm | undefined;
   tailleFilm: TailleFilm | undefined;
   typeFilm: TypeFilm | undefined;
 }
 
-class TypeFilm {
+export class TypeFilm {
   id: number | undefined;
   nom: string | undefined;
 }
 
-class StatutFilm {
+export class StatutFilm {
   id: number | undefined;
   nom: string | undefined;
 }
 
-class TailleFilm {
+export class TailleFilm {
   id: number | undefined;
   nom: string | undefined;
   taille: string | undefined;
   formatFilm: FormatFilm | undefined;
 }
 
-class FormatFilm {
+export class FormatFilm {
   id: number | undefined;
   nom: string | undefined;
 }

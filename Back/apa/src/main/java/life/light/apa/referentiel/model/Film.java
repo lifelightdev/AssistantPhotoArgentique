@@ -9,6 +9,9 @@ public class Film {
     @Column(name = "id", nullable = false)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "produit_id")
+    private Produit produit;
+    @ManyToOne
     @JoinColumn(name = "statut_film_id")
     private StatutFilm statutFilm;
     @ManyToOne
@@ -21,13 +24,20 @@ public class Film {
     // private List<AppareilPhoto> listeAppareilPhotoCompatible;
     // private List<Chassis> listeChassisCompatible;
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Produit getProduit() {
+        return produit;
+    }
+
+    public void setProduit(Produit produit) {
+        this.produit = produit;
     }
 
     public StatutFilm getStatutFilm() {
