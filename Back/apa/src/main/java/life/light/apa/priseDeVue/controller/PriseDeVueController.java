@@ -1,8 +1,10 @@
 package life.light.apa.priseDeVue.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import life.light.apa.priseDeVue.dao.PositionRepository;
 import life.light.apa.priseDeVue.dao.PriseDeVueRepository;
 import life.light.apa.priseDeVue.dao.StatutPriseDeVueRepository;
+import life.light.apa.priseDeVue.model.Position;
 import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
 import life.light.apa.referentiel.model.Materiel;
@@ -59,14 +61,14 @@ public class PriseDeVueController {
             if (null != priseDeVue.getPosition()) {
                 Feature feature = new Feature();
                 List<Double> coordinates = new ArrayList<>();
-                coordinates.add(priseDeVue.getLongitude());
-                coordinates.add(priseDeVue.getLatitude());
+                coordinates.add(priseDeVue.getPosition().getLongitude());
+                coordinates.add(priseDeVue.getPosition().getLatitude());
                 Geometry geometry = new Geometry();
                 geometry.setCoordinates(coordinates);
                 feature.setGeometry(geometry);
                 FeatureProperties featureProperties = new FeatureProperties();
-                featureProperties.setNom(priseDeVue.getPosition());
-                featureProperties.setAdresse(priseDeVue.getAdresse());
+                featureProperties.setNom(priseDeVue.getPosition().getNom());
+                featureProperties.setAdresse(priseDeVue.getPosition().getVille() + " - " + priseDeVue.getPosition().getCodePostal());
                 feature.setProperties(featureProperties);
                 features.add(feature);
             }
@@ -83,16 +85,24 @@ public class PriseDeVueController {
     }
 
     @Autowired
-    private StatutPriseDeVueRepository statutPriseDeVue;
+    private StatutPriseDeVueRepository statutPriseDeVueRepository;
+
+    @Autowired
+    private PositionRepository positionRepository;
 
     @GetMapping(value = "/statutPriseDeVue")
     public Iterable<StatutPriseDeVue> listeStatutPriseDeVue() {
-        return statutPriseDeVue.findAll();
+        return statutPriseDeVueRepository.findAll();
     }
 
     @RequestMapping(value = "/priseDeVue/materiel/{id}")
     public Iterable<Materiel> afficherLesMateriels(@RequestParam Map<String, String> allParams) {
         return priseDeVueRepository.findMaterielsById(Long.valueOf(allParams.get("id")));
+    }
+
+    @GetMapping(value = "/position")
+    public Iterable<Position> listePosition() {
+        return positionRepository.findAll();
     }
 
 }

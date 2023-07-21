@@ -15,12 +15,9 @@ public class PriseDeVue {
     private Long id;
     private String nom;
     private LocalDateTime date;
-    private String position;
-    private String ville;
-    private String codePostal;
-    private Double latitude;
-    private Double longitude;
-    private String adresse;
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position position;
     private String remarque;
     @ManyToOne
     @JoinColumn(name = "statut_id")
@@ -60,60 +57,12 @@ public class PriseDeVue {
         this.date = date;
     }
 
-    public String getPosition() {
+    public Position getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Position position) {
         this.position = position;
-    }
-
-    public String getVille() {
-        return ville;
-    }
-
-    public void setVille(String ville) {
-        this.ville = ville;
-    }
-
-    public String getCodePostal() {
-        return codePostal;
-    }
-
-    public void setCodePostal(String codePostal) {
-        this.codePostal = codePostal;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getAdresse() {
-        return adresse;
-    }
-
-    public void setAdresse(String adresse) {
-        this.adresse = adresse;
-    }
-
-    public StatutPriseDeVue getStatutPriseDeVue() {
-        return statutPriseDeVue;
-    }
-
-    public void setStatutPriseDeVue(StatutPriseDeVue statutPriseDeVue) {
-        this.statutPriseDeVue = statutPriseDeVue;
     }
 
     public String getRemarque() {
@@ -122,6 +71,14 @@ public class PriseDeVue {
 
     public void setRemarque(String remarque) {
         this.remarque = remarque;
+    }
+
+    public StatutPriseDeVue getStatutPriseDeVue() {
+        return statutPriseDeVue;
+    }
+
+    public void setStatutPriseDeVue(StatutPriseDeVue statutPriseDeVue) {
+        this.statutPriseDeVue = statutPriseDeVue;
     }
 
     public List<Materiel> getMateriels() {

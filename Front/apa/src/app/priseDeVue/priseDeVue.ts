@@ -6,16 +6,19 @@ export class PriseDeVue {
   nom: string | undefined;
   statutPriseDeVue: StatutPriseDeVue | undefined;
   date: Date | undefined;
-  dateTime: string | undefined;
-  position: string | undefined;
+  position: Position | undefined;
+  remarque: string | undefined;
+  materiels: Materiel[] | undefined;
+  produits: Produit[] | undefined;
+}
+
+export class Position {
+  id: number | undefined;
+  nom: string | undefined;
   ville: string | undefined;
   codePostal: string | undefined;
   latitude: number | undefined;
   longitude: number | undefined;
-  adresse: string | undefined;
-  remarque: string | undefined;
-  materiels: Materiel[] | undefined;
-  produits: Produit[] | undefined;
 }
 
 export class StatutPriseDeVue {

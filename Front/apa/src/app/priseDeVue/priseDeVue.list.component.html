@@ -12,6 +12,12 @@
     </select>
   </div>
   <div>
+    <label>Position : </label>
+    <select [(ngModel)]="modelRecherchePriseDeVue.position" name="statut">
+      <option *ngFor="let position of positions" [value]="position.id">{{position.nom}}</option>
+    </select>
+  </div>
+  <div>
       <label>Date : </label>
     <input type="datetime-local" id="meeting-time" name="meeting-time" value=""
            [(ngModel)]="modelRecherchePriseDeVue.date">
@@ -48,7 +54,7 @@
     </ng-container>
     <ng-container matColumnDef="Position">
       <th mat-header-cell *matHeaderCellDef>Position</th>
-      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.position}} </td>
+      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.position?.nom}} </td>
     </ng-container>
     <ng-container matColumnDef="Remarque">
       <th mat-header-cell *matHeaderCellDef>Remarque</th>

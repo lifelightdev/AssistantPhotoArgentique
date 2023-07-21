@@ -9,7 +9,8 @@
     <li>Modéle : {{materiel.modele?.nom}}</li>
     <li>Remaque : {{materiel.remarque}}</li>
     <li>Mode d'emploie :
-      <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{materiel.nom}}.pdf">
+      <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{materiel.nom}}.pdf" target="_blank"
+         rel="noopener noreferrer">
         Afficher le mode d'emploie
       </a>
     </li>

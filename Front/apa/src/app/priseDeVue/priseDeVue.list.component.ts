@@ -1,7 +1,14 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
-import {Coordonnees, ModelRecherchePriseDeVue, PositionSoleil, PriseDeVue, StatutPriseDeVue} from "./priseDeVue";
+import {
+  Coordonnees,
+  ModelRecherchePriseDeVue,
+  Position,
+  PositionSoleil,
+  PriseDeVue,
+  StatutPriseDeVue
+} from "./priseDeVue";
 import {PriseDeVueService} from "./priseDeVue.service";
 
 @Component({
@@ -20,17 +27,19 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
   coordonnees: Coordonnees = new Coordonnees();
   modelRecherchePriseDeVue: ModelRecherchePriseDeVue = new ModelRecherchePriseDeVue();
   statuts: StatutPriseDeVue[] = [];
+  positions: Position[] = [];
 
   ngOnInit(): void {
-    this.priseDeVueService.findAllPriseDeVue().subscribe(data => { this.dataSource.data = data; });
-    this.priseDeVueService.findAllStatutPriseDeVue().subscribe(data => { this.statuts = data; });
+    this.priseDeVueService.rechercheTousLesPriseDeVue().subscribe(data => { this.dataSource.data = data; });
+    this.priseDeVueService.rechercheTousLesStatutPriseDeVue().subscribe(data => { this.statuts = data; });
+    this.priseDeVueService.recherchePosition().subscribe(data => { this.positions = data; });
   }
 
   submitted = false;
 
   onSubmit() {
     this.submitted = true;
-    this.priseDeVueService.searchPriseDeVues(this.modelRecherchePriseDeVue).subscribe(data => { this.dataSource.data = data; });
+    this.priseDeVueService.rechercheDesPriseDeVues(this.modelRecherchePriseDeVue).subscribe(data => { this.dataSource.data = data; });
   }
 
   displayedColumns = ["ID", "Nom", "Statut", "Date", "Position", "Remarque"];
@@ -45,8 +54,8 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
 
   onSelect(priseDeVue: PriseDeVue): void {
     this.priseDeVue = priseDeVue;
-    this.coordonnees.latitude = priseDeVue.latitude;
-    this.coordonnees.longitude = priseDeVue.longitude;
+    this.coordonnees.latitude = priseDeVue.position?.latitude;
+    this.coordonnees.longitude = priseDeVue.position?.longitude;
     let date: String;
     // @ts-ignore
     date = priseDeVue.date
