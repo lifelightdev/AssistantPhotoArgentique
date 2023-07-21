@@ -24,66 +24,58 @@ const optionRequete = {
 })
 export class MaterielService {
 
-  private materielUrl = `http://localhost:8081/materiel`;
-  private sousTypeUrl = `http://localhost:8081/sousTypeMateriel`;
-  private marqueUrl = `http://localhost:8081/marque`;
-  private modeleUrl = `http://localhost:8081/modele`;
-  private typeUrl = `http://localhost:8081/typeMateriel`;
-  private statutUrl = `http://localhost:8081/statutMateriel`;
-  private appareilPhotoUrl = `http://localhost:8081/appareilPhoto`;
-  private objectifUrl = `http://localhost:8081/objectif`;
-  private piedUrl = `http://localhost:8081/pied`;
+  private serveurUrl = `http://localhost:8081`;
 
   constructor(
     private http: HttpClient) {
   }
 
-  findAllMateriel(): Observable<Materiel[]> {
-    return this.http.get<Materiel[]>(this.materielUrl, optionRequete);
+  rechercheTousLesMateriel(): Observable<Materiel[]> {
+    return this.http.get<Materiel[]>(this.serveurUrl + `/materiel`, optionRequete);
   }
 
-  findMaterielById(id: number): Observable<Materiel> {
-    return this.http.get<Materiel>(this.materielUrl + '/' + id, optionRequete)
+  rechercheUnMaterielParId(id: number): Observable<Materiel> {
+    return this.http.get<Materiel>(this.serveurUrl + '/materiel/' + id, optionRequete)
   }
 
-  searchMateriels(term: ModelRechercheMateriel): Observable<Materiel[]> {
-    return this.http.get<Materiel[]>(`${this.materielUrl}?nom=${term.nom}&typeMateriel=${term.typeMateriel}&sousType=${term.sousType}&statutMateriel=${term.statutMateriel}&marque=${term.marque}&modele=${term.modele}&remarque=${term.remarque}`, optionRequete)
+  recherchedesMateriels(term: ModelRechercheMateriel): Observable<Materiel[]> {
+    return this.http.get<Materiel[]>(`${this.serveurUrl}/materiel?nom=${term.nom}&typeMateriel=${term.typeMateriel}&sousType=${term.sousType}&statutMateriel=${term.statutMateriel}&marque=${term.marque}&modele=${term.modele}&remarque=${term.remarque}`, optionRequete)
   }
 
-  findAllSousType(): Observable<SousType[]> {
-    return this.http.get<SousType[]>(this.sousTypeUrl, optionRequete);
+  rechercheTousLesSousType(): Observable<SousType[]> {
+    return this.http.get<SousType[]>(this.serveurUrl + `/sousTypeMateriel`, optionRequete);
   }
 
-  findAllMarque(): Observable<Marque[]> {
-    return this.http.get<Marque[]>(this.marqueUrl, optionRequete);
+  rechercheToutesLesMarques(): Observable<Marque[]> {
+    return this.http.get<Marque[]>(this.serveurUrl + `/marque`, optionRequete);
   }
 
-  findAllModele(): Observable<Modele[]> {
-    return this.http.get<Modele[]>(this.modeleUrl, optionRequete);
+  rechercheTousLesModeles(): Observable<Modele[]> {
+    return this.http.get<Modele[]>(this.serveurUrl + `/modele`, optionRequete);
   }
 
-  findAllType(): Observable<TypeMateriel[]> {
-    return this.http.get<TypeMateriel[]>(this.typeUrl, optionRequete);
+  rechercheTousLesTypesDeMateriel(): Observable<TypeMateriel[]> {
+    return this.http.get<TypeMateriel[]>(this.serveurUrl + `/typeMateriel`, optionRequete);
   }
 
-  findAllStatut(): Observable<StatutMateriel[]> {
-    return this.http.get<StatutMateriel[]>(this.statutUrl, optionRequete);
+  rechercheTousLesStatutsDeMateriel(): Observable<StatutMateriel[]> {
+    return this.http.get<StatutMateriel[]>(this.serveurUrl + `/statutMateriel`, optionRequete);
   }
 
   getMateriel(id: number) {
-    return this.http.get<Materiel>(this.materielUrl + '/' + id, optionRequete)
+    return this.http.get<Materiel>(this.serveurUrl + '/materiel/' + id, optionRequete)
   }
 
   geAppareilPhoto(id: number) {
-    return this.http.get<AppareilPhoto>(this.appareilPhotoUrl + '/' + id, optionRequete)
+    return this.http.get<AppareilPhoto>(this.serveurUrl + '/appareilPhoto/' + id, optionRequete)
   }
 
   geObjectif(id: number) {
-    return this.http.get<Objectif>(this.objectifUrl + '/' + id, optionRequete)
+    return this.http.get<Objectif>(this.serveurUrl + '/objectif/' + id, optionRequete)
   }
 
   gePied(id: number) {
-    return this.http.get<Pied>(this.piedUrl + '/' + id, optionRequete)
+    return this.http.get<Pied>(this.serveurUrl + '/pied/' + id, optionRequete)
   }
 
 }

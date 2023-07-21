@@ -24,18 +24,18 @@ export class ProduitListComponent implements OnInit, AfterViewInit {
   statuts: StatutProduit[] = [];
 
   ngOnInit(): void {
-    this.produitService.findAllProduit().subscribe(data => { this.dataSource.data = data; });
-    this.produitService.findAllMarque().subscribe(data => { this.marques = data; });
-    this.produitService.findAllModele().subscribe(data => { this.modeles = data; });
-    this.produitService.findAllType().subscribe(data => { this.types = data; });
-    this.produitService.findAllStatutProduit().subscribe(data => { this.statuts = data; });
+    this.produitService.rechercheTousLesProduits().subscribe(data => { this.dataSource.data = data; });
+    this.produitService.rechercheToutesLesMarques().subscribe(data => { this.marques = data; });
+    this.produitService.rechercheTousLesModeles().subscribe(data => { this.modeles = data; });
+    this.produitService.rechercheTousLesTypesDeProduit().subscribe(data => { this.types = data; });
+    this.produitService.rechercheTousLesStatutsDeProduit().subscribe(data => { this.statuts = data; });
   }
 
   submitted = false;
 
   onSubmit() {
     this.submitted = true;
-    this.produitService.searchProduits(this.modelRechercheProduit).subscribe(data => { this.dataSource.data = data; });
+    this.produitService.rechercheDesProduits(this.modelRechercheProduit).subscribe(data => { this.dataSource.data = data; });
   }
 
   displayedColumns = ["ID", "Nom", "Type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque"];

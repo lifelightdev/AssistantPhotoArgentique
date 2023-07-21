@@ -14,37 +14,34 @@ const optionRequete = {
 })
 export class ProduitService {
 
-  private produitUrl = `http://localhost:8081/produit`;
-  private marqueUrl = `http://localhost:8081/marque`;
-  private modeleUrl = `http://localhost:8081/modele`;
-  private typeUrl = `http://localhost:8081/typeProduit`;
-  private statutUrl = `http://localhost:8081/statutProduit`;
+  private serveurUrl = `http://localhost:8081`;
 
   constructor(
     private http: HttpClient) {
   }
 
-  findAllProduit(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(this.produitUrl, optionRequete);
+  rechercheTousLesProduits(): Observable<Produit[]> {
+    return this.http.get<Produit[]>(this.serveurUrl + `/produit`, optionRequete);
   }
 
-  searchProduits(term: ModelRechercheProduit) {
-    return this.http.get<Produit[]>(`${this.produitUrl}?nom=${term.nom}&typeProduit=${term.typeProduit}&statutProduit=${term.statutProduit}&marque=${term.marque}&modele=${term.modele}&remarque=${term.remarque}`, optionRequete)
+  rechercheDesProduits(term: ModelRechercheProduit) {
+    return this.http.get<Produit[]>(`${this.serveurUrl}/produit?nom=${term.nom}&typeProduit=${term.typeProduit}&statutProduit=${term.statutProduit}&marque=${term.marque}&modele=${term.modele}&remarque=${term.remarque}`, optionRequete)
   }
 
-  findAllMarque(): Observable<Marque[]> {
-    return this.http.get<Marque[]>(this.marqueUrl, optionRequete);
+  rechercheToutesLesMarques(): Observable<Marque[]> {
+    return this.http.get<Marque[]>(this.serveurUrl + `/marque`, optionRequete);
   }
 
-  findAllModele(): Observable<Modele[]> {
-    return this.http.get<Modele[]>(this.modeleUrl, optionRequete);
-  }
-  findAllType(): Observable<TypeProduit[]> {
-    return this.http.get<TypeProduit[]>(this.typeUrl, optionRequete);
+  rechercheTousLesModeles(): Observable<Modele[]> {
+    return this.http.get<Modele[]>(this.serveurUrl + `/modele`, optionRequete);
   }
 
-  findAllStatutProduit(): Observable<StatutProduit[]> {
-    return this.http.get<StatutProduit[]>(this.statutUrl, optionRequete);
+  rechercheTousLesTypesDeProduit(): Observable<TypeProduit[]> {
+    return this.http.get<TypeProduit[]>(this.serveurUrl + `/typeProduit`, optionRequete);
+  }
+
+  rechercheTousLesStatutsDeProduit(): Observable<StatutProduit[]> {
+    return this.http.get<StatutProduit[]>(this.serveurUrl + `/statutProduit`, optionRequete);
   }
 
 }

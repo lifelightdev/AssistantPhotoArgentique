@@ -23,19 +23,19 @@ export class MaterielListComponent implements OnInit, AfterViewInit {
   statuts: StatutMateriel[] = [];
 
   ngOnInit(): void {
-    this.materielService.findAllMateriel().subscribe(data => { this.dataSource.data = data; });
-    this.materielService.findAllMarque().subscribe(data => { this.marques = data; });
-    this.materielService.findAllModele().subscribe(data => { this.modeles = data; });
-    this.materielService.findAllType().subscribe(data => { this.types = data; });
-    this.materielService.findAllSousType().subscribe(data => { this.sousTypes = data; });
-    this.materielService.findAllStatut().subscribe(data => { this.statuts = data; });
+    this.materielService.rechercheTousLesMateriel().subscribe(data => { this.dataSource.data = data; });
+    this.materielService.rechercheToutesLesMarques().subscribe(data => { this.marques = data; });
+    this.materielService.rechercheTousLesModeles().subscribe(data => { this.modeles = data; });
+    this.materielService.rechercheTousLesTypesDeMateriel().subscribe(data => { this.types = data; });
+    this.materielService.rechercheTousLesSousType().subscribe(data => { this.sousTypes = data; });
+    this.materielService.rechercheTousLesStatutsDeMateriel().subscribe(data => { this.statuts = data; });
   }
 
   submitted = false;
 
   onSubmit() {
     this.submitted = true;
-    this.materielService.searchMateriels(this.modelRecherche).subscribe(data => { this.dataSource.data = data; });
+    this.materielService.recherchedesMateriels(this.modelRecherche).subscribe(data => { this.dataSource.data = data; });
   }
 
   displayedColumns = ["ID", "Nom", "Type", "Sous type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque", "Tâche"];

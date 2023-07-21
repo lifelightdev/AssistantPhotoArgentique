@@ -15,24 +15,22 @@ const optionRequete = {
 
 export class PriseDeVueService {
 
-  private priseDeVueUrl = `http://localhost:8081/priseDeVue`;
-  private statutUrl = `http://localhost:8081/statutPriseDeVue`;
-  private positionUrl = `http:/localhost:8081/position`;
+  private serveurUrl = `http://localhost:8081`;
 
   constructor(
     private http: HttpClient) {
   }
 
   rechercheTousLesPriseDeVue(): Observable<PriseDeVue[]> {
-    return this.http.get<PriseDeVue[]>(this.priseDeVueUrl, optionRequete);
+    return this.http.get<PriseDeVue[]>(this.serveurUrl +`/priseDeVue`, optionRequete);
   }
 
   rechercheDesPriseDeVues(term: ModelRecherchePriseDeVue) {
-    return this.http.get<PriseDeVue[]>(`${this.priseDeVueUrl}?nom=${term.nom}&statutPriseDeVue=${term.statutPriseDeVue}&date=${term.date}&remarque=${term.remarque}`, optionRequete);
+    return this.http.get<PriseDeVue[]>(`${this.serveurUrl}/priseDeVue?nom=${term.nom}&statutPriseDeVue=${term.statutPriseDeVue}&date=${term.date}&remarque=${term.remarque}`, optionRequete);
   }
 
   rechercheTousLesStatutPriseDeVue(): Observable<StatutPriseDeVue[]> {
-    return this.http.get<StatutPriseDeVue[]>(this.statutUrl, optionRequete);
+    return this.http.get<StatutPriseDeVue[]>(this.serveurUrl + `/statutPriseDeVue`, optionRequete);
   }
 
   rechercheCodePostal(coordonnees: Coordonnees) {
@@ -44,7 +42,7 @@ export class PriseDeVueService {
   }
 
   recherchePosition() {
-    return this.http.get<Position[]>(this.positionUrl, optionRequete);
+    return this.http.get<Position[]>(this.serveurUrl + `/position`, optionRequete);
   }
 
 }
