@@ -42,7 +42,7 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
     this.priseDeVueService.rechercheDesPriseDeVues(this.modelRecherchePriseDeVue).subscribe(data => { this.dataSource.data = data; });
   }
 
-  displayedColumns = ["ID", "Nom", "Statut", "Date", "Position", "Remarque"];
+  displayedColumns = ["ID", "Nom", "Statut", "Date", "Position", "Remarque", "Tâche"];
   dataSource = new MatTableDataSource<PriseDeVue>();
 
   // @ts-ignore

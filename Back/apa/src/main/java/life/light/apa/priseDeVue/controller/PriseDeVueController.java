@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
 import static life.light.apa.priseDeVue.dao.PriseDeVueSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -103,6 +105,11 @@ public class PriseDeVueController {
     @GetMapping(value = "/position")
     public Iterable<Position> listePosition() {
         return positionRepository.findAll();
+    }
+
+    @RequestMapping(value = "/priseDeVue/{id}")
+    public Optional<PriseDeVue> afficherUnMaterielePriseDeVue(@PathVariable long id) {
+        return priseDeVueRepository.findById(id);
     }
 
 }

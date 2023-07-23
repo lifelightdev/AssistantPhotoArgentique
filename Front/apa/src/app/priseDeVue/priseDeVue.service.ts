@@ -45,4 +45,8 @@ export class PriseDeVueService {
     return this.http.get<Position[]>(this.serveurUrl + `/position`, optionRequete);
   }
 
+  getPriseDeVue(id: number) {
+    return this.http.get<PriseDeVue>(this.serveurUrl + '/priseDeVue/' + id, optionRequete)
+  }
+
 }

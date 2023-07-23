@@ -1,5 +1,5 @@
-import {Materiel} from "../referentiel/materiel/materiel";
-import {Produit} from "../referentiel/produit/produit";
+import {AppareilPhoto, Materiel} from "../referentiel/materiel/materiel";
+import {Film} from "../referentiel/produit/produit";
 
 export class PriseDeVue {
   id: number | undefined;
@@ -9,7 +9,8 @@ export class PriseDeVue {
   position: Position | undefined;
   remarque: string | undefined;
   materiels: Materiel[] | undefined;
-  produits: Produit[] | undefined;
+  films: Film[] | undefined;
+  vues: Vue[] | undefined;
 }
 
 export class Position {
@@ -56,4 +57,12 @@ export class Results {
   nautical_twilight_end: Date | undefined;
   astronomical_twilight_begin: Date | undefined;
   astronomical_twilight_end: Date | undefined;
+}
+
+export class Vue {
+  id: number | undefined;
+  nom: string | undefined;
+  appareilPhoto: AppareilPhoto | undefined;
+  position: Position | undefined;
+  film: Film | undefined;
 }
