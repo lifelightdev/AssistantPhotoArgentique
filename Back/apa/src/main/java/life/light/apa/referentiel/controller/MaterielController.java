@@ -32,11 +32,7 @@ public class MaterielController {
 
     @RequestMapping(value = "/materiel/{id}")
     public Optional<Materiel> afficherUnMateriel(@PathVariable long id) {
-        Optional<Materiel> materiel = materielRepository.findById(id);
-        if (materiel.isEmpty()) {
-            return null;
-        }
-        return materiel;
+        return materielRepository.findById(id);
     }
 
     @GetMapping(value = "/materiel")
@@ -137,28 +133,16 @@ public class MaterielController {
 
     @RequestMapping(value = "/appareilPhoto/{id}")
     public Optional<AppareilPhoto> afficherUnAppareilPhoto(@PathVariable String id) {
-        Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(Long.parseLong(id));
-        if (appareilPhoto.isEmpty()) {
-            return null;
-        }
-        return appareilPhoto;
+        return appareilPhotoRepository.findAppareilPhotoByMaterielId(Long.parseLong(id));
     }
 
     @RequestMapping(value = "/objectif/{id}")
     public Optional<Objectif> afficherUnObjectif(@PathVariable String id) {
-        Optional<Objectif> objectif = objectifRepository.findObjectifByMaterielId(Long.parseLong(id));
-        if (objectif.isEmpty()) {
-            return null;
-        }
-        return objectif;
+        return objectifRepository.findObjectifByMaterielId(Long.parseLong(id));
     }
 
     @RequestMapping(value = "/pied/{id}")
     public Optional<Pied> afficherUnPied(@PathVariable String id) {
-        Optional<Pied> pied = piedRepository.findPiedByMaterielId(Long.parseLong(id));
-        if (pied.isEmpty()) {
-            return null;
-        }
-        return pied;
+        return piedRepository.findPiedByMaterielId(Long.parseLong(id));
     }
 }

@@ -45,46 +45,46 @@
        src="assets/Images/{{appareilPhoto.objectif?.materiel?.nom}}.jpg"
        alt="Photo de {{appareilPhoto.objectif?.materiel?.nom}}"/>
 </div>
-<div *ngIf="appareilPhoto">
+<div *ngIf="appareilPhoto?.chassis">
   <ul>
     <h2>Détail du chassi</h2>
-    <li>Nom : {{appareilPhoto.chassis?.materiel?.nom}}</li>
-    <li>Statut : {{appareilPhoto.chassis?.materiel?.statutMateriel?.nom}}</li>
-    <li>Marque : {{appareilPhoto.chassis?.materiel?.modele?.marque?.nom}}</li>
-    <li>Modéle : {{appareilPhoto.chassis?.materiel?.modele?.nom}}</li>
-    <li>Remaque : {{appareilPhoto.chassis?.materiel?.remarque}}</li>
-    <li *ngIf="appareilPhoto.chassis?.materiel?.modeEmploie">
+    <li>Nom : {{materiel?.nom}}</li>
+    <li>Statut : {{materiel?.statutMateriel?.nom}}</li>
+    <li>Marque : {{materiel?.modele?.marque?.nom}}</li>
+    <li>Modéle : {{materiel?.modele?.nom}}</li>
+    <li>Remaque : {{materiel?.remarque}}</li>
+    <li *ngIf="materiel?.modeEmploie">
       Mode d'emploie :
-      <a href="assets/ModeEmploie/{{appareilPhoto.chassis?.materiel?.nom}}.pdf"
+      <a href="assets/ModeEmploie/{{materiel?.nom}}.pdf"
          target="_blank" rel="noopener noreferrer">
         Afficher le mode d'emploie
       </a>
     </li>
-    <li>Le Statut : {{appareilPhoto.chassis?.statutChassis?.nom}}</li>
-    <li>La dimension : {{appareilPhoto.chassis?.dimensionChassis?.nom}}</li>
+    <li>Le Statut : {{appareilPhoto?.chassis?.statutChassis?.nom}}</li>
+    <li>La dimension : {{appareilPhoto?.chassis?.dimensionChassis?.nom}}</li>
   </ul>
-  <img *ngIf="appareilPhoto.chassis?.materiel?.photo" class="photo"
-       src="assets/Images/{{appareilPhoto.chassis?.materiel?.nom}}.jpg"
-       alt="Photo de {{appareilPhoto.chassis?.materiel?.nom}}"/>
+  <img *ngIf="appareilPhoto?.chassis?.materiel?.photo" class="photo"
+       src="assets/Images/{{appareilPhoto?.chassis?.materiel?.nom}}.jpg"
+       alt="Photo de {{appareilPhoto?.chassis?.materiel?.nom}}"/>
   <ul>
     <h2>Détail du film</h2>
-    <li>Nom : {{appareilPhoto.chassis?.film?.produit?.nom}}</li>
-    <li>Statut : {{appareilPhoto.chassis?.film?.statutFilm?.nom}}</li>
-    <li>Marque : {{appareilPhoto.chassis?.film?.produit?.modele?.marque?.nom}}</li>
-    <li>Modéle : {{appareilPhoto.chassis?.film?.produit?.modele?.nom}}</li>
-    <li>Remaque : {{appareilPhoto.chassis?.film?.produit?.remarque}}</li>
-    <li *ngIf="appareilPhoto.chassis?.film?.produit?.modeEmploie">Mode d'emploie :
-      <a href="assets/ModeEmploie/{{appareilPhoto.chassis?.film?.produit?.nom}}.pdf" target="_blank"
+    <li>Nom : {{appareilPhoto?.chassis?.film?.produit?.nom}}</li>
+    <li>Statut : {{appareilPhoto?.chassis?.film?.statutFilm?.nom}}</li>
+    <li>Marque : {{appareilPhoto?.chassis?.film?.produit?.modele?.marque?.nom}}</li>
+    <li>Modéle : {{appareilPhoto?.chassis?.film?.produit?.modele?.nom}}</li>
+    <li>Remaque : {{appareilPhoto?.chassis?.film?.produit?.remarque}}</li>
+    <li *ngIf="appareilPhoto?.chassis?.film?.produit?.modeEmploie">Mode d'emploie :
+      <a href="assets/ModeEmploie/{{appareilPhoto?.chassis?.film?.produit?.nom}}.pdf" target="_blank"
          rel="noopener noreferrer">
         Afficher le mode d'emploie
       </a>
     </li>
-    <li>La taille : {{appareilPhoto.chassis?.film?.tailleFilm?.nom}}</li>
-    <li>Le type : {{appareilPhoto.chassis?.film?.typeFilm?.nom}}</li>
+    <li>La taille : {{appareilPhoto?.chassis?.film?.tailleFilm?.nom}}</li>
+    <li>Le type : {{appareilPhoto?.chassis?.film?.typeFilm?.nom}}</li>
   </ul>
-  <img *ngIf="appareilPhoto.chassis?.film?.produit?.photo" class="photo"
-       src="assets/Images/{{appareilPhoto.chassis?.film?.produit?.nom}}.jpg"
-       alt="Photo de {{appareilPhoto.chassis?.film?.produit?.nom}}"/>
+  <img *ngIf="appareilPhoto?.chassis?.film?.produit?.photo" class="photo"
+       src="assets/Images/{{appareilPhoto?.chassis?.film?.produit?.nom}}.jpg"
+       alt="Photo de {{appareilPhoto?.chassis?.film?.produit?.nom}}"/>
 </div>
 <div *ngIf="pied">
   <ul>
@@ -122,7 +122,7 @@
     </li>
     <li>Pas de vis du matériel : {{pied.rotule.pasDeVisMateriel}}</li>
     <li>Pas de vis du pied : {{pied.rotule.pasDeVisPied}}</li>
-    <li>Avec fixation rapide : {{pied.rotule.avecFixationRapide}}</li>
+    <li>Avec fixation rapide : {{String(pied.rotule.avecFixationRapide) | translate}}</li>
   </ul>
   <img *ngIf="pied.rotule?.materiel?.photo" class="photo" src="assets/Images/{{pied.rotule?.materiel?.nom}}.jpg"
        alt="Photo de {{pied.rotule?.materiel?.nom}}"/>

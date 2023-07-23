@@ -25,4 +25,5 @@ export class DetailMaterielComponent implements OnInit {
     this.materielService.gePied(id).subscribe(pied => this.pied = pied);
   }
 
+  protected readonly String = String;
 }

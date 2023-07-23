@@ -130,5 +130,6 @@ export class Rotule {
   materiel: Materiel | undefined;
   pasDeVisMateriel: string | undefined;
   pasDeVisPied: string | undefined;
-  avecFixationRapide: boolean | undefined;
+  // @ts-ignore
+  avecFixationRapide: boolean | false;
 }
