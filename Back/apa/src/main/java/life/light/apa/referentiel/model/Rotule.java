@@ -13,7 +13,7 @@ public class Rotule {
     private Materiel materiel;
     private String pasDeVisMateriel;
     private String pasDeVisPied;
-    private Boolean fixationRapide;
+    private Boolean avecFixationRapide;
 
     public Long getId() {
         return id;
@@ -47,11 +47,11 @@ public class Rotule {
         this.pasDeVisPied = pasDeVisPied;
     }
 
-    public Boolean getFixationRapide() {
-        return fixationRapide;
+    public Boolean getAvecFixationRapide() {
+        return avecFixationRapide;
     }
 
-    public void setFixationRapide(Boolean fixationRapide) {
-        this.fixationRapide = fixationRapide;
+    public void setAvecFixationRapide(Boolean avecFixationRapide) {
+        this.avecFixationRapide = avecFixationRapide;
     }
 }
