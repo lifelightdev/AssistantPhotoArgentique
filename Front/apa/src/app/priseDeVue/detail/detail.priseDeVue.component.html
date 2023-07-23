@@ -11,7 +11,8 @@
   <li>Latitude : {{priseDeVue.position?.latitude}}</li>
   <li>Longitude : {{priseDeVue.position?.longitude}}</li>
   <li *ngIf="priseDeVue.position?.ville">
-    <a href="https://prevision-meteo.ch/meteo/localite/{{priseDeVue.position?.ville}}" target="_blank"
+    <a
+      href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue.position?.ville}}/{{priseDeVue.position?.codePostal}}" target="_blank"
        rel="noopener noreferrer">
       Afficher la météo
     </a>
