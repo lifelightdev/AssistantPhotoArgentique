@@ -45,6 +45,10 @@ export class Film {
   statutFilm: StatutFilm | undefined;
   tailleFilm: TailleFilm | undefined;
   typeFilm: TypeFilm | undefined;
+  tailleVue: TailleVue | undefined;
+  nbVueExpose: number | undefined;
+  nbVuePossible: number | undefined;
+  sensibilite: number | undefined;
 }
 
 export class TypeFilm {
@@ -65,6 +69,11 @@ export class TailleFilm {
 }
 
 export class FormatFilm {
+  id: number | undefined;
+  nom: string | undefined;
+}
+
+export class TailleVue {
   id: number | undefined;
   nom: string | undefined;
 }

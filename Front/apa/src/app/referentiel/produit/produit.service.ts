@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Marque, Modele, ModelRechercheProduit, Produit, StatutProduit, TypeProduit} from "./produit";
+import {Film, Marque, Modele, ModelRechercheProduit, Produit, StatutProduit, TypeProduit} from "./produit";
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -44,4 +44,11 @@ export class ProduitService {
     return this.http.get<StatutProduit[]>(this.serveurUrl + `/statutProduit`, optionRequete);
   }
 
+  getProduit(id: number) {
+    return this.http.get<Produit>(this.serveurUrl + '/produit/' + id, optionRequete);
+  }
+
+  getFilm(id: number) {
+    return this.http.get<Film>(this.serveurUrl + '/film/' + id, optionRequete);
+  }
 }

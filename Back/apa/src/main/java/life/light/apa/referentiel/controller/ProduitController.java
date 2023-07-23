@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Optional;
 import static life.light.apa.referentiel.dao.ProduitSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -23,6 +23,9 @@ public class ProduitController {
     @Autowired
     private ProduitRepository produitRepository;
 
+    @Autowired
+    private FilmRepository filmRepository;
+
     @GetMapping(value = "/produit")
     @ResponseBody
     public Iterable<Produit> rechercheProduits(@RequestParam Map<String, String> allParams) throws IOException {
@@ -30,22 +33,22 @@ public class ProduitController {
         if (allParams.entrySet().isEmpty()) {
             liste = produitRepository.findAll();
         } else {
-            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!"".equals(allParams.get("nom").trim()))){
+            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!"".equals(allParams.get("nom").trim()))) {
                 liste = ListUtils.union(liste, produitRepository.findAll(where(nomLike(allParams.get("nom")))));
             }
-            if ((allParams.containsKey("typeProduit")) && (!"undefined".equals(allParams.get("typeProduit"))) && (!"0".equals(allParams.get("typeProduit").trim()))){
+            if ((allParams.containsKey("typeProduit")) && (!"undefined".equals(allParams.get("typeProduit"))) && (!"0".equals(allParams.get("typeProduit").trim()))) {
                 liste = ListUtils.union(liste, produitRepository.findAll(where(idTypeLike(Long.valueOf(allParams.get("typeProduit"))))));
             }
-            if ((allParams.containsKey("statutProduit")) && (!"undefined".equals(allParams.get("statutProduit"))) && (!"0".equals(allParams.get("statutProduit").trim()))){
+            if ((allParams.containsKey("statutProduit")) && (!"undefined".equals(allParams.get("statutProduit"))) && (!"0".equals(allParams.get("statutProduit").trim()))) {
                 liste = ListUtils.union(liste, produitRepository.findAll(where(idStatutLike(Long.valueOf(allParams.get("statutProduit"))))));
             }
-            if ((allParams.containsKey("marque")) && (!"undefined".equals(allParams.get("marque"))) && (!"0".equals(allParams.get("marque").trim()))){
+            if ((allParams.containsKey("marque")) && (!"undefined".equals(allParams.get("marque"))) && (!"0".equals(allParams.get("marque").trim()))) {
                 liste = ListUtils.union(liste, produitRepository.findAll(where(idMarqueLike(Long.valueOf(allParams.get("marque"))))));
             }
-            if ((allParams.containsKey("modele")) && (!"undefined".equals(allParams.get("modele"))) && (!"0".equals(allParams.get("modele").trim()))){
+            if ((allParams.containsKey("modele")) && (!"undefined".equals(allParams.get("modele"))) && (!"0".equals(allParams.get("modele").trim()))) {
                 liste = ListUtils.union(liste, produitRepository.findAll(where(idModeleLike(Long.valueOf(allParams.get("modele"))))));
             }
-            if ((allParams.containsKey("remarque")) && (!"undefined".equals(allParams.get("remarque")))){
+            if ((allParams.containsKey("remarque")) && (!"undefined".equals(allParams.get("remarque")))) {
                 liste = ListUtils.union(liste, produitRepository.findAll(where(remarqueLike(allParams.get("remarque")))));
             }
         }
@@ -88,6 +91,19 @@ public class ProduitController {
     private StatutProduitRepository statutProduit;
 
     @GetMapping(value = "/statutProduit")
-    public Iterable<StatutProduit> listeStatutProduit() { return statutProduit.findAll(); }
+    public Iterable<StatutProduit> listeStatutProduit() {
+        return statutProduit.findAll();
+    }
+
+    @RequestMapping(value = "/produit/{id}")
+    public Optional<Produit> afficherUnProduit(@PathVariable long id) {
+        return produitRepository.findById(id);
+    }
+
+    @RequestMapping(value = "/film/{id}")
+    public Optional<Film> afficherUnFilm(@PathVariable long id) {
+        System.out.println("Recherche du film appartir du produit " + id);
+        return filmRepository.findFilmByProduitId(id);
+    }
 
 }
