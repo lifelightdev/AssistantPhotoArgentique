@@ -1,0 +1,13 @@
+Ajouter une vue
+<br>
+Sensibilité en ISO : {{vue.film?.sensibilite}}
+<br>
+Liste des ouvetures possible :
+<select [(ngModel)]="ouvertures" name="type">
+  <option *ngFor="let ouverture of ouvertures" [value]="ouverture.id">{{ouverture.nom}}</option>
+</select>
+<br>
+Liste des vitesses possible :
+<select [(ngModel)]="vitesses" name="type">
+  <option *ngFor="let vitesse of vitesses" [value]="vitesse.id">{{vitesse.nom}}</option>
+</select>

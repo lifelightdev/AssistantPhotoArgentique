@@ -2,6 +2,9 @@ package life.light.apa.referentiel.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "objectif")
 public class Objectif {
@@ -23,9 +26,17 @@ public class Objectif {
     @ManyToOne
     @JoinColumn(name = "type_fixation_filtre_id")
     private TypeFixation typeFixationFiltre;
+    @ManyToMany
+    @JoinTable(name = "objectif_ouverture",
+            joinColumns = @JoinColumn(name = "objectif_id"),
+            inverseJoinColumns = @JoinColumn(name = "ouverture_id"))
+    private List<Ouverture> ouvertures = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "objectif_vitesse",
+            joinColumns = @JoinColumn(name = "objectif_id"),
+            inverseJoinColumns = @JoinColumn(name = "vitesse_id"))
+    private List<Vitesse> vitesses = new ArrayList<>();
 
-    // private List<Ouveture> listeOuvertures;
-    // private List<Vitesse> listeVitesses;
     // private List<Focal> ListeFocales;
 
     // private List<Flash> ListeFlashsCompatible;
@@ -81,5 +92,21 @@ public class Objectif {
 
     public void setTypeFixationFiltre(TypeFixation typeFixationFiltre) {
         this.typeFixationFiltre = typeFixationFiltre;
+    }
+
+    public List<Ouverture> getOuvertures() {
+        return ouvertures;
+    }
+
+    public void setOuvertures(List<Ouverture> ouvertures) {
+        this.ouvertures = ouvertures;
+    }
+
+    public List<Vitesse> getVitesses() {
+        return vitesses;
+    }
+
+    public void setVitesses(List<Vitesse> vitesses) {
+        this.vitesses = vitesses;
     }
 }

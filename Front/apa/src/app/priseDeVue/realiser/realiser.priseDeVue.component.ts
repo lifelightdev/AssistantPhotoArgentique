@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {PriseDeVue} from "../priseDeVue";
+import {PositionSoleil, PriseDeVue} from "../priseDeVue";
 import {ActivatedRoute} from "@angular/router";
 import {PriseDeVueService} from "../priseDeVue.service";
 
@@ -10,14 +10,19 @@ import {PriseDeVueService} from "../priseDeVue.service";
 })
 export class RealiserPriseDeVueComponent {
   priseDeVue: PriseDeVue | undefined;
+  positionSoleil: PositionSoleil | undefined;
 
   constructor(
     private route: ActivatedRoute,
-    private  priseDeVueService:  PriseDeVueService
-  ) {}
+    private priseDeVueService: PriseDeVueService
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
-    this.priseDeVueService.getPriseDeVue(id).subscribe(priseDeVue => this.priseDeVue = priseDeVue)
+    const latitude = parseFloat(this.route.snapshot.paramMap.get('latitude')!);
+    const longitude = parseFloat(this.route.snapshot.paramMap.get('latitude')!);
+    const date = this.route.snapshot.paramMap.get('date')!;
+    this.priseDeVueService.getPriseDeVue(id).subscribe(priseDeVue => this.priseDeVue = priseDeVue);
+    this.priseDeVueService.recherchePositionSoleil(id, latitude, longitude, date).subscribe(data => { this.positionSoleil = data; });
   }
 }

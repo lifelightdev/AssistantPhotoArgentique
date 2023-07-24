@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import life.light.apa.priseDeVue.dao.PositionRepository;
 import life.light.apa.priseDeVue.dao.PriseDeVueRepository;
 import life.light.apa.priseDeVue.dao.StatutPriseDeVueRepository;
+import life.light.apa.priseDeVue.dao.VueRepository;
 import life.light.apa.priseDeVue.model.Position;
 import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
+import life.light.apa.priseDeVue.model.Vue;
 import life.light.apa.referentiel.model.Materiel;
+import life.light.apa.referentiel.model.Ouverture;
+import life.light.apa.referentiel.model.Vitesse;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +32,9 @@ public class PriseDeVueController {
 
     @Autowired
     private PriseDeVueRepository priseDeVueRepository;
+
+    @Autowired
+    private VueRepository vueRepository;
 
     @GetMapping(value = "/priseDeVue")
     @ResponseBody
@@ -110,6 +117,21 @@ public class PriseDeVueController {
     @RequestMapping(value = "/priseDeVue/{id}")
     public Optional<PriseDeVue> afficherUnMaterielePriseDeVue(@PathVariable long id) {
         return priseDeVueRepository.findById(id);
+    }
+
+    @RequestMapping(value = "/vue/{id}")
+    public Optional<Vue> afficherUneVue(@PathVariable long id) {
+        return vueRepository.findById(id);
+    }
+
+    @RequestMapping(value = "/ouvertures/{id}")
+    public Iterable<Ouverture> listeOuverture(@PathVariable long vueId) {
+        return vueRepository.findOuverture(vueId);
+    }
+
+    @RequestMapping(value = "/vitesses/{id}")
+    public Iterable<Vitesse> listeVitesse(@PathVariable long vueId) {
+        return vueRepository.findVitesse(vueId);
     }
 
 }

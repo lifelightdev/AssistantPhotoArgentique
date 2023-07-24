@@ -1,7 +1,14 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Coordonnees, ModelRecherchePriseDeVue, PositionSoleil, Position, PriseDeVue, StatutPriseDeVue} from "./priseDeVue";
+import {
+  ModelRecherchePriseDeVue,
+  PositionSoleil,
+  Position,
+  PriseDeVue,
+  StatutPriseDeVue, Vue
+} from "./priseDeVue";
+import {Ouverture, Vitesse} from "../referentiel/materiel/materiel";
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -22,7 +29,7 @@ export class PriseDeVueService {
   }
 
   rechercheTousLesPriseDeVue(): Observable<PriseDeVue[]> {
-    return this.http.get<PriseDeVue[]>(this.serveurUrl +`/priseDeVue`, optionRequete);
+    return this.http.get<PriseDeVue[]>(this.serveurUrl + `/priseDeVue`, optionRequete);
   }
 
   rechercheDesPriseDeVues(term: ModelRecherchePriseDeVue) {
@@ -33,12 +40,12 @@ export class PriseDeVueService {
     return this.http.get<StatutPriseDeVue[]>(this.serveurUrl + `/statutPriseDeVue`, optionRequete);
   }
 
-  rechercheCodePostal(coordonnees: Coordonnees) {
-    return this.http.get<PriseDeVue[]>(`https://geo.api.gouv.fr/communes?lat=${coordonnees.latitude}&lon=${coordonnees.longitude}&fields=nom,codesPostaux&format=json&geometry=centre`);
+  rechercheCodePostal(latitude: number, longitude: number) {
+    return this.http.get<PriseDeVue[]>(`https://geo.api.gouv.fr/communes?lat=${latitude}&lon=${longitude}&fields=nom,codesPostaux&format=json&geometry=centre`);
   }
 
-  recherchePositionSoleil(coordonnees: Coordonnees) {
-    return this.http.get<PositionSoleil>(`https://api.sunrise-sunset.org/json?lat=${coordonnees.latitude}&lng=${coordonnees.longitude}&date=${coordonnees.date}&formatted=0`)
+  recherchePositionSoleil(id: number, latitude: number, longitude: number, date: string) {
+    return this.http.get<PositionSoleil>(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&date=${date}&formatted=0`)
   }
 
   recherchePosition() {
@@ -47,6 +54,18 @@ export class PriseDeVueService {
 
   getPriseDeVue(id: number) {
     return this.http.get<PriseDeVue>(this.serveurUrl + '/priseDeVue/' + id, optionRequete)
+  }
+
+  getVue(id: number) {
+    return this.http.get<Vue>(this.serveurUrl + '/vue/' + id, optionRequete)
+  }
+
+  rechercheToutesLesOuvertures(id: number): Observable<Ouverture[]> {
+    return this.http.get<Ouverture[]>(this.serveurUrl + `/ouvertures/` + id, optionRequete);
+  }
+
+  rechercheToutesLesVitesses(id: number): Observable<Vitesse[]> {
+    return this.http.get<Vitesse[]>(this.serveurUrl + `/vitesses/` + id, optionRequete);
   }
 
 }

@@ -35,12 +35,6 @@ export class ModelRecherchePriseDeVue {
   statutPriseDeVue: StatutPriseDeVue | undefined;
 }
 
-export class Coordonnees {
-  latitude: number | undefined;
-  longitude: number | undefined;
-  date: string | undefined;
-}
-
 export class PositionSoleil {
   results: Results | undefined;
   status: string | undefined;

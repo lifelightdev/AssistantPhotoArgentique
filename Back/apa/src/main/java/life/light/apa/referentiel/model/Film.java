@@ -25,6 +25,7 @@ public class Film {
     private TypeFilm typeFilm;
     private Integer nbVuePossible;
     private Integer nbVueExpose;
+    private Integer sensibilite;
     @ManyToOne
     @JoinColumn(name = "taille_vue_id")
     private TailleVue tailleVue;
@@ -107,5 +108,13 @@ public class Film {
 
     public void setVues(List<Vue> vues) {
         this.vues = vues;
+    }
+
+    public Integer getSensibilite() {
+        return sensibilite;
+    }
+
+    public void setSensibilite(Integer sensibilite) {
+        this.sensibilite = sensibilite;
     }
 }

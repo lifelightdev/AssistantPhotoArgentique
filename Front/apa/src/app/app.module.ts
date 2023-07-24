@@ -27,12 +27,11 @@ import {DetailPriseDeVueComponent} from "./priseDeVue/detail/detail.priseDeVue.c
 import {MapComponent} from './priseDeVue/detail/map/map.component';
 import {paginationPersonnalise} from './paginationPersonnalise';
 import {MatPaginatorIntl} from '@angular/material/paginator';
-
-// import ngx-translate and the http loader
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { RealiserPriseDeVueComponent } from './priseDeVue/realiser/realiser.priseDeVue.component';
+import { AjouterVueComponent } from './priseDeVue/realiser/ajouter-vue.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +45,7 @@ import { RealiserPriseDeVueComponent } from './priseDeVue/realiser/realiser.pris
     DetailPriseDeVueComponent,
     MapComponent,
     RealiserPriseDeVueComponent,
+    AjouterVueComponent,
   ],
   imports: [
     BrowserModule,

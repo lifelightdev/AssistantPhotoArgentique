@@ -86,6 +86,8 @@ export class Objectif {
   typeFixationFlash: TypeFixation | undefined;
   typeFixationPied: TypeFixation | undefined;
   typeFixationFiltre: TypeFixation | undefined;
+  ouvetures: Ouverture[] | undefined;
+  vitesses: Vitesse[] | undefined;
 }
 
 export class Focal {
@@ -132,4 +134,14 @@ export class Rotule {
   pasDeVisPied: string | undefined;
   // @ts-ignore
   avecFixationRapide: boolean | false;
+}
+
+export class Ouverture {
+  id: number | undefined;
+  nom: string | undefined;
+}
+
+export class Vitesse {
+  id: number | undefined;
+  nom: string | undefined;
 }
