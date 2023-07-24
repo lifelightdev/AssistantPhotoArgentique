@@ -1,5 +1,5 @@
-import {AppareilPhoto, Materiel} from "../referentiel/materiel/materiel";
-import {Film} from "../referentiel/produit/produit";
+import {AppareilPhoto, Materiel, Ouverture, Vitesse} from "../referentiel/materiel/materiel";
+import {Film, Sensibilite} from "../referentiel/produit/produit";
 
 export class PriseDeVue {
   id: number | undefined;
@@ -59,4 +59,7 @@ export class Vue {
   appareilPhoto: AppareilPhoto | undefined;
   position: Position | undefined;
   film: Film | undefined;
+  sensibilite: Sensibilite | undefined;
+  ouverture: Ouverture | undefined;
+  vitesse: Vitesse | undefined;
 }

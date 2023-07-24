@@ -29,6 +29,10 @@ public class MaterielController {
     private ObjectifRepository objectifRepository;
     @Autowired
     private PiedRepository piedRepository;
+    @Autowired
+    private OuvertureRepository ouvertureRepository;
+    @Autowired
+    private VitesseRepository vitesseRepository;
 
     @RequestMapping(value = "/materiel/{id}")
     public Optional<Materiel> afficherUnMateriel(@PathVariable long id) {
@@ -144,5 +148,15 @@ public class MaterielController {
     @RequestMapping(value = "/pied/{id}")
     public Optional<Pied> afficherUnPied(@PathVariable String id) {
         return piedRepository.findPiedByMaterielId(Long.parseLong(id));
+    }
+
+    @RequestMapping(value = "/ouvertures/{id}")
+    public Iterable<Ouverture> listeOuverture(@PathVariable long id) {
+        return ouvertureRepository.findOuvertureByObjectif(id);
+    }
+
+    @RequestMapping(value = "/vitesses/{id}")
+    public Iterable<Vitesse> listeVitesse(@PathVariable long id) {
+        return vitesseRepository.findVitesseByObjectif(id);
     }
 }

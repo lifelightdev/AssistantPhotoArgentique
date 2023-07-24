@@ -1,8 +1,13 @@
+<br>
 Ajouter une vue
 <br>
-Sensibilité en ISO : {{vue.film?.sensibilite}}
+Appareil Photo : {{vue.appareilPhoto?.materiel?.nom}}
 <br>
-Liste des ouvetures possible :
+Film : {{vue.film?.produit?.nom}}
+<br>
+Sensibilité en ISO : {{vue.film?.sensibilite?.nom}}
+<br>
+Liste des ouvertures possible :
 <select [(ngModel)]="ouvertures" name="type">
   <option *ngFor="let ouverture of ouvertures" [value]="ouverture.id">{{ouverture.nom}}</option>
 </select>

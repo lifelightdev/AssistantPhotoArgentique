@@ -10,8 +10,6 @@ import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
 import life.light.apa.priseDeVue.model.Vue;
 import life.light.apa.referentiel.model.Materiel;
-import life.light.apa.referentiel.model.Ouverture;
-import life.light.apa.referentiel.model.Vitesse;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -122,16 +120,6 @@ public class PriseDeVueController {
     @RequestMapping(value = "/vue/{id}")
     public Optional<Vue> afficherUneVue(@PathVariable long id) {
         return vueRepository.findById(id);
-    }
-
-    @RequestMapping(value = "/ouvertures/{id}")
-    public Iterable<Ouverture> listeOuverture(@PathVariable long vueId) {
-        return vueRepository.findOuverture(vueId);
-    }
-
-    @RequestMapping(value = "/vitesses/{id}")
-    public Iterable<Vitesse> listeVitesse(@PathVariable long vueId) {
-        return vueRepository.findVitesse(vueId);
     }
 
 }

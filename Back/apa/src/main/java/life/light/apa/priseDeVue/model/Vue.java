@@ -1,8 +1,7 @@
 package life.light.apa.priseDeVue.model;
 
 import jakarta.persistence.*;
-import life.light.apa.referentiel.model.AppareilPhoto;
-import life.light.apa.referentiel.model.Film;
+import life.light.apa.referentiel.model.*;
 
 @Entity
 @Table(name = "vue")
@@ -20,6 +19,15 @@ public class Vue {
     @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;
+    @ManyToOne
+    @JoinColumn(name = "sensibilite_id")
+    private Sensibilite sensibilite;
+    @ManyToOne
+    @JoinColumn(name = "vitesse_id")
+    private Vitesse vitesse;
+    @ManyToOne
+    @JoinColumn(name = "ouverture_id")
+    private Ouverture ouverture;
 
     public Long getId() {
         return id;
@@ -61,4 +69,27 @@ public class Vue {
         this.position = position;
     }
 
+    public Sensibilite getSensibilite() {
+        return sensibilite;
+    }
+
+    public void setSensibilite(Sensibilite sensibilite) {
+        this.sensibilite = sensibilite;
+    }
+
+    public Vitesse getVitesse() {
+        return vitesse;
+    }
+
+    public void setVitesse(Vitesse vitesse) {
+        this.vitesse = vitesse;
+    }
+
+    public Ouverture getOuverture() {
+        return ouverture;
+    }
+
+    public void setOuverture(Ouverture ouverture) {
+        this.ouverture = ouverture;
+    }
 }

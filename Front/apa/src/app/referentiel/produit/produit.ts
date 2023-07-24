@@ -48,7 +48,12 @@ export class Film {
   tailleVue: TailleVue | undefined;
   nbVueExpose: number | undefined;
   nbVuePossible: number | undefined;
-  sensibilite: number | undefined;
+  sensibilite: Sensibilite | undefined;
+}
+
+export class Sensibilite {
+  id: number | undefined;
+  nom: string | undefined;
 }
 
 export class TypeFilm {

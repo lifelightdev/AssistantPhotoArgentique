@@ -25,7 +25,9 @@ public class Film {
     private TypeFilm typeFilm;
     private Integer nbVuePossible;
     private Integer nbVueExpose;
-    private Integer sensibilite;
+    @ManyToOne
+    @JoinColumn(name = "sensibilite_id")
+    private Sensibilite sensibilite;
     @ManyToOne
     @JoinColumn(name = "taille_vue_id")
     private TailleVue tailleVue;
@@ -33,7 +35,7 @@ public class Film {
     @JoinTable(name = "film_vue",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "vue_id"))
-    private List<Vue> vues = new ArrayList();
+    private List<Vue> vues = new ArrayList<>();
 
     // private List<AppareilPhoto> listeAppareilPhotoCompatible;
     // private List<Chassis> listeChassisCompatible;
@@ -110,11 +112,11 @@ public class Film {
         this.vues = vues;
     }
 
-    public Integer getSensibilite() {
+    public Sensibilite getSensibilite() {
         return sensibilite;
     }
 
-    public void setSensibilite(Integer sensibilite) {
+    public void setSensibilite(Sensibilite sensibilite) {
         this.sensibilite = sensibilite;
     }
 }
