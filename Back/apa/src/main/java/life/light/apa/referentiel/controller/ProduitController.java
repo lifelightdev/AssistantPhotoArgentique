@@ -16,7 +16,7 @@ import java.util.Optional;
 import static life.light.apa.referentiel.dao.ProduitSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://localhost:4200")
 @RestController
 public class ProduitController {
 
