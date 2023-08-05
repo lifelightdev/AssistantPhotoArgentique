@@ -1,6 +1,7 @@
 package life.light.apa.priseDeVue.dao;
 
 import life.light.apa.priseDeVue.model.PriseDeVue;
+import life.light.apa.priseDeVue.model.Vue;
 import life.light.apa.referentiel.model.Materiel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -20,4 +21,6 @@ public interface PriseDeVueRepository extends JpaRepository<PriseDeVue, Long>, J
     @Query("select m from Materiel m join PriseDeVue p where p.id=:id")
     List<Materiel> findMaterielsById(Long id);
 
+    @Query("select v from Vue v join PriseDeVue p where p.id=:id")
+    List<Vue> findVueByPriseDeVueId(long id);
 }

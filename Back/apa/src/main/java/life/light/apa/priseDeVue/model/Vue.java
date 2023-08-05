@@ -20,14 +20,14 @@ public class Vue {
     @JoinColumn(name = "position_id")
     private Position position;
     @ManyToOne
-    @JoinColumn(name = "sensibilite_id")
-    private Sensibilite sensibilite;
-    @ManyToOne
     @JoinColumn(name = "vitesse_id")
     private Vitesse vitesse;
     @ManyToOne
     @JoinColumn(name = "ouverture_id")
     private Ouverture ouverture;
+    @Lob
+    @Column(name = "photo", columnDefinition="BLOB")
+    private byte[] photo;
 
     public Long getId() {
         return id;
@@ -69,14 +69,6 @@ public class Vue {
         this.position = position;
     }
 
-    public Sensibilite getSensibilite() {
-        return sensibilite;
-    }
-
-    public void setSensibilite(Sensibilite sensibilite) {
-        this.sensibilite = sensibilite;
-    }
-
     public Vitesse getVitesse() {
         return vitesse;
     }
@@ -91,5 +83,13 @@ public class Vue {
 
     public void setOuverture(Ouverture ouverture) {
         this.ouverture = ouverture;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 }

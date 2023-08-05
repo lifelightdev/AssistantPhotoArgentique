@@ -68,4 +68,8 @@ export class PriseDeVueService {
     return this.http.get<Vitesse[]>(this.serveurUrl + `/vitesses/` + id, optionRequete);
   }
 
+  rechercheTousLesVues(id: number) {
+    return this.http.get<Vue[]>(this.serveurUrl + '/priseDeVue/' + id + '/vue', optionRequete);
+  }
+
 }

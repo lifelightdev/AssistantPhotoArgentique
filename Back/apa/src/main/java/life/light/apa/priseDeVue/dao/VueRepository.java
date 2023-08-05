@@ -12,6 +12,9 @@ public interface VueRepository extends JpaRepository<Vue, Long>, JpaSpecificatio
     @Override
     Optional<Vue> findById(Long id);
 
+    @Query("select v from Vue v where v.id =:id")
+    Vue findVuebyId(Long id);
+
     @Query("select v from Vue v")
     List<Vue> findAll();
 

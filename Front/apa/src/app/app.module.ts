@@ -30,8 +30,6 @@ import {MatPaginatorIntl} from '@angular/material/paginator';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import { RealiserPriseDeVueComponent } from './priseDeVue/realiser/realiser.priseDeVue.component';
-import { AjouterVueComponent } from './priseDeVue/realiser/ajouter-vue.component';
 
 @NgModule({
   declarations: [
@@ -44,8 +42,6 @@ import { AjouterVueComponent } from './priseDeVue/realiser/ajouter-vue.component
     PriseDeVueListComponent,
     DetailPriseDeVueComponent,
     MapComponent,
-    RealiserPriseDeVueComponent,
-    AjouterVueComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,9 +5,8 @@ import {DetailMaterielComponent} from "./referentiel/materiel/detail/detail.mate
 import {ProduitListComponent} from "./referentiel/produit/produit.list.component";
 import {PriseDeVueListComponent} from "./priseDeVue/priseDeVue.list.component";
 import {MapComponent} from "./priseDeVue/detail/map/map.component";
-import {RealiserPriseDeVueComponent} from "./priseDeVue/realiser/realiser.priseDeVue.component";
 import {DetailProduitComponent} from "./referentiel/produit/detail/detail.produit.component";
-import {AjouterVueComponent} from "./priseDeVue/realiser/ajouter-vue.component";
+import {DetailPriseDeVueComponent} from "./priseDeVue/detail/detail.priseDeVue.component";
 
 const routes: Routes = [
   {path: 'materiel.list', component: MaterielListComponent},
@@ -15,8 +14,7 @@ const routes: Routes = [
   {path: 'produit.list', component: ProduitListComponent},
   {path: 'produit/detail/:id', component: DetailProduitComponent},
   {path: 'priseDeVue.list', component: PriseDeVueListComponent},
-  {path: 'priseDeVue/realiser/:id/:latitude/:longitude/:date', component: RealiserPriseDeVueComponent},
-  {path: 'priseDeVue/vue/:id', component: AjouterVueComponent},
+  {path: 'priseDeVue/detail/:id/:latitude/:longitude/:date', component: DetailPriseDeVueComponent},
   {path: 'map', component: MapComponent},
 ];
 

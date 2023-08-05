@@ -15,6 +15,7 @@ import life.light.apa.referentiel.model.Vitesse;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import javax.imageio.stream.FileImageOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -120,8 +121,38 @@ public class PriseDeVueController {
     }
 
     @RequestMapping(value = "/vue/{id}")
-    public Optional<Vue> afficherUneVue(@PathVariable long id) {
+    public Optional<Vue> afficherUneVue(@PathVariable long id) throws IOException {
+        // Envoie des photos sur le serveur front en dur
+        Vue vue = vueRepository.findVuebyId(id);
+        if (null != vue.getPhoto()) {
+            String imageFileName = vue.getAppareilPhoto().getMateriel().getNom() + "-" + vue.getNom() + "-" + vue.getId();
+            String extension = ".jpg";
+            File file = new File("D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Images\\" + imageFileName + extension);
+            file.createNewFile();
+            FileImageOutputStream fos = new FileImageOutputStream(file);
+            fos.write(vue.getPhoto());
+            fos.close();
+        }
         return vueRepository.findById(id);
+    }
+
+    @RequestMapping(value = "/priseDeVue/{id}/vue")
+    public Iterable<Vue> afficherToutesLesVueDUnePriseDeVue(@PathVariable long id) throws IOException {
+        // Envoie des photos sur le serveur front en dur
+        List<Vue> vues = priseDeVueRepository.findVueByPriseDeVueId(id);
+        for (Vue vue : vues) {
+            if (null != vue.getPhoto()) {
+                String imageFileName = vue.getAppareilPhoto().getMateriel().getNom() + "-" + vue.getNom() + "-" + vue.getId();
+                String extension = ".jpg";
+                File file = new File("D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Images\\" + imageFileName + extension);
+                file.createNewFile();
+                FileImageOutputStream fos = new FileImageOutputStream(file);
+                fos.write(vue.getPhoto());
+                fos.close();
+            }
+        }
+        return vues;
+
     }
 
     @RequestMapping(value = "/android/vue")
@@ -142,12 +173,12 @@ public class PriseDeVueController {
                         System.out.println("Il n'y a pas de film chargé dans cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
                         androidVue.setSensibilite(vue.getAppareilPhoto().getChassis().getFilm().getSensibilite().getNom());
                         List<String> ouvetures = new ArrayList<>();
-                        for(Ouverture o : vue.getAppareilPhoto().getObjectif().getOuvertures()){
+                        for (Ouverture o : vue.getAppareilPhoto().getObjectif().getOuvertures()) {
                             ouvetures.add(o.getNom());
                         }
                         androidVue.setOuvertures(ouvetures);
                         List<String> vitesses = new ArrayList<>();
-                        for(Vitesse v : vue.getAppareilPhoto().getObjectif().getVitesses()){
+                        for (Vitesse v : vue.getAppareilPhoto().getObjectif().getVitesses()) {
                             vitesses.add(v.getNom());
                         }
                         androidVue.setVitesses(vitesses);

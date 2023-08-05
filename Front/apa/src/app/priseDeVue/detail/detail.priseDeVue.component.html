@@ -1,58 +1,96 @@
 <div>
-<ul *ngIf="priseDeVue.nom">
   <h1>Détail de la prise de vue</h1>
-  <li>Nom : {{priseDeVue.nom}}</li>
-  <li>Statut : {{priseDeVue.statutPriseDeVue?.nom}}</li>
-  <li>Date : {{priseDeVue.date | date: 'le dd/MM/yyyy à HH:mm'}}</li>
-  <li>Position : {{priseDeVue.position}}</li>
-  <li>Remarque : {{priseDeVue.remarque}}</li>
-  <li>Ville : {{priseDeVue.position?.ville}}</li>
-  <li>Code postal : {{priseDeVue.position?.codePostal}}</li>
-  <li>Latitude : {{priseDeVue.position?.latitude}}</li>
-  <li>Longitude : {{priseDeVue.position?.longitude}}</li>
-  <li *ngIf="priseDeVue.position?.ville">
-    <a
-      href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue.position?.ville}}/{{priseDeVue.position?.codePostal}}" target="_blank"
-       rel="noopener noreferrer">
-      Afficher la météo
-    </a>
-  </li>
-</ul>
-
-<ul *ngIf="positionSoleil">
-  <h1>Détail sur les astres</h1>
-  <li>Le lever du soleil est à {{positionSoleil.results?.sunrise | date: 'HH:mm le dd/MM/yyyy'}}</li>
-  <li>Le coucher du soleil est à {{positionSoleil.results?.sunset | date: 'HH:mm le dd/MM/yyyy'}}</li>
-  <li>Le midi solaire est à {{positionSoleil.results?.solar_noon | date: 'HH:mm le dd/MM/yyyy'}}</li>
-  <li>La durée de la journée est de {{positionSoleil.results?.day_length}}</li>
-  <li>Le début du crépuscule civil est à
-    {{positionSoleil.results?.civil_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
-  </li>
-  <li>La fin du crépuscule civil est à
-    {{positionSoleil.results?.civil_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
-  </li>
-  <li>Le début du crépuscule nautique est à
-    {{positionSoleil.results?.nautical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
-  </li>
-  <li>La fin du crépuscule nautique est à
-    {{positionSoleil.results?.nautical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
-  </li>
-  <li>Le début du crépuscule astronomique est à
-    {{positionSoleil.results?.astronomical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
-  </li>
-  <li>Le fin du crépuscule astronomique est à
-    {{positionSoleil.results?.astronomical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
-  </li>
-  <li *ngIf="priseDeVue.position?.latitude">
-    <a
-      href="https://www.mooncalc.org/#/{{priseDeVue.position?.latitude}},{{priseDeVue.position?.longitude}},8/{{priseDeVue.date | date:
+  <ul>
+    Position
+    <li>Latitude : {{priseDeVue?.position?.latitude}}</li>
+    <li>Longitude : {{priseDeVue?.position?.longitude}}</li>
+    <li>Date : {{priseDeVue?.date | date: 'HH:mm le dd/MM/yyyy'}}</li>
+    <li *ngIf="priseDeVue?.position?.ville"><a
+            href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue?.position?.ville}}/{{priseDeVue?.position?.codePostal}}" target="_blank" rel="noopener noreferrer"> Afficher la météo </a>
+    </li>
+    <li *ngIf="positionSoleil?.results?.sunrise">Le lever du soleil est à {{positionSoleil?.results?.sunrise | date:
+            'HH:mm le dd/MM/yyyy'}}</li>
+    <li *ngIf="positionSoleil?.results?.sunset">Le coucher du soleil est à {{positionSoleil?.results?.sunset | date:
+            'HH:mm le dd/MM/yyyy'}}</li>
+    <li *ngIf="positionSoleil?.results?.solar_noon">Le midi solaire est à
+      {{positionSoleil?.results?.solar_noon | date: 'HH:mm le dd/MM/yyyy'}}</li>
+    <li *ngIf="positionSoleil?.results?.day_length">La durée de la journée est de
+      {{positionSoleil?.results?.day_length}}</li>
+    <li *ngIf="positionSoleil?.results?.civil_twilight_begin">Le début du crépuscule civil est à
+      {{positionSoleil?.results?.civil_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
+    </li>
+    <li *ngIf="positionSoleil?.results?.civil_twilight_end">La fin du crépuscule civil est à
+      {{positionSoleil?.results?.civil_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
+    </li>
+    <li *ngIf="positionSoleil?.results?.nautical_twilight_begin">Le début du crépuscule nautique est à
+      {{positionSoleil?.results?.nautical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
+    </li>
+    <li *ngIf="positionSoleil?.results?.nautical_twilight_end">La fin du crépuscule nautique est à
+      {{positionSoleil?.results?.nautical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
+    </li>
+    <li *ngIf="positionSoleil?.results?.astronomical_twilight_begin">Le début du crépuscule astronomique est à
+      {{positionSoleil?.results?.astronomical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
+    </li>
+    <li *ngIf="positionSoleil?.results?.astronomical_twilight_end">Le fin du crépuscule astronomique est à
+      {{positionSoleil?.results?.astronomical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
+    </li>
+    <li *ngIf="priseDeVue?.position?.latitude">
+      <a
+        href="https://www.mooncalc.org/#/{{priseDeVue?.position?.latitude}},{{priseDeVue?.position?.longitude}},8/{{priseDeVue?.date | date:
   'yyyy.MM.dd/HH:mm'}}/1/3" target="_blank" rel="noopener noreferrer"> Afficher la position de la lune</a>
-  </li>
-</ul>
+    </li>
+  </ul>
 </div>
-<ul *ngIf="priseDeVue.materiels">
-  <h1>Liste du matériel</h1>
-  <li *ngFor="let materiel of priseDeVue.materiels">
-    <a routerLink="/materiel/detail/{{materiel.id}}">{{materiel.nom}}</a>
-  </li>
-</ul>
+<div>
+  <ul>
+    <h1>Liste du matériel</h1>
+    <li *ngFor="let materiel of priseDeVue?.materiels">
+      <a routerLink="/materiel/detail/{{materiel.id}}">{{materiel.nom}}</a> -
+      <a *ngIf="materiel?.modeEmploie" href="assets/ModeEmploie/{{materiel?.nom}}.pdf"> Afficher le mode d'emploie </a>
+    </li>
+  </ul>
+</div>
+<div>
+  <ul>
+    <h1>Liste des films</h1>
+    <li *ngFor="let film of priseDeVue?.films">
+      <a routerLink="/produit/detail/{{film.id}}">{{film.produit?.nom}}</a>
+    </li>
+  </ul>
+</div>
+<div *ngFor="let vue of priseDeVue?.vues">
+  <hr>
+  <h1>Liste des vues</h1>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="AppareilPhoto">
+      <th mat-header-cell *matHeaderCellDef>Appareil Photo</th>
+      <td mat-cell *matCellDef="let vue">{{vue.appareilPhoto?.materiel?.nom}}</td>
+    </ng-container>
+    <ng-container matColumnDef="Film">
+      <th mat-header-cell *matHeaderCellDef>Film</th>
+      <td mat-cell *matCellDef="let vue"> {{vue.film?.produit?.nom}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Sensibilite">
+      <th mat-header-cell *matHeaderCellDef>Sensibilité en ISO</th>
+      <td mat-cell *matCellDef="let vue"> {{vue.film?.sensibilite?.nom}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Ouverture">
+      <th mat-header-cell *matHeaderCellDef>Ouverture</th>
+      <td mat-cell *matCellDef="let vue"> {{vue.ouverture?.nom}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Vitesse">
+      <th mat-header-cell *matHeaderCellDef>Vitesse</th>
+      <td mat-cell *matCellDef="let vue"> {{vue.vitesse?.nom}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Photo">
+      <th mat-header-cell *matHeaderCellDef>Photo</th>
+      <td mat-cell *matCellDef="let vue">
+        <img *ngIf="vue.photo" class="photo" src="assets/Images/{{ vue.nom }}.jpg" alt="Photo"/>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row (click)="onSelect(row)" *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <hr>
+</div>
