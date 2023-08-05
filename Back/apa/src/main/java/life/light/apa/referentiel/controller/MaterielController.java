@@ -17,7 +17,7 @@ import java.util.Optional;
 import static life.light.apa.referentiel.dao.MaterielSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
-@CrossOrigin(origins = "https://localhost:4200")
+@CrossOrigin(origins = "http://127.0.0.1:4200")
 @RestController
 public class MaterielController {
 
@@ -46,7 +46,7 @@ public class MaterielController {
         if (allParams.entrySet().isEmpty()) {
             liste = materielRepository.findAll();
         } else {
-            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!"".equals(allParams.get("nom").trim()))){
+            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!allParams.get("nom").trim().isEmpty())){
                 liste = ListUtils.union(liste, materielRepository.findAll(where(nomLike(allParams.get("nom")))));
             }
             if ((allParams.containsKey("typeMateriel")) && (!"undefined".equals(allParams.get("typeMateriel"))) && (!"0".equals(allParams.get("typeMateriel").trim()))){

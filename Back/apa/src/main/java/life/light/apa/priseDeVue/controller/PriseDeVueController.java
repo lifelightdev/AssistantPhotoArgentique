@@ -10,6 +10,8 @@ import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
 import life.light.apa.priseDeVue.model.Vue;
 import life.light.apa.referentiel.model.Materiel;
+import life.light.apa.referentiel.model.Ouverture;
+import life.light.apa.referentiel.model.Vitesse;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +26,7 @@ import java.util.Optional;
 import static life.light.apa.priseDeVue.dao.PriseDeVueSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
-@CrossOrigin(origins = "https://localhost:4200")
+@CrossOrigin(origins = "http://127.0.0.1:4200")
 @RestController
 public class PriseDeVueController {
 
@@ -39,7 +41,7 @@ public class PriseDeVueController {
     public Iterable<PriseDeVue> recherchePriseDeVues(@RequestParam Map<String, String> allParams) {
         List<PriseDeVue> liste = new ArrayList<>();
         boolean trouver = false;
-        if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!"".equals(allParams.get("nom").trim()))) {
+        if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!allParams.get("nom").trim().isEmpty())) {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(nomLike(allParams.get("nom")))));
             trouver = true;
         }
@@ -47,7 +49,7 @@ public class PriseDeVueController {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(idStatutLike(Long.valueOf(allParams.get("statutPriseDeVue"))))));
             trouver = true;
         }
-        if ((allParams.containsKey("date")) && (!"undefined".equals(allParams.get("date"))) && (!"".equals(allParams.get("date").trim()))) {
+        if ((allParams.containsKey("date")) && (!"undefined".equals(allParams.get("date"))) && (!allParams.get("date").trim().isEmpty())) {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(dateLike(LocalDateTime.parse(allParams.get("date"))))));
             trouver = true;
         }
@@ -59,7 +61,7 @@ public class PriseDeVueController {
             liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(remarqueLike(allParams.get("remarque")))));
             trouver = true;
         }
-        if (! trouver) {
+        if (!trouver) {
             liste = priseDeVueRepository.findAll();
         }
         GeoJson geoJson = new GeoJson();
@@ -120,6 +122,57 @@ public class PriseDeVueController {
     @RequestMapping(value = "/vue/{id}")
     public Optional<Vue> afficherUneVue(@PathVariable long id) {
         return vueRepository.findById(id);
+    }
+
+    @RequestMapping(value = "/android/vue")
+    public Optional<Android> listeAndroidVue() {
+        List<Vue> listeDeVue = vueRepository.findAll();
+        List<AndroidVue> listeAndroidVue = new ArrayList<>();
+        for (Vue vue : listeDeVue) {
+            AndroidVue androidVue = new AndroidVue();
+            androidVue.setId(vue.getId());
+            if (vue.getPosition() != null) {
+                androidVue.setLatitude(vue.getPosition().getLatitude());
+                androidVue.setLongitude(vue.getPosition().getLongitude());
+                if (vue.getAppareilPhoto() != null) {
+                    androidVue.setNomAppareilPhoto(vue.getAppareilPhoto().getMateriel().getNom());
+                    if (vue.getAppareilPhoto().getFilmCharge() != null) {
+                        androidVue.setSensibilite(vue.getAppareilPhoto().getFilmCharge().getSensibilite().getNom());
+                    } else if (vue.getAppareilPhoto().getChassis().getFilm() != null) {
+                        System.out.println("Il n'y a pas de film chargé dans cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
+                        androidVue.setSensibilite(vue.getAppareilPhoto().getChassis().getFilm().getSensibilite().getNom());
+                        List<String> ouvetures = new ArrayList<>();
+                        for(Ouverture o : vue.getAppareilPhoto().getObjectif().getOuvertures()){
+                            ouvetures.add(o.getNom());
+                        }
+                        androidVue.setOuvertures(ouvetures);
+                        List<String> vitesses = new ArrayList<>();
+                        for(Vitesse v : vue.getAppareilPhoto().getObjectif().getVitesses()){
+                            vitesses.add(v.getNom());
+                        }
+                        androidVue.setVitesses(vitesses);
+                        if (androidVue.getSensibilite() != null
+                                && !androidVue.getOuvertures().isEmpty()
+                                && !androidVue.getVitesses().isEmpty()) {
+                            listeAndroidVue.add(androidVue);
+                            // Duplication par flaime de saisie d'une deuxieme vue
+                            listeAndroidVue.add(androidVue);
+                        }
+                    } else {
+                        System.out.println("Il n'y a pas de film chargé dans le chassis cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
+                    }
+                } else {
+                    System.out.println("Il n'y a pas d'appareil photo dans cette vue " + vue.getId());
+                }
+            } else {
+                System.out.println("Il n'y a pas de position dans cette vue " + vue.getId());
+            }
+        }
+        System.out.println("Il y a " + listeAndroidVue.size() + " vue(s) ");
+        Android android = new Android();
+        android.setVues(listeAndroidVue);
+
+        return Optional.of(android);
     }
 
 }

@@ -24,7 +24,7 @@ const optionRequete = {
 })
 export class MaterielService {
 
-  private serveurUrl = `http://localhost:8081`;
+  private serveurUrl = `http://127.0.0.1:8081`;
 
   constructor(
     private http: HttpClient) {

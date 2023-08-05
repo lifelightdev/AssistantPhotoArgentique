@@ -16,7 +16,7 @@ import java.util.Optional;
 import static life.light.apa.referentiel.dao.ProduitSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
 
-@CrossOrigin(origins = "https://localhost:4200")
+@CrossOrigin(origins = "http://127.0.0.1:4200")
 @RestController
 public class ProduitController {
 
@@ -33,7 +33,7 @@ public class ProduitController {
         if (allParams.entrySet().isEmpty()) {
             liste = produitRepository.findAll();
         } else {
-            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!"".equals(allParams.get("nom").trim()))) {
+            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!allParams.get("nom").trim().isEmpty())) {
                 liste = ListUtils.union(liste, produitRepository.findAll(where(nomLike(allParams.get("nom")))));
             }
             if ((allParams.containsKey("typeProduit")) && (!"undefined".equals(allParams.get("typeProduit"))) && (!"0".equals(allParams.get("typeProduit").trim()))) {
