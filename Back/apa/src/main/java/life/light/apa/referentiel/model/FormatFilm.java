@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "format_film")
 public class FormatFilm {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
 

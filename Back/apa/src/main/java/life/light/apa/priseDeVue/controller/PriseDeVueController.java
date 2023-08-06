@@ -206,4 +206,9 @@ public class PriseDeVueController {
         return Optional.of(android);
     }
 
+    @PostMapping("/vue")
+    Vue ajouterVue(@RequestBody Vue nouvelleVue) {
+        return vueRepository.save(nouvelleVue);
+    }
+
 }

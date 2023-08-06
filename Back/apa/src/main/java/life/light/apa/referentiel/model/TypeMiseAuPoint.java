@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "type_mise_au_point_photo")
 public class TypeMiseAuPoint {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
 

@@ -2,13 +2,11 @@ package life.light.apa.referentiel.model;
 
 import jakarta.persistence.*;
 
-import java.io.File;
-
 @Entity
 @Table(name = "materiel")
 public class Materiel {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
     @ManyToOne

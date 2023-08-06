@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "film")
 public class Film {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "produit_id")

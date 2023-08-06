@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "focal")
 public class Focal {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
 

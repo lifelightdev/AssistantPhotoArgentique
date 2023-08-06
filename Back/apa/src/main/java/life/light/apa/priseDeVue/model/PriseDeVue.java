@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "prise_de_vue")
 public class PriseDeVue {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
     private LocalDateTime date;

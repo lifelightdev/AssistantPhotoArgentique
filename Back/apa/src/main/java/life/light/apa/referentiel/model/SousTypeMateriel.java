@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "sous_type_materiel")
 public class SousTypeMateriel {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
     @JoinColumn(name = "type_id")
@@ -20,6 +20,15 @@ public class SousTypeMateriel {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public TypeMateriel getType() {
+        return type;
+    }
+
+    public void setType(TypeMateriel type) {
+        this.type = type;
+    }
+
     public String getNom() {
         return nom;
     }

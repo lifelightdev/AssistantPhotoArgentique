@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "statut_chassis")
 public class StatutChassis {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
 

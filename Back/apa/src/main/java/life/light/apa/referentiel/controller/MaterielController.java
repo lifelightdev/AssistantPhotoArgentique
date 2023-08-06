@@ -72,7 +72,7 @@ public class MaterielController {
             if (null != materiel.getPhoto()) {
                 String imageFileName = materiel.getNom();
                 String extension = ".jpg";
-                File file = new File("D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Images\\" + imageFileName + extension);
+                File file = new File("F:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Images\\" + imageFileName + extension);
                 file.createNewFile();
                 FileImageOutputStream fos = new FileImageOutputStream(file);
                 if (materiel.getPhoto() != null) {
@@ -83,7 +83,7 @@ public class MaterielController {
             if (null != materiel.getModeEmploie()) {
                 String modeEmploieFileName = materiel.getNom();
                 String extension = ".pdf";
-                File file = new File("D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\ModeEmploie\\" + modeEmploieFileName + extension);
+                File file = new File("F:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\ModeEmploie\\" + modeEmploieFileName + extension);
                 file.createNewFile();
                 FileImageOutputStream fos = new FileImageOutputStream(file);
                 if (materiel.getModeEmploie() != null) {

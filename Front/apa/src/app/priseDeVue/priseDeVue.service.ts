@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Observable,} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {
   ModelRecherchePriseDeVue,
@@ -12,7 +12,8 @@ import {Ouverture, Vitesse} from "../referentiel/materiel/materiel";
 
 const optionRequete = {
   headers: new HttpHeaders({
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
   })
 };
 
@@ -70,6 +71,12 @@ export class PriseDeVueService {
 
   rechercheTousLesVues(id: number) {
     return this.http.get<Vue[]>(this.serveurUrl + '/priseDeVue/' + id + '/vue', optionRequete);
+  }
+
+  ajouterVue(vue: Vue,) {
+    this.http.post<Vue>(this.serveurUrl + '/vue' , JSON.stringify(vue), optionRequete).subscribe(
+      (response) => { vue = response; },
+      (error) => { console.log(error); });
   }
 
 }

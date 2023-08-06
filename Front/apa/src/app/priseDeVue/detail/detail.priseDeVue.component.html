@@ -6,12 +6,13 @@
     <li>Longitude : {{priseDeVue?.position?.longitude}}</li>
     <li>Date : {{priseDeVue?.date | date: 'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="priseDeVue?.position?.ville"><a
-            href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue?.position?.ville}}/{{priseDeVue?.position?.codePostal}}" target="_blank" rel="noopener noreferrer"> Afficher la météo </a>
+      href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue?.position?.ville}}/{{priseDeVue?.position?.codePostal}}"
+      target="_blank" rel="noopener noreferrer"> Afficher la météo </a>
     </li>
     <li *ngIf="positionSoleil?.results?.sunrise">Le lever du soleil est à {{positionSoleil?.results?.sunrise | date:
-            'HH:mm le dd/MM/yyyy'}}</li>
+      'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="positionSoleil?.results?.sunset">Le coucher du soleil est à {{positionSoleil?.results?.sunset | date:
-            'HH:mm le dd/MM/yyyy'}}</li>
+      'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="positionSoleil?.results?.solar_noon">Le midi solaire est à
       {{positionSoleil?.results?.solar_noon | date: 'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="positionSoleil?.results?.day_length">La durée de la journée est de
@@ -93,4 +94,5 @@
   </table>
   <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   <hr>
+  <button (click)="ajouter()">Ajouter</button>
 </div>

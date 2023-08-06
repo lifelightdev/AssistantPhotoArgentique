@@ -7,7 +7,7 @@ import life.light.apa.referentiel.model.*;
 @Table(name = "vue")
 public class Vue {
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
     @ManyToOne
