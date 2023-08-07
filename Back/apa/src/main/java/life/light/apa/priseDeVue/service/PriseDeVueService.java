@@ -1,18 +1,11 @@
 package life.light.apa.priseDeVue.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import life.light.apa.priseDeVue.controller.*;
-import life.light.apa.priseDeVue.dao.PositionRepository;
-import life.light.apa.priseDeVue.dao.PriseDeVueRepository;
-import life.light.apa.priseDeVue.dao.StatutPriseDeVueRepository;
-import life.light.apa.priseDeVue.dao.VueRepository;
-import life.light.apa.priseDeVue.model.Position;
-import life.light.apa.priseDeVue.model.PriseDeVue;
-import life.light.apa.priseDeVue.model.StatutPriseDeVue;
-import life.light.apa.priseDeVue.model.Vue;
-import life.light.apa.referentiel.model.Materiel;
-import life.light.apa.referentiel.model.Ouverture;
-import life.light.apa.referentiel.model.Vitesse;
+import life.light.apa.priseDeVue.dao.*;
+import life.light.apa.priseDeVue.model.*;
+import life.light.apa.referentiel.dao.AppareilPhotoRepository;
+import life.light.apa.referentiel.dao.FilmRepository;
+import life.light.apa.referentiel.model.*;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,7 +32,12 @@ public class PriseDeVueService {
     private VueRepository vueRepository;
     @Autowired
     private StatutPriseDeVueRepository statutPriseDeVueRepository;
-
+    @Autowired
+    private StatutVueRepository statutVueRepository;
+    @Autowired
+    private AppareilPhotoRepository appareilPhotoRepository;
+    @Autowired
+    private FilmRepository filmRepository;
     @Autowired
     private PositionRepository positionRepository;
 
@@ -67,10 +65,6 @@ public class PriseDeVueService {
             fos.write(vue.getPhoto());
             fos.close();
         }
-    }
-
-    public Vue ajouterVue(Vue nouvelleVue) {
-        return vueRepository.save(nouvelleVue);
     }
 
     public Android getAndroid() {
@@ -189,5 +183,53 @@ public class PriseDeVueService {
             e.printStackTrace();
         }
         return liste;
+    }
+
+    public List<Vue> ajouterVue(String idPriseDeVue, String idAppareilPhoto, String idFilm) throws IOException {
+        PriseDeVue priseDeVue = priseDeVueRepository.findById(Long.valueOf(idPriseDeVue)).get();
+        AppareilPhoto appareilPhoto = appareilPhotoRepository.findById(Long.valueOf(idAppareilPhoto)).get();
+        Film film = filmRepository.findById(Long.valueOf(idFilm)).get();
+        Vue vue = new Vue();
+        vue.setPriseDeVue(priseDeVue);
+        vue.setAppareilPhoto(appareilPhoto);
+        vue.setFilm(film);
+        String nomDeLaVue = vue.getPriseDeVue().getNom() +
+                " - " + (vueRepository.findVueByPriseDeVueId(vue.getPriseDeVue().getId()).size() + 1) +
+                " - " + vue.getAppareilPhoto().getMateriel().getNom();
+        vue.setNom(nomDeLaVue);
+        StatutVue statut = statutVueRepository.findById(1L).get();
+        vue.setStatutVue(statut);
+        vueRepository.save(vue);
+        return listeDesVueDUnePriseDeVue(Long.valueOf(idPriseDeVue));
+    }
+
+    public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(long id) {
+        List<Optional<AppareilPhoto>> appareilsPhoto = getAppareilsPhoto(id);
+        return appareilsPhoto;
+    }
+
+    public List<Optional<Film>> listeDesFilmsDUnePriseDeVue(long id) {
+        List<Produit> produits = priseDeVueRepository.findProduitsById(id);
+        List<Optional<Film>> films = new ArrayList<>();
+        for (Produit produit : produits) {
+            if (null != filmRepository.findById(produit.getId())) {
+                Optional<Film> film = filmRepository.findById(produit.getId());
+                films.add(film);
+            }
+        }
+        return films;
+    }
+
+    private List<Optional<AppareilPhoto>> getAppareilsPhoto(long id) {
+        Optional<PriseDeVue> priseDeVue = priseDeVueRepository.findById(id);
+        List<Materiel> materiels = priseDeVue.get().getMateriels();
+        List<Optional<AppareilPhoto>> appareilsPhoto = new ArrayList<>();
+        for (Materiel materiel : materiels) {
+            if (!appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).isEmpty()) {
+                Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findById(materiel.getId());
+                appareilsPhoto.add(appareilPhoto);
+            }
+        }
+        return appareilsPhoto;
     }
 }

@@ -1,7 +1,6 @@
 package life.light.apa.priseDeVue.model;
 
 import jakarta.persistence.*;
-import life.light.apa.referentiel.model.Film;
 import life.light.apa.referentiel.model.Materiel;
 import life.light.apa.referentiel.model.Produit;
 import java.time.LocalDateTime;
@@ -33,16 +32,6 @@ public class PriseDeVue {
             joinColumns = @JoinColumn(name = "prise_de_vue_id"),
             inverseJoinColumns = @JoinColumn(name = "produit_id"))
     private List<Produit> produits = new ArrayList<>();
-    @ManyToMany
-    @JoinTable(name = "prise_de_vue_film",
-            joinColumns = @JoinColumn(name = "prise_de_vue_id"),
-            inverseJoinColumns = @JoinColumn(name = "film_id"))
-    private List<Film> films = new ArrayList<>();
-    @ManyToMany
-    @JoinTable(name = "prise_de_vue_vue",
-            joinColumns = @JoinColumn(name = "prise_de_vue_id"),
-            inverseJoinColumns = @JoinColumn(name = "vue_id"))
-    private List<Vue> vues = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -108,19 +97,4 @@ public class PriseDeVue {
         this.produits = produits;
     }
 
-    public List<Film> getFilms() {
-        return films;
-    }
-
-    public void setFilms(List<Film> films) {
-        this.films = films;
-    }
-
-    public List<Vue> getVues() {
-        return vues;
-    }
-
-    public void setVues(List<Vue> vues) {
-        this.vues = vues;
-    }
 }

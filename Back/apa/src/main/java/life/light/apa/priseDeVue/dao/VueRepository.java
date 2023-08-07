@@ -18,4 +18,5 @@ public interface VueRepository extends JpaRepository<Vue, Long>, JpaSpecificatio
     @Query("select v from Vue v")
     List<Vue> findAll();
 
+    List<Vue> findVueByPriseDeVueId(Long id);
 }

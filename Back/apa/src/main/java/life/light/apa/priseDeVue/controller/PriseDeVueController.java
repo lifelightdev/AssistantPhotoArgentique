@@ -4,12 +4,16 @@ import life.light.apa.priseDeVue.model.Position;
 import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
 import life.light.apa.priseDeVue.model.Vue;
+import life.light.apa.priseDeVue.service.Android;
 import life.light.apa.priseDeVue.service.PriseDeVueService;
+import life.light.apa.referentiel.model.AppareilPhoto;
+import life.light.apa.referentiel.model.Film;
 import life.light.apa.referentiel.model.Materiel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -57,14 +61,24 @@ public class PriseDeVueController {
         return priseDeVueService.listeDesVueDUnePriseDeVue(id);
     }
 
+    @RequestMapping(value = "/priseDeVue/{id}/appareilPhoto")
+    public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(@PathVariable long id) {
+        return priseDeVueService.listeDesAppareilsPhotoDUnePriseDeVue(id);
+    }
+
+    @RequestMapping(value = "/priseDeVue/{id}/film")
+    public List<Optional<Film>> listeDesFilmsDUnePriseDeVue(@PathVariable long id) {
+        return priseDeVueService.listeDesFilmsDUnePriseDeVue(id);
+    }
+
     @RequestMapping(value = "/android/vue")
     public Optional<Android> listeAndroidVue() {
         return Optional.of(priseDeVueService.getAndroid());
     }
 
     @PostMapping("/vue")
-    public Vue ajouterVue(@RequestBody Vue nouvelleVue) {
-        return priseDeVueService.ajouterVue(nouvelleVue);
+    public Iterable<Vue> ajouterVue(@RequestParam Map<String, String> allParams) throws IOException {
+        return priseDeVueService.ajouterVue(allParams.get("priseDeVue"), allParams.get("appareilPhoto"), allParams.get("film"));
     }
 
 }

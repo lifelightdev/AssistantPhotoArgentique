@@ -1,9 +1,11 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {PositionSoleil, PriseDeVue, Vue} from "../priseDeVue";
+import {ModelVue, PositionSoleil, PriseDeVue, Vue} from "../priseDeVue";
 import {ActivatedRoute} from "@angular/router";
 import {PriseDeVueService} from "../priseDeVue.service";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
+import {AppareilPhoto} from "../../referentiel/materiel/materiel";
+import {Film} from "../../referentiel/produit/produit";
 
 @Component({
   selector: 'app-detail-priseDeVue',
@@ -13,12 +15,14 @@ import {MatPaginator} from "@angular/material/paginator";
 export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
   priseDeVue: PriseDeVue | undefined;
   positionSoleil: PositionSoleil | undefined;
+  modelVue: ModelVue = new ModelVue();
+  appareilsPhoto: AppareilPhoto [] = [];
+  films: Film[] = [];
 
   constructor(
     private route: ActivatedRoute,
     private priseDeVueService: PriseDeVueService
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     const id = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
@@ -26,15 +30,13 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     const longitude = parseFloat(this.route.snapshot.paramMap.get('latitude')!);
     const date = this.route.snapshot.paramMap.get('date')!;
     this.priseDeVueService.getPriseDeVue(id).subscribe(priseDeVue => this.priseDeVue = priseDeVue);
-    this.priseDeVueService.recherchePositionSoleil(id, latitude, longitude, date).subscribe(data => {
-      this.positionSoleil = data;
-    });
-    this.priseDeVueService.rechercheTousLesVues(id).subscribe(data => {
-      this.dataSource.data = data;
-    });
+    this.priseDeVueService.recherchePositionSoleil(id, latitude, longitude, date).subscribe(data => { this.positionSoleil = data; });
+    this.priseDeVueService.rechercheTousLesVues(id).subscribe(data => { this.dataSource.data = data; });
+    this.priseDeVueService.rechercheTousLesAppareilsPhotoDUnuePriseDeVue(id).subscribe(data => { this.appareilsPhoto = data;});
+    this.priseDeVueService.rechercheTousLesFilmsDUnuePriseDeVue(id).subscribe(data => { this.films = data; });
   }
 
-  displayedColumns = ["AppareilPhoto", "Film", "Sensibilite", "Ouverture", "Vitesse", "Photo"];
+  displayedColumns = ["Nom", "AppareilPhoto", "Film", "Sensibilite", "Ouverture", "Vitesse", "Photo"];
   dataSource = new MatTableDataSource<Vue>();
 
   // @ts-ignore
@@ -50,13 +52,11 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
 
   protected readonly String = String;
 
+  submitted = false;
+
   ajouter() {
-    let nouvelleVue = new Vue();
-    nouvelleVue.nom = this.priseDeVue?.nom;
-    // @ts-ignore
-    nouvelleVue.appareilPhoto = this.priseDeVue?.vues?.at(0).appareilPhoto;
-    // @ts-ignore
-    nouvelleVue.film = this.priseDeVue?.vues?.at(0).film;
-    this.priseDeVueService.ajouterVue(nouvelleVue);
+    this.submitted = true;
+    this.modelVue.id = this.priseDeVue?.id
+    this.priseDeVueService.ajouterVue(this.modelVue).subscribe(data => { this.dataSource.data = data; });
   }
 }

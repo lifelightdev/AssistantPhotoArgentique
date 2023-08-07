@@ -9,6 +9,12 @@ public class Vue {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "prise_de_vue_id")
+    private PriseDeVue priseDeVue;
+    @ManyToOne
+    @JoinColumn(name = "statut_vue_id")
+    private StatutVue statutVue;
     private String nom;
     @ManyToOne
     @JoinColumn(name = "film_id")
@@ -35,6 +41,22 @@ public class Vue {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public PriseDeVue getPriseDeVue() {
+        return priseDeVue;
+    }
+
+    public void setPriseDeVue(PriseDeVue priseDeVue) {
+        this.priseDeVue = priseDeVue;
+    }
+
+    public StatutVue getStatutVue() {
+        return statutVue;
+    }
+
+    public void setStatutVue(StatutVue statutVue) {
+        this.statutVue = statutVue;
     }
 
     public String getNom() {

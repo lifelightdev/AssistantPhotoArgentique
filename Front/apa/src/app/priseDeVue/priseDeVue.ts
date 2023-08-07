@@ -56,10 +56,23 @@ export class Results {
 export class Vue {
   id: number | undefined;
   nom: string | undefined;
+  priseDeVue: PriseDeVue | undefined;
+  statutVue: StatutVue | undefined;
   appareilPhoto: AppareilPhoto | undefined;
   position: Position | undefined;
   film: Film | undefined;
   ouverture: Ouverture | undefined;
   vitesse: Vitesse | undefined;
   photo: undefined;
+}
+
+export class StatutVue {
+  id: number | undefined;
+  nom: string | undefined;
+}
+
+export class ModelVue {
+  id: number | undefined;
+  appareilPhoto: number | undefined;
+  film: number | undefined;
 }

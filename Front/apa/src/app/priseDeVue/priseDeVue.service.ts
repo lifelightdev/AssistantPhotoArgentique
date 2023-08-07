@@ -6,9 +6,10 @@ import {
   PositionSoleil,
   Position,
   PriseDeVue,
-  StatutPriseDeVue, Vue
+  StatutPriseDeVue, Vue, ModelVue
 } from "./priseDeVue";
-import {Ouverture, Vitesse} from "../referentiel/materiel/materiel";
+import {AppareilPhoto, Ouverture, Vitesse} from "../referentiel/materiel/materiel";
+import {Film} from "../referentiel/produit/produit";
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -73,10 +74,15 @@ export class PriseDeVueService {
     return this.http.get<Vue[]>(this.serveurUrl + '/priseDeVue/' + id + '/vue', optionRequete);
   }
 
-  ajouterVue(vue: Vue,) {
-    this.http.post<Vue>(this.serveurUrl + '/vue' , JSON.stringify(vue), optionRequete).subscribe(
-      (response) => { vue = response; },
-      (error) => { console.log(error); });
+  ajouterVue(vue: ModelVue,) {
+    return this.http.post<Vue[]>(`${this.serveurUrl}/vue?priseDeVue=${vue.id}&appareilPhoto=${vue.appareilPhoto}&film=${vue.film}`, optionRequete);
   }
 
+  rechercheTousLesAppareilsPhotoDUnuePriseDeVue(id: number) {
+    return this.http.get<AppareilPhoto[]>(this.serveurUrl + '/priseDeVue/' + id + '/appareilPhoto', optionRequete);
+  }
+
+  rechercheTousLesFilmsDUnuePriseDeVue(id: number) {
+    return this.http.get<Film[]>(this.serveurUrl + '/priseDeVue/' + id + '/film', optionRequete);
+  }
 }

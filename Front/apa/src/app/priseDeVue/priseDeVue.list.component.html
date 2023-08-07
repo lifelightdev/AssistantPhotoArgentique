@@ -3,7 +3,7 @@
 <form (ngSubmit)="onSubmit()">
   <div>
     <label>Nom : </label>
-    <input type="text" [(ngModel)]="modelRecherchePriseDeVue.nom" name="Nom">
+    <input type="text" [(ngModel)]="modelRecherchePriseDeVue.nom" name="nom">
   </div>
   <div>
     <label>Statut : </label>
@@ -13,7 +13,7 @@
   </div>
   <div>
     <label>Position : </label>
-    <select [(ngModel)]="modelRecherchePriseDeVue.position" name="statut">
+    <select [(ngModel)]="modelRecherchePriseDeVue.position" name="position">
       <option *ngFor="let position of positions" [value]="position.id">{{position.nom}}</option>
     </select>
   </div>

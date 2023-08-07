@@ -1,4 +1,4 @@
-package life.light.apa.priseDeVue.controller;
+package life.light.apa.priseDeVue.service;
 
 public class Feature {
     private String type = "Feature";
