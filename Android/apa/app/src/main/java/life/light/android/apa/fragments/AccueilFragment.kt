@@ -51,7 +51,7 @@ class AccueilFragment internal constructor() : Fragment() {
 
         getData()
 
-        fragmentAccueilBinding.button.setOnClickListener {
+        fragmentAccueilBinding.buttonPosemetre.setOnClickListener {
             lifecycleScope.launch {
                 Navigation.findNavController(requireActivity(), R.id.fragment_container)
                     .navigate(

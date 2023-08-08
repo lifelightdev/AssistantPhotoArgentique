@@ -609,7 +609,7 @@ class CameraFragment : Fragment() {
             }
         }
 
-        cameraUiContainerBinding?.calcul?.setOnClickListener {
+        cameraUiContainerBinding?.calculButton?.setOnClickListener {
             // Only navigate when the gallery has photos
             lifecycleScope.launch {
                 cameraUiContainerBinding?.vitesse?.setSelection(idVitesse)

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/camera_ui_container"
     android:layoutDirection="ltr"
     android:layout_width="match_parent"
@@ -9,16 +10,16 @@
 
     <!-- Camera control and gallery buttons -->
     <TextView
+        android:text="@string/ouverture_liste"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:text="Ouverture"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.643" />
+        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <Spinner
         android:id="@+id/ouverture"
@@ -28,19 +29,22 @@
         android:layout_marginTop="484dp"
         android:background="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <TextView
+        android:text="@string/vitesse_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:text="Vitesse"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.643" />
+        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <Spinner
         android:id="@+id/vitesse"
@@ -50,71 +54,79 @@
         android:layout_marginTop="484dp"
         android:background="@android:color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <TextView
         android:id="@+id/nom_appareil_photo"
+        android:text="Nom de l'appareil photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:text="Nom de l'appareil photo"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.643" />
+        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:ignore="HardcodedText,VisualLintOverlap" />
+
+    <Button
+        android:id="@+id/calcul_button"
+        android:text="@string/calcul_button"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="176dp"
+        android:padding="@dimen/spacing_large"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageButton
         android:id="@+id/camera_switch_button"
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_medium"
+        android:layout_marginLeft="32dp"
         android:layout_marginBottom="@dimen/margin_xlarge"
-        android:layout_marginStart="@dimen/margin_small"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/switch_camera_button_alt"
         android:padding="@dimen/spacing_small"
         android:scaleType="fitCenter"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_switch"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/switch_camera_button_alt" />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:srcCompat="@drawable/ic_switch"
+        tools:ignore="RtlHardcoded" />
 
     <ImageButton
         android:id="@+id/camera_capture_button"
         android:layout_width="@dimen/round_button_large"
         android:layout_height="@dimen/round_button_large"
         android:layout_marginBottom="@dimen/shutter_button_margin"
-        android:scaleType="fitCenter"
         android:background="@drawable/ic_shutter"
+        android:contentDescription="@string/capture_button_alt"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/capture_button_alt" />
+        tools:ignore="ImageContrastCheck" />
 
     <ImageButton
         android:id="@+id/photo_view_button"
         android:layout_width="@dimen/round_button_medium"
         android:layout_height="@dimen/round_button_medium"
         android:layout_marginBottom="@dimen/margin_xlarge"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:padding="@dimen/spacing_large"
-        android:scaleType="fitCenter"
         android:background="@drawable/ic_outer_circle"
-        app:srcCompat="@drawable/ic_photo"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:contentDescription="@string/gallery_button_alt" />
-
-    <Button
-        android:id="@+id/calcul"
-        android:text="Calcul"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
-        android:layout_marginBottom="@dimen/margin_xlarge"
-        android:layout_marginEnd="@dimen/margin_small"
+        android:contentDescription="@string/gallery_button_alt"
         android:padding="@dimen/spacing_large"
         android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:srcCompat="@drawable/ic_photo"
+        tools:ignore="ImageContrastCheck" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
