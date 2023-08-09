@@ -55,7 +55,11 @@ class AccueilFragment internal constructor() : Fragment() {
             lifecycleScope.launch {
                 Navigation.findNavController(requireActivity(), R.id.fragment_container)
                     .navigate(
-                        AccueilFragmentDirections.actionAccueilToCamera(androidVue.nomAppareilPhoto.toString())
+                        AccueilFragmentDirections.actionAccueilToCamera(
+                            androidVue.vitesses.toTypedArray(),
+                            androidVue.ouvertures.toTypedArray(),
+                            androidVue.nomAppareilPhoto.toString(),
+                            androidVue.sensibilite.toString())
                     )
             }
         }
@@ -85,6 +89,7 @@ class AccueilFragment internal constructor() : Fragment() {
                         listOf(androidVueJSONObject.getJSONArray("ouvertures").toString())
 
                     fragmentAccueilBinding.appareilPhoto.setText(androidVue.nomAppareilPhoto)
+                    fragmentAccueilBinding.sensibilite.setText(androidVue.sensibilite)
 
                 }
             }

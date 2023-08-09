@@ -143,7 +143,7 @@ class CameraFragment : Fragment() {
         // user could have removed them while the app was in paused state.
         if (!PermissionsFragment.hasPermissions(requireContext())) {
             Navigation.findNavController(requireActivity(), R.id.fragment_container).navigate(
-                    CameraFragmentDirections.actionCameraToAccueil()
+                CameraFragmentDirections.actionCameraToAccueil()
             )
         }
     }
@@ -161,9 +161,9 @@ class CameraFragment : Fragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _fragmentCameraBinding = FragmentCameraBinding.inflate(inflater, container, false)
         return fragmentCameraBinding.root
@@ -223,26 +223,37 @@ class CameraFragment : Fragment() {
 
             cameraUiContainerBinding?.nomAppareilPhoto?.setText(args.appareilPhoto)
 
-            val listOuverture = ArrayList<String>()
-            listOuverture.add("4,5")
-            listOuverture.add("11")
-            listOuverture.add("22")
-            //val androidVue = AndroidVue()
-            //listOuverture.addAll(androidVue.ouvertures)
-            val adapterOuverture = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,listOuverture)
+            val ouvertures = listeDuTableau(args.listeOuveture[0].replace("[", "").replace("]", ""))
+            val adapterOuverture = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ouvertures)
             adapterOuverture.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             cameraUiContainerBinding?.ouverture?.adapter = adapterOuverture
 
-            val listVitesse = ArrayList<String>()
-            listVitesse.add("1/100")
-            listVitesse.add("1/200")
-            listVitesse.add("1s")
-            listVitesse.add("2s")
-            val adapterVitesse = ArrayAdapter(requireContext(),android.R.layout.simple_spinner_item,listVitesse)
+            val vitesses = listeDuTableau(args.listeVitesse[0].replace("[", "").replace("]", ""))
+            val adapterVitesse = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, vitesses)
             adapterVitesse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             cameraUiContainerBinding?.vitesse?.adapter = adapterVitesse
 
+            cameraUiContainerBinding?.radioGroup?.check(R.id.AutomatiqueRB)
+
         }
+    }
+
+    private fun listeDuTableau(tableau: String): ArrayList<String> {
+        val list = ArrayList<String>()
+        var element = ""
+        var trouve: Boolean = false;
+        for (caractere in tableau) {
+            if ((caractere == '"') && (!trouve)) {
+                trouve = true
+            } else if ((trouve == true) && (caractere != '"')) {
+                element += caractere
+            } else if ((caractere == '"') && (trouve)) {
+                trouve = false
+                list.add(element)
+                element = ""
+            }
+        }
+        return list
     }
 
     /**
@@ -285,7 +296,8 @@ class CameraFragment : Fragment() {
     private fun bindCameraUseCases() {
 
         // Get screen metrics used to setup camera for full screen resolution
-        val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity()).bounds
+        val metrics = WindowMetricsCalculator.getOrCreate()
+            .computeCurrentWindowMetrics(requireActivity()).bounds
         Log.d(TAG, "Screen metrics: ${metrics.width()} x ${metrics.height()}")
 
         val screenAspectRatio = aspectRatio(metrics.width(), metrics.height())
@@ -295,49 +307,49 @@ class CameraFragment : Fragment() {
 
         // CameraProvider
         val cameraProvider = cameraProvider
-                ?: throw IllegalStateException("Camera initialization failed.")
+            ?: throw IllegalStateException("Camera initialization failed.")
 
         // CameraSelector
         val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
 
         // Preview
         preview = Preview.Builder()
-                // We request aspect ratio but no resolution
-                .setTargetAspectRatio(screenAspectRatio)
-                // Set initial target rotation
-                .setTargetRotation(rotation)
-                .build()
+            // We request aspect ratio but no resolution
+            .setTargetAspectRatio(screenAspectRatio)
+            // Set initial target rotation
+            .setTargetRotation(rotation)
+            .build()
 
         // ImageCapture
         imageCapture = ImageCapture.Builder()
-                .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
-                // We request aspect ratio but no resolution to match preview config, but letting
-                // CameraX optimize for whatever specific resolution best fits our use cases
-                .setTargetAspectRatio(screenAspectRatio)
-                // Set initial target rotation, we will have to call this again if rotation changes
-                // during the lifecycle of this use case
-                .setTargetRotation(rotation)
-                .build()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            // We request aspect ratio but no resolution to match preview config, but letting
+            // CameraX optimize for whatever specific resolution best fits our use cases
+            .setTargetAspectRatio(screenAspectRatio)
+            // Set initial target rotation, we will have to call this again if rotation changes
+            // during the lifecycle of this use case
+            .setTargetRotation(rotation)
+            .build()
 
         // ImageAnalysis
         imageAnalyzer = ImageAnalysis.Builder()
-                // We request aspect ratio but no resolution
-                .setTargetAspectRatio(screenAspectRatio)
-                // Set initial target rotation, we will have to call this again if rotation changes
-                // during the lifecycle of this use case
-                .setTargetRotation(rotation)
-                .build()
-                // The analyzer can then be assigned to the instance
-                .also {
-                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                        // Values returned from our analyzer are passed to the attached listener
-                        // We log image analysis results here - you should do something useful instead!
-                        // Les valeurs renvoyées par notre analyseur sont transmises à l'écouteur attaché
-                        // Nous enregistrons ici les résultats de l'analyse d'image - vous devriez faire quelque chose d'utile à la place !
-                        Log.d(TAG, "Average luminosity: $luma")
-                        calcul(luma)
-                    })
-                }
+            // We request aspect ratio but no resolution
+            .setTargetAspectRatio(screenAspectRatio)
+            // Set initial target rotation, we will have to call this again if rotation changes
+            // during the lifecycle of this use case
+            .setTargetRotation(rotation)
+            .build()
+            // The analyzer can then be assigned to the instance
+            .also {
+                it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
+                    // Values returned from our analyzer are passed to the attached listener
+                    // We log image analysis results here - you should do something useful instead!
+                    // Les valeurs renvoyées par notre analyseur sont transmises à l'écouteur attaché
+                    // Nous enregistrons ici les résultats de l'analyse d'image - vous devriez faire quelque chose d'utile à la place !
+                    Log.d(TAG, "Average luminosity: $luma")
+                    calcul(luma)
+                })
+            }
 
         // Must unbind the use-cases before rebinding them
         cameraProvider.unbindAll()
@@ -351,7 +363,8 @@ class CameraFragment : Fragment() {
             // A variable number of use-cases can be passed here -
             // camera provides access to CameraControl & CameraInfo
             camera = cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer)
+                this, cameraSelector, preview, imageCapture, imageAnalyzer
+            )
 
             // Attach the viewfinder's surface provider to preview use case
             preview?.setSurfaceProvider(fragmentCameraBinding.viewFinder.surfaceProvider)
@@ -363,11 +376,11 @@ class CameraFragment : Fragment() {
 
     private fun calcul(luma: Double) {
         //val luxToEv = mapOf(1.25 to -1, 1.17 to -0.5, 40 to 4, 56 to 4.5, 80 to 5, 112 to 5.5)
-        if (luma < 56.0){
+        if (luma < 56.0) {
             //Log.d(TAG, "-- $luma et $idVitesse")
             idVitesse = 0
             idOuverture = 1
-        } else if (luma > 56){
+        } else if (luma > 56) {
             //Log.d(TAG, "----____ $luma et $idVitesse")
             idVitesse = 2
             idOuverture = 2
@@ -384,33 +397,47 @@ class CameraFragment : Fragment() {
                 when (cameraState.type) {
                     CameraState.Type.PENDING_OPEN -> {
                         // Ask the user to close other camera apps
-                        Toast.makeText(context,
-                                "CameraState: Pending Open",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "CameraState: Pending Open",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     CameraState.Type.OPENING -> {
                         // Show the Camera UI
-                        Toast.makeText(context,
-                                "CameraState: Opening",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "CameraState: Opening",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     CameraState.Type.OPEN -> {
                         // Setup Camera resources and begin processing
-                        Toast.makeText(context,
-                                "CameraState: Open",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "CameraState: Open",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     CameraState.Type.CLOSING -> {
                         // Close camera UI
-                        Toast.makeText(context,
-                                "CameraState: Closing",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "CameraState: Closing",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     CameraState.Type.CLOSED -> {
                         // Free camera resources
-                        Toast.makeText(context,
-                                "CameraState: Closed",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "CameraState: Closed",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -420,49 +447,66 @@ class CameraFragment : Fragment() {
                     // Open errors
                     CameraState.ERROR_STREAM_CONFIG -> {
                         // Make sure to setup the use cases properly
-                        Toast.makeText(context,
-                                "Stream config error",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Stream config error",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     // Opening errors
                     CameraState.ERROR_CAMERA_IN_USE -> {
                         // Close the camera or ask user to close another camera app that's using the
                         // camera
-                        Toast.makeText(context,
-                                "Camera in use",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Camera in use",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     CameraState.ERROR_MAX_CAMERAS_IN_USE -> {
                         // Close another open camera in the app, or ask the user to close another
                         // camera app that's using the camera
-                        Toast.makeText(context,
-                                "Max cameras in use",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Max cameras in use",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     CameraState.ERROR_OTHER_RECOVERABLE_ERROR -> {
-                        Toast.makeText(context,
-                                "Other recoverable error",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Other recoverable error",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     // Closing errors
                     CameraState.ERROR_CAMERA_DISABLED -> {
                         // Ask the user to enable the device's cameras
-                        Toast.makeText(context,
-                                "Camera disabled",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Camera disabled",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+
                     CameraState.ERROR_CAMERA_FATAL_ERROR -> {
                         // Ask the user to reboot the device to restore camera function
-                        Toast.makeText(context,
-                                "Fatal error",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Fatal error",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     // Closed errors
                     CameraState.ERROR_DO_NOT_DISTURB_MODE_ENABLED -> {
                         // Ask the user to disable the "Do Not Disturb" mode, then reopen the camera
-                        Toast.makeText(context,
-                                "Do not disturb mode enabled",
-                                Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "Do not disturb mode enabled",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -497,9 +541,9 @@ class CameraFragment : Fragment() {
         }
 
         cameraUiContainerBinding = CameraUiContainerBinding.inflate(
-                LayoutInflater.from(requireContext()),
-                fragmentCameraBinding.root,
-                true
+            LayoutInflater.from(requireContext()),
+            fragmentCameraBinding.root,
+            true
         )
 
         // In the background, load latest photo taken (if any) for gallery thumbnail
@@ -522,7 +566,7 @@ class CameraFragment : Fragment() {
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, name)
                     put(MediaStore.MediaColumns.MIME_TYPE, PHOTO_TYPE)
-                    if(Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
                         val appName = requireContext().resources.getString(R.string.app_name)
                         put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/${appName}")
                     }
@@ -530,39 +574,41 @@ class CameraFragment : Fragment() {
 
                 // Create output options object which contains file + metadata
                 val outputOptions = ImageCapture.OutputFileOptions
-                    .Builder(requireContext().contentResolver,
+                    .Builder(
+                        requireContext().contentResolver,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        contentValues)
+                        contentValues
+                    )
                     .build()
 
                 // Setup image capture listener which is triggered after photo has been taken
                 imageCapture.takePicture(
-                        outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
-                    override fun onError(exc: ImageCaptureException) {
-                        Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
-                    }
-
-                    override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                        val savedUri = output.savedUri
-                        Log.d(TAG, "Photo capture succeeded: $savedUri")
-
-                        // We can only change the foreground Drawable using API level 23+ API
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            // Update the gallery thumbnail with latest picture taken
-                            setGalleryThumbnail(savedUri.toString())
+                    outputOptions, cameraExecutor, object : ImageCapture.OnImageSavedCallback {
+                        override fun onError(exc: ImageCaptureException) {
+                            Log.e(TAG, "Photo capture failed: ${exc.message}", exc)
                         }
 
-                        // Implicit broadcasts will be ignored for devices running API level >= 24
-                        // so if you only target API level 24+ you can remove this statement
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                            // Suppress deprecated Camera usage needed for API level 23 and below
-                            @Suppress("DEPRECATION")
-                            requireActivity().sendBroadcast(
+                        override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                            val savedUri = output.savedUri
+                            Log.d(TAG, "Photo capture succeeded: $savedUri")
+
+                            // We can only change the foreground Drawable using API level 23+ API
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                // Update the gallery thumbnail with latest picture taken
+                                setGalleryThumbnail(savedUri.toString())
+                            }
+
+                            // Implicit broadcasts will be ignored for devices running API level >= 24
+                            // so if you only target API level 24+ you can remove this statement
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                                // Suppress deprecated Camera usage needed for API level 23 and below
+                                @Suppress("DEPRECATION")
+                                requireActivity().sendBroadcast(
                                     Intent(android.hardware.Camera.ACTION_NEW_PICTURE, savedUri)
-                            )
+                                )
+                            }
                         }
-                    }
-                })
+                    })
 
                 // We can only change the foreground Drawable using API level 23+ API
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -571,7 +617,8 @@ class CameraFragment : Fragment() {
                     fragmentCameraBinding.root.postDelayed({
                         fragmentCameraBinding.root.foreground = ColorDrawable(Color.WHITE)
                         fragmentCameraBinding.root.postDelayed(
-                                { fragmentCameraBinding.root.foreground = null }, ANIMATION_FAST_MILLIS)
+                            { fragmentCameraBinding.root.foreground = null }, ANIMATION_FAST_MILLIS
+                        )
                     }, ANIMATION_SLOW_MILLIS)
                 }
             }
@@ -601,10 +648,11 @@ class CameraFragment : Fragment() {
             lifecycleScope.launch {
                 if (mediaStoreUtils.getImages().isNotEmpty()) {
                     Navigation.findNavController(requireActivity(), R.id.fragment_container)
-                        .navigate(CameraFragmentDirections.actionCameraToGallery(
-                            mediaStoreUtils.mediaStoreCollection.toString()
+                        .navigate(
+                            CameraFragmentDirections.actionCameraToGallery(
+                                mediaStoreUtils.mediaStoreCollection.toString()
+                            )
                         )
-                    )
                 }
             }
         }
@@ -621,7 +669,8 @@ class CameraFragment : Fragment() {
     /** Enabled or disabled a button to switch cameras depending on the available cameras */
     private fun updateCameraSwitchButton() {
         try {
-            cameraUiContainerBinding?.cameraSwitchButton?.isEnabled = hasBackCamera() && hasFrontCamera()
+            cameraUiContainerBinding?.cameraSwitchButton?.isEnabled =
+                hasBackCamera() && hasFrontCamera()
         } catch (exception: CameraInfoUnavailableException) {
             cameraUiContainerBinding?.cameraSwitchButton?.isEnabled = false
         }

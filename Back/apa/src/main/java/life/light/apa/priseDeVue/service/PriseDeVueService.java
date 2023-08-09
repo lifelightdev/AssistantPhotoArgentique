@@ -1,6 +1,7 @@
 package life.light.apa.priseDeVue.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import life.light.apa.priseDeVue.PriseDeVueException;
 import life.light.apa.priseDeVue.dao.*;
 import life.light.apa.priseDeVue.model.*;
 import life.light.apa.referentiel.dao.AppareilPhotoRepository;
@@ -68,45 +69,43 @@ public class PriseDeVueService {
     }
 
     public Android getAndroid() {
-        List<Vue> listeDeVue = vueRepository.findAll();
+        Vue vue = vueRepository.findVueByStatutVueId(1L);
         List<AndroidVue> listeAndroidVue = new ArrayList<>();
-        for (Vue vue : listeDeVue) {
-            AndroidVue androidVue = new AndroidVue();
-            androidVue.setId(vue.getId());
-            if (vue.getPosition() != null) {
-                androidVue.setLatitude(vue.getPosition().getLatitude());
-                androidVue.setLongitude(vue.getPosition().getLongitude());
-                if (vue.getAppareilPhoto() != null) {
-                    androidVue.setNomAppareilPhoto(vue.getAppareilPhoto().getMateriel().getNom());
-                    if (vue.getAppareilPhoto().getFilmCharge() != null) {
-                        androidVue.setSensibilite(vue.getAppareilPhoto().getFilmCharge().getSensibilite().getNom());
-                    } else if (vue.getAppareilPhoto().getChassis().getFilm() != null) {
-                        System.out.println("Il n'y a pas de film chargé dans cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
-                        androidVue.setSensibilite(vue.getAppareilPhoto().getChassis().getFilm().getSensibilite().getNom());
-                        List<String> ouvetures = new ArrayList<>();
-                        for (Ouverture o : vue.getAppareilPhoto().getObjectif().getOuvertures()) {
-                            ouvetures.add(o.getNom());
-                        }
-                        androidVue.setOuvertures(ouvetures);
-                        List<String> vitesses = new ArrayList<>();
-                        for (Vitesse v : vue.getAppareilPhoto().getObjectif().getVitesses()) {
-                            vitesses.add(v.getNom());
-                        }
-                        androidVue.setVitesses(vitesses);
-                        if (androidVue.getSensibilite() != null
-                                && !androidVue.getOuvertures().isEmpty()
-                                && !androidVue.getVitesses().isEmpty()) {
-                            listeAndroidVue.add(androidVue);
-                        }
-                    } else {
-                        System.out.println("Il n'y a pas de film chargé dans le chassis cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
+        AndroidVue androidVue = new AndroidVue();
+        androidVue.setId(vue.getId());
+        if (vue.getPosition() != null) {
+            androidVue.setLatitude(vue.getPosition().getLatitude());
+            androidVue.setLongitude(vue.getPosition().getLongitude());
+            if (vue.getAppareilPhoto() != null) {
+                androidVue.setNomAppareilPhoto(vue.getAppareilPhoto().getMateriel().getNom());
+                if (vue.getAppareilPhoto().getFilmCharge() != null) {
+                    androidVue.setSensibilite(vue.getAppareilPhoto().getFilmCharge().getSensibilite().getNom());
+                } else if (vue.getAppareilPhoto().getChassis().getFilm() != null) {
+                    System.out.println("Il n'y a pas de film chargé dans cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
+                    androidVue.setSensibilite(vue.getAppareilPhoto().getChassis().getFilm().getSensibilite().getNom());
+                    List<String> ouvetures = new ArrayList<>();
+                    for (Ouverture o : vueRepository.findOuvertureByVueIdOrdreByOuvertureOrdre(vue.getId())) {
+                        ouvetures.add(o.getNom());
+                    }
+                    androidVue.setOuvertures(ouvetures);
+                    List<String> vitesses = new ArrayList<>();
+                    for (Vitesse v : vueRepository.findVitesseByVueIdOrdreByVitesseOrdre(vue.getId())) {
+                        vitesses.add(v.getNom());
+                    }
+                    androidVue.setVitesses(vitesses);
+                    if (androidVue.getSensibilite() != null
+                            && !androidVue.getOuvertures().isEmpty()
+                            && !androidVue.getVitesses().isEmpty()) {
+                        listeAndroidVue.add(androidVue);
                     }
                 } else {
-                    System.out.println("Il n'y a pas d'appareil photo dans cette vue " + vue.getId());
+                    System.out.println("Il n'y a pas de film chargé dans le chassis cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
                 }
             } else {
-                System.out.println("Il n'y a pas de position dans cette vue " + vue.getId());
+                System.out.println("Il n'y a pas d'appareil photo dans cette vue " + vue.getId());
             }
+        } else {
+            System.out.println("Il n'y a pas de position dans cette vue " + vue.getId());
         }
         System.out.println("Il y a " + listeAndroidVue.size() + " vue(s) ");
         Android android = new Android();
@@ -185,10 +184,11 @@ public class PriseDeVueService {
         return liste;
     }
 
-    public List<Vue> ajouterVue(String idPriseDeVue, String idAppareilPhoto, String idFilm) throws IOException {
-        PriseDeVue priseDeVue = priseDeVueRepository.findById(Long.valueOf(idPriseDeVue)).get();
-        AppareilPhoto appareilPhoto = appareilPhotoRepository.findById(Long.valueOf(idAppareilPhoto)).get();
-        Film film = filmRepository.findById(Long.valueOf(idFilm)).get();
+    public List<Vue> ajouterVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws IOException, PriseDeVueException {
+        List<Vue> vues = new ArrayList<>();
+        PriseDeVue priseDeVue = priseDeVueRepository.findById(idPriseDeVue).get();
+        AppareilPhoto appareilPhoto = appareilPhotoRepository.findById(idAppareilPhoto).get();
+        Film film = filmRepository.findById(idFilm).get();
         Vue vue = new Vue();
         vue.setPriseDeVue(priseDeVue);
         vue.setAppareilPhoto(appareilPhoto);
@@ -199,9 +199,31 @@ public class PriseDeVueService {
         vue.setNom(nomDeLaVue);
         StatutVue statut = statutVueRepository.findById(1L).get();
         vue.setStatutVue(statut);
-        vueRepository.save(vue);
-        return listeDesVueDUnePriseDeVue(Long.valueOf(idPriseDeVue));
+        if (uneSeuleVueARealiser(idPriseDeVue)) {
+            vueRepository.save(vue);
+        } else {
+            throw new PriseDeVueException("Impossible d'ajouter une vue car il y a déjà une vue au statut '" + statut.getNom() + "'");
+        }
+        try {
+            vues = listeDesVueDUnePriseDeVue(idPriseDeVue);
+        } catch (IOException e) {
+            throw new PriseDeVueException("Impossible d'ajouter une vue car il y a une erreur à la création d'un fichier.", e);
+        }
+        return vues;
     }
+
+    private boolean uneSeuleVueARealiser(Long idPriseDeVue) {
+        Boolean trouver = true;
+        for (Vue vue : vueRepository.findVueByPriseDeVueId(idPriseDeVue)) {
+            // TODO à mettre en constante : 1 = A réasiler
+            if (vue.getStatutVue().getId() == 1) {
+                trouver = false;
+                break;
+            }
+        }
+        return trouver;
+    }
+
 
     public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(long id) {
         List<Optional<AppareilPhoto>> appareilsPhoto = getAppareilsPhoto(id);

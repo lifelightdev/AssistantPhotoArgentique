@@ -10,7 +10,9 @@ import life.light.apa.referentiel.model.AppareilPhoto;
 import life.light.apa.referentiel.model.Film;
 import life.light.apa.referentiel.model.Materiel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -77,8 +79,15 @@ public class PriseDeVueController {
     }
 
     @PostMapping("/vue")
-    public Iterable<Vue> ajouterVue(@RequestParam Map<String, String> allParams) throws IOException {
-        return priseDeVueService.ajouterVue(allParams.get("priseDeVue"), allParams.get("appareilPhoto"), allParams.get("film"));
+    public Iterable<Vue> ajouterVue(@RequestParam Map<String, String> allParams) {
+        try {
+            return priseDeVueService.ajouterVue(Long.valueOf(allParams.get("priseDeVue")),
+                    Long.valueOf(allParams.get("appareilPhoto")),
+                    Long.valueOf(allParams.get("film")));
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
 }
