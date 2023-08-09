@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable,} from 'rxjs';
+import {catchError, Observable, throwError} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {
   ModelRecherchePriseDeVue,
@@ -75,7 +75,12 @@ export class PriseDeVueService {
   }
 
   ajouterVue(vue: ModelVue,) {
-    return this.http.post<Vue[]>(`${this.serveurUrl}/vue?priseDeVue=${vue.id}&appareilPhoto=${vue.appareilPhoto}&film=${vue.film}`, optionRequete);
+    return this.http.post<Vue[]>(`${this.serveurUrl}/vue?priseDeVue=${vue.id}&appareilPhoto=${vue.appareilPhoto}&film=${vue.film}`,
+      optionRequete).pipe(
+      catchError((err) => {
+        console.error(err.error.message);
+        return throwError(err.error.message);
+      }));
   }
 
   rechercheTousLesAppareilsPhotoDUnuePriseDeVue(id: number) {

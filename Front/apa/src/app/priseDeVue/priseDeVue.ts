@@ -72,7 +72,7 @@ export class StatutVue {
 }
 
 export class ModelVue {
-  id: number | undefined;
+  id = 0;
   appareilPhoto: number | undefined;
   film: number | undefined;
 }

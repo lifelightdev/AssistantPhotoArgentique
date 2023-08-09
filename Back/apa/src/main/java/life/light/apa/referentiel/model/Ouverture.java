@@ -9,6 +9,7 @@ public class Ouverture {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nom;
+    private Integer ordre;
 
     public Long getId() {
         return id;
@@ -24,5 +25,13 @@ public class Ouverture {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Integer getOrdre() {
+        return ordre;
+    }
+
+    public void setOrdre(Integer ordre) {
+        this.ordre = ordre;
     }
 }

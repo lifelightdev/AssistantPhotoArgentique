@@ -18,6 +18,8 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
   modelVue: ModelVue = new ModelVue();
   appareilsPhoto: AppareilPhoto [] = [];
   films: Film[] = [];
+  submitted = false;
+  errorMessage: String | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,13 +32,21 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     const longitude = parseFloat(this.route.snapshot.paramMap.get('latitude')!);
     const date = this.route.snapshot.paramMap.get('date')!;
     this.priseDeVueService.getPriseDeVue(id).subscribe(priseDeVue => this.priseDeVue = priseDeVue);
-    this.priseDeVueService.recherchePositionSoleil(id, latitude, longitude, date).subscribe(data => { this.positionSoleil = data; });
-    this.priseDeVueService.rechercheTousLesVues(id).subscribe(data => { this.dataSource.data = data; });
-    this.priseDeVueService.rechercheTousLesAppareilsPhotoDUnuePriseDeVue(id).subscribe(data => { this.appareilsPhoto = data;});
-    this.priseDeVueService.rechercheTousLesFilmsDUnuePriseDeVue(id).subscribe(data => { this.films = data; });
+    this.priseDeVueService.recherchePositionSoleil(id, latitude, longitude, date).subscribe(data => {
+      this.positionSoleil = data;
+    });
+    this.priseDeVueService.rechercheTousLesVues(id).subscribe(data => {
+      this.dataSource.data = data;
+    });
+    this.priseDeVueService.rechercheTousLesAppareilsPhotoDUnuePriseDeVue(id).subscribe(data => {
+      this.appareilsPhoto = data;
+    });
+    this.priseDeVueService.rechercheTousLesFilmsDUnuePriseDeVue(id).subscribe(data => {
+      this.films = data;
+    });
   }
 
-  displayedColumns = ["Nom", "AppareilPhoto", "Film", "Sensibilite", "Ouverture", "Vitesse", "Photo"];
+  displayedColumns = ["Nom", "Statut", "AppareilPhoto", "Film", "Sensibilite", "Ouverture", "Vitesse", "Photo"];
   dataSource = new MatTableDataSource<Vue>();
 
   // @ts-ignore
@@ -50,13 +60,22 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     console.log("Vue" + vue.nom);
   }
 
-  protected readonly String = String;
-
-  submitted = false;
-
   ajouter() {
+    this.errorMessage = "";
     this.submitted = true;
-    this.modelVue.id = this.priseDeVue?.id
-    this.priseDeVueService.ajouterVue(this.modelVue).subscribe(data => { this.dataSource.data = data; });
+    if (this.priseDeVue?.id) {
+      this.modelVue.id = this.priseDeVue?.id;
+    }
+
+    this.priseDeVueService.ajouterVue(this.modelVue).subscribe(
+      (response) => { console.log('response received') },
+      (error) => {
+        this.errorMessage = error;
+      }
+    );
+
+    this.priseDeVueService.rechercheTousLesVues(this.modelVue.id).subscribe(data => {
+      this.dataSource.data = data;
+    });
   }
 }
