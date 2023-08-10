@@ -94,12 +94,19 @@ class CameraFragment : Fragment() {
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var windowManager: WindowInfoTracker
-
     val args: CameraFragmentArgs by navArgs()
-
+    private var vitesses = ArrayList<String>()
+    private var vitesse: String = ""
     private var idVitesse: Int = 0
+    private var ouvertures = ArrayList<String>()
+    private var ouverture: String = ""
     private var idOuverture: Int = 0
-    //private var iso: Int = 100
+    private var iso = ""
+    private val luxToEv: MutableMap<Double, Double> = HashMap()
+    private val idEvs: MutableMap<Double, Int> = HashMap()
+    private val idOuvertures: MutableMap<Double, Int> = HashMap()
+    private val EvOuvertureToVitesse = Array(23) { arrayOfNulls<String>(23) }
+    private var luma = 0.0
 
     private val displayManager by lazy {
         requireContext().getSystemService(Context.DISPLAY_SERVICE) as DisplayManager
@@ -185,7 +192,7 @@ class CameraFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingPermission")
+    @SuppressLint("MissingPermission", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -221,15 +228,18 @@ class CameraFragment : Fragment() {
                 setUpCamera()
             }
 
-            cameraUiContainerBinding?.nomAppareilPhoto?.setText(args.appareilPhoto)
+            cameraUiContainerBinding?.sensibilite?.setText(args.sensibilite + " ISO")
+            iso = args.sensibilite
 
-            val ouvertures = listeDuTableau(args.listeOuveture[0].replace("[", "").replace("]", ""))
-            val adapterOuverture = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ouvertures)
+            ouvertures = listeDuTableau(args.listeOuveture[0].replace("[", "").replace("]", ""))
+            val adapterOuverture =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, ouvertures)
             adapterOuverture.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             cameraUiContainerBinding?.ouverture?.adapter = adapterOuverture
 
-            val vitesses = listeDuTableau(args.listeVitesse[0].replace("[", "").replace("]", ""))
-            val adapterVitesse = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, vitesses)
+            vitesses = listeDuTableau(args.listeVitesse[0].replace("[", "").replace("]", ""))
+            val adapterVitesse =
+                ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, vitesses)
             adapterVitesse.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             cameraUiContainerBinding?.vitesse?.adapter = adapterVitesse
 
@@ -241,7 +251,7 @@ class CameraFragment : Fragment() {
     private fun listeDuTableau(tableau: String): ArrayList<String> {
         val list = ArrayList<String>()
         var element = ""
-        var trouve: Boolean = false;
+        var trouve = false
         for (caractere in tableau) {
             if ((caractere == '"') && (!trouve)) {
                 trouve = true
@@ -346,8 +356,8 @@ class CameraFragment : Fragment() {
                     // We log image analysis results here - you should do something useful instead!
                     // Les valeurs renvoyées par notre analyseur sont transmises à l'écouteur attaché
                     // Nous enregistrons ici les résultats de l'analyse d'image - vous devriez faire quelque chose d'utile à la place !
-                    Log.d(TAG, "Average luminosity: $luma")
-                    calcul(luma)
+                    // Log.d(TAG, "Average luminosity: $luma")
+                    this.luma = luma
                 })
             }
 
@@ -374,16 +384,38 @@ class CameraFragment : Fragment() {
         }
     }
 
-    private fun calcul(luma: Double) {
-        //val luxToEv = mapOf(1.25 to -1, 1.17 to -0.5, 40 to 4, 56 to 4.5, 80 to 5, 112 to 5.5)
-        if (luma < 56.0) {
-            //Log.d(TAG, "-- $luma et $idVitesse")
-            idVitesse = 0
-            idOuverture = 1
-        } else if (luma > 56) {
-            //Log.d(TAG, "----____ $luma et $idVitesse")
-            idVitesse = 2
-            idOuverture = 2
+    private fun calcul() {
+
+        initMapLuxToEv()
+        var ev = 0.0
+        if (luxToEv.containsKey(luma)) {
+            ev = luxToEv[luma]!!
+        } else {
+            luxToEv.forEach { lux, valeur ->
+                if (luma < lux && ev == 0.0) {
+                    ev = valeur
+                }
+            }
+        }
+
+        if (iso == "100") {
+            initListeIdEv()
+            initListeIdOuverture()
+            initEvOuvertureToVitesse()
+            if (R.id.AutomatiqueRB == cameraUiContainerBinding?.radioGroup?.checkedRadioButtonId) {
+                idOuverture = ouvertures.size / 2
+                ouverture = ouvertures[idOuverture]
+                val idListeOuverture = idOuvertures[ouverture.toDouble()]
+                val idListeEV = idEvs[ev]
+                vitesse = EvOuvertureToVitesse[idListeEV!!][idListeOuverture!!].toString()
+                for ((i, v) in vitesses.withIndex()) {
+                    if (v.equals(vitesse)) {
+                        idVitesse = i
+                        break
+                    }
+                }
+            }
+            //Log.d(TAG, " EV = " + ev + " Ouverture = " + ouverture + " Vitesse = " + vitesse)
         }
     }
 
@@ -660,6 +692,7 @@ class CameraFragment : Fragment() {
         cameraUiContainerBinding?.calculButton?.setOnClickListener {
             // Only navigate when the gallery has photos
             lifecycleScope.launch {
+                calcul()
                 cameraUiContainerBinding?.vitesse?.setSelection(idVitesse)
                 cameraUiContainerBinding?.ouverture?.setSelection(idOuverture)
             }
@@ -775,4 +808,255 @@ class CameraFragment : Fragment() {
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
+
+    private fun initMapLuxToEv() {
+        luxToEv[001.25] = -1.0
+        luxToEv[001.75] = -0.5
+        luxToEv[002.50] = 00.0
+        luxToEv[003.50] = 00.5
+        luxToEv[005.00] = 01.0
+        luxToEv[007.00] = 01.5
+        luxToEv[010.00] = 02.0
+        luxToEv[014.00] = 02.5
+        luxToEv[020.00] = 03.0
+        luxToEv[028.00] = 03.5
+        luxToEv[040.00] = 04.0
+        luxToEv[056.00] = 04.5
+        luxToEv[080.00] = 05.0
+        luxToEv[112.00] = 05.5
+        luxToEv[160.00] = 06.0
+        luxToEv[225.00] = 06.5
+    }
+
+    private fun initListeIdEv() {
+        idEvs[-6.0] = 0
+        idEvs[-5.0] = 1
+        idEvs[-4.0] = 2
+        idEvs[-3.0] = 3
+        idEvs[-2.0] = 4
+        idEvs[-1.0] = 5
+        idEvs[00.0] = 6
+        idEvs[01.0] = 7
+        idEvs[02.0] = 8
+        idEvs[03.0] = 9
+        idEvs[04.0] = 10
+        idEvs[05.0] = 11
+        idEvs[06.0] = 12
+        idEvs[07.0] = 13
+        idEvs[08.0] = 14
+        idEvs[09.0] = 15
+        idEvs[10.0] = 16
+        idEvs[11.0] = 17
+        idEvs[12.0] = 18
+        idEvs[13.0] = 19
+        idEvs[14.0] = 20
+        idEvs[15.0] = 21
+        idEvs[16.0] = 22
+    }
+
+    private fun initListeIdOuverture() {
+        idOuvertures[01.0] = 0
+        idOuvertures[01.4] = 1
+        idOuvertures[02.0] = 2
+        idOuvertures[02.8] = 3
+        idOuvertures[04.0] = 4
+        idOuvertures[05.6] = 5
+        idOuvertures[08.0] = 6
+        idOuvertures[11.0] = 7
+        idOuvertures[16.0] = 8
+        idOuvertures[22.0] = 9
+        idOuvertures[32.0] = 10
+        idOuvertures[45.0] = 11
+        idOuvertures[64.0] = 12
+    }
+
+    private fun initEvOuvertureToVitesse() {
+        // Ouverture 1
+        EvOuvertureToVitesse[0][0] = "60"
+        EvOuvertureToVitesse[1][0] = "30"
+        EvOuvertureToVitesse[2][0] = "15"
+        EvOuvertureToVitesse[3][0] = "8"
+        EvOuvertureToVitesse[4][0] = "4"
+        EvOuvertureToVitesse[5][0] = "2"
+        EvOuvertureToVitesse[6][0] = "1"
+        EvOuvertureToVitesse[7][0] = "1/2"
+        EvOuvertureToVitesse[8][0] = "1/4"
+        EvOuvertureToVitesse[9][0] = "1/8"
+        EvOuvertureToVitesse[10][0] = "1/15"
+        EvOuvertureToVitesse[11][0] = "1/30"
+        EvOuvertureToVitesse[12][0] = "1/60"
+        EvOuvertureToVitesse[12][0] = "1/125"
+        EvOuvertureToVitesse[13][0] = "1/250"
+        EvOuvertureToVitesse[14][0] = "1/500"
+        EvOuvertureToVitesse[15][0] = "1/1000"
+        EvOuvertureToVitesse[16][0] = "1/2000"
+        EvOuvertureToVitesse[17][0] = "1/4000"
+        EvOuvertureToVitesse[18][0] = "1/8000"
+
+        // Ouverture 2.8
+        EvOuvertureToVitesse[0][3] = "8m"
+        EvOuvertureToVitesse[1][3] = "4m"
+        EvOuvertureToVitesse[2][3] = "2m"
+        EvOuvertureToVitesse[3][3] = "60"
+        EvOuvertureToVitesse[4][3] = "30"
+        EvOuvertureToVitesse[5][3] = "15"
+        EvOuvertureToVitesse[6][3] = "8"
+        EvOuvertureToVitesse[7][3] = "4"
+        EvOuvertureToVitesse[8][3] = "2"
+        EvOuvertureToVitesse[9][3] = "1"
+        EvOuvertureToVitesse[10][3] = "1/2"
+        EvOuvertureToVitesse[11][3] = "1/4"
+        EvOuvertureToVitesse[12][3] = "1/8"
+        EvOuvertureToVitesse[13][3] = "1/15"
+        EvOuvertureToVitesse[14][3] = "1/30"
+        EvOuvertureToVitesse[15][3] = "1/60"
+        EvOuvertureToVitesse[16][3] = "1/125"
+        EvOuvertureToVitesse[17][3] = "1/250"
+        EvOuvertureToVitesse[18][3] = "1/500"
+
+        // Ouverture 4
+        EvOuvertureToVitesse[0][4] = "16m"
+        EvOuvertureToVitesse[1][4] = "8m"
+        EvOuvertureToVitesse[2][4] = "4m"
+        EvOuvertureToVitesse[3][4] = "2m"
+        EvOuvertureToVitesse[1][4] = "60"
+        EvOuvertureToVitesse[5][4] = "30"
+        EvOuvertureToVitesse[6][4] = "15"
+        EvOuvertureToVitesse[7][4] = "8"
+        EvOuvertureToVitesse[8][4] = "4"
+        EvOuvertureToVitesse[9][4] = "2"
+        EvOuvertureToVitesse[10][4] = "1"
+        EvOuvertureToVitesse[11][4] = "1/2"
+        EvOuvertureToVitesse[12][4] = "1/4"
+        EvOuvertureToVitesse[13][4] = "1/8"
+        EvOuvertureToVitesse[14][4] = "1/15"
+        EvOuvertureToVitesse[15][4] = "1/30"
+        EvOuvertureToVitesse[16][4] = "1/60"
+        EvOuvertureToVitesse[17][4] = "1/125"
+        EvOuvertureToVitesse[18][4] = "1/250"
+        EvOuvertureToVitesse[19][4] = "1/500"
+
+        // Ouverture 5.6
+        EvOuvertureToVitesse[0][5] = "32m"
+        EvOuvertureToVitesse[1][5] = "16m"
+        EvOuvertureToVitesse[2][5] = "8m"
+        EvOuvertureToVitesse[3][5] = "4m"
+        EvOuvertureToVitesse[4][5] = "2m"
+        EvOuvertureToVitesse[5][5] = "60"
+        EvOuvertureToVitesse[6][5] = "30"
+        EvOuvertureToVitesse[7][5] = "15"
+        EvOuvertureToVitesse[8][5] = "8"
+        EvOuvertureToVitesse[9][5] = "4"
+        EvOuvertureToVitesse[10][5] = "2"
+        EvOuvertureToVitesse[11][5] = "1"
+        EvOuvertureToVitesse[12][5] = "1/2"
+        EvOuvertureToVitesse[13][5] = "1/4"
+        EvOuvertureToVitesse[14][5] = "1/8"
+        EvOuvertureToVitesse[15][5] = "1/15"
+        EvOuvertureToVitesse[16][5] = "1/30"
+        EvOuvertureToVitesse[17][5] = "1/60"
+        EvOuvertureToVitesse[18][5] = "1/125"
+        EvOuvertureToVitesse[19][5] = "1/250"
+        EvOuvertureToVitesse[20][5] = "1/500"
+
+        // Ouverture 8
+        EvOuvertureToVitesse[0][6] = "64m"
+        EvOuvertureToVitesse[1][6] = "32m"
+        EvOuvertureToVitesse[2][6] = "16m"
+        EvOuvertureToVitesse[3][6] = "8m"
+        EvOuvertureToVitesse[4][6] = "4m"
+        EvOuvertureToVitesse[5][6] = "2m"
+        EvOuvertureToVitesse[6][6] = "60"
+        EvOuvertureToVitesse[7][6] = "30"
+        EvOuvertureToVitesse[8][6] = "15"
+        EvOuvertureToVitesse[9][6] = "8"
+        EvOuvertureToVitesse[10][6] = "4"
+        EvOuvertureToVitesse[11][6] = "2"
+        EvOuvertureToVitesse[12][6] = "1"
+        EvOuvertureToVitesse[13][6] = "1/2"
+        EvOuvertureToVitesse[14][6] = "1/4"
+        EvOuvertureToVitesse[15][6] = "1/8"
+        EvOuvertureToVitesse[16][6] = "1/15"
+        EvOuvertureToVitesse[17][6] = "1/30"
+        EvOuvertureToVitesse[18][6] = "1/60"
+        EvOuvertureToVitesse[19][6] = "1/125"
+        EvOuvertureToVitesse[20][6] = "1/250"
+        EvOuvertureToVitesse[21][6] = "1/500"
+
+        // Ouverture 11
+        EvOuvertureToVitesse[0][7] = "128m"
+        EvOuvertureToVitesse[1][7] = "64m"
+        EvOuvertureToVitesse[2][7] = "32m"
+        EvOuvertureToVitesse[3][7] = "16m"
+        EvOuvertureToVitesse[4][7] = "8m"
+        EvOuvertureToVitesse[5][7] = "4m"
+        EvOuvertureToVitesse[6][7] = "2m"
+        EvOuvertureToVitesse[7][7] = "60"
+        EvOuvertureToVitesse[8][7] = "30"
+        EvOuvertureToVitesse[9][7] = "15"
+        EvOuvertureToVitesse[10][7] = "8"
+        EvOuvertureToVitesse[11][7] = "4"
+        EvOuvertureToVitesse[12][7] = "2"
+        EvOuvertureToVitesse[13][7] = "1"
+        EvOuvertureToVitesse[14][7] = "1/2"
+        EvOuvertureToVitesse[15][7] = "1/4"
+        EvOuvertureToVitesse[16][7] = "1/8"
+        EvOuvertureToVitesse[17][7] = "1/15"
+        EvOuvertureToVitesse[18][7] = "1/30"
+        EvOuvertureToVitesse[19][7] = "1/60"
+        EvOuvertureToVitesse[20][7] = "1/125"
+        EvOuvertureToVitesse[21][7] = "1/250"
+        EvOuvertureToVitesse[22][7] = "1/500"
+
+        // Ouverture 16
+        EvOuvertureToVitesse[0][8] = "256m"
+        EvOuvertureToVitesse[1][8] = "128m"
+        EvOuvertureToVitesse[2][8] = "64m"
+        EvOuvertureToVitesse[3][8] = "32m"
+        EvOuvertureToVitesse[4][8] = "16m"
+        EvOuvertureToVitesse[5][8] = "8m"
+        EvOuvertureToVitesse[6][8] = "4m"
+        EvOuvertureToVitesse[7][8] = "2m"
+        EvOuvertureToVitesse[8][8] = "60"
+        EvOuvertureToVitesse[9][8] = "30"
+        EvOuvertureToVitesse[10][8] = "15"
+        EvOuvertureToVitesse[11][8] = "8"
+        EvOuvertureToVitesse[12][8] = "4"
+        EvOuvertureToVitesse[13][8] = "2"
+        EvOuvertureToVitesse[14][8] = "1"
+        EvOuvertureToVitesse[15][8] = "1/2"
+        EvOuvertureToVitesse[16][8] = "1/4"
+        EvOuvertureToVitesse[17][8] = "1/8"
+        EvOuvertureToVitesse[18][8] = "1/15"
+        EvOuvertureToVitesse[19][8] = "1/30"
+        EvOuvertureToVitesse[20][8] = "1/60"
+        EvOuvertureToVitesse[21][8] = "1/125"
+        EvOuvertureToVitesse[22][8] = "1/250"
+
+        // Ouverture 22
+        EvOuvertureToVitesse[0][9] = "512m"
+        EvOuvertureToVitesse[1][9] = "256m"
+        EvOuvertureToVitesse[2][9] = "128m"
+        EvOuvertureToVitesse[3][9] = "64m"
+        EvOuvertureToVitesse[4][9] = "32m"
+        EvOuvertureToVitesse[5][9] = "16m"
+        EvOuvertureToVitesse[6][9] = "8m"
+        EvOuvertureToVitesse[7][9] = "4m"
+        EvOuvertureToVitesse[8][9] = "2m"
+        EvOuvertureToVitesse[9][9] = "60"
+        EvOuvertureToVitesse[10][9] = "30"
+        EvOuvertureToVitesse[11][9] = "15"
+        EvOuvertureToVitesse[12][9] = "8"
+        EvOuvertureToVitesse[13][9] = "4"
+        EvOuvertureToVitesse[14][9] = "2"
+        EvOuvertureToVitesse[15][9] = "1"
+        EvOuvertureToVitesse[16][9] = "1/2"
+        EvOuvertureToVitesse[17][9] = "1/4"
+        EvOuvertureToVitesse[18][9] = "1/8"
+        EvOuvertureToVitesse[19][9] = "1/15"
+        EvOuvertureToVitesse[20][9] = "1/30"
+        EvOuvertureToVitesse[21][9] = "1/60"
+        EvOuvertureToVitesse[22][9] = "1/125"
+    }
+
 }
