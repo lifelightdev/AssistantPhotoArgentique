@@ -3,6 +3,7 @@ package life.light.apa.priseDeVue.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import life.light.apa.priseDeVue.PriseDeVueException;
 import life.light.apa.priseDeVue.dao.*;
+import life.light.apa.priseDeVue.dto.*;
 import life.light.apa.priseDeVue.model.*;
 import life.light.apa.referentiel.dao.AppareilPhotoRepository;
 import life.light.apa.referentiel.dao.FilmRepository;
@@ -12,7 +13,6 @@ import life.light.apa.referentiel.model.*;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.stream.FileImageOutputStream;
 import java.io.File;
@@ -191,7 +191,7 @@ public class PriseDeVueService {
         return liste;
     }
 
-    public List<Vue> ajouterVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws IOException, PriseDeVueException {
+    public List<Vue> ajouterVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws  PriseDeVueException {
         List<Vue> vues = new ArrayList<>();
         PriseDeVue priseDeVue = priseDeVueRepository.findById(idPriseDeVue).get();
         AppareilPhoto appareilPhoto = appareilPhotoRepository.findById(idAppareilPhoto).get();
@@ -233,8 +233,7 @@ public class PriseDeVueService {
 
 
     public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(long id) {
-        List<Optional<AppareilPhoto>> appareilsPhoto = getAppareilsPhoto(id);
-        return appareilsPhoto;
+        return getAppareilsPhoto(id);
     }
 
     public List<Optional<Film>> listeDesFilmsDUnePriseDeVue(long id) {

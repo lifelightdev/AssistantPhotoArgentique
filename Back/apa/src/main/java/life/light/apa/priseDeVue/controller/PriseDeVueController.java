@@ -1,10 +1,10 @@
 package life.light.apa.priseDeVue.controller;
 
+import life.light.apa.priseDeVue.dto.Android;
 import life.light.apa.priseDeVue.model.Position;
 import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
 import life.light.apa.priseDeVue.model.Vue;
-import life.light.apa.priseDeVue.service.Android;
 import life.light.apa.priseDeVue.service.PriseDeVueService;
 import life.light.apa.referentiel.model.AppareilPhoto;
 import life.light.apa.referentiel.model.Film;
@@ -91,15 +91,10 @@ public class PriseDeVueController {
 
     @PostMapping("/vue/{id}/photo")
     public void ajouterUnePhoto(@PathVariable long id, @RequestParam Map<String, String> allParams) {
-        try {
-            System.out.println("id = " + id + " params = " + allParams.size());
-            priseDeVueService.miseAJourVue(id,
-                    Long.valueOf(allParams.get("idOuverture")),
-                    Long.valueOf(allParams.get("idVitesse")),
-                    Long.valueOf(allParams.get("idStatut")));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
+        priseDeVueService.miseAJourVue(id,
+                Long.valueOf(allParams.get("idOuverture")),
+                Long.valueOf(allParams.get("idVitesse")),
+                Long.valueOf(allParams.get("idStatut")));
     }
 
 }

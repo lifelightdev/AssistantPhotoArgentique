@@ -46,7 +46,7 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     });
   }
 
-  displayedColumns = ["Nom", "Statut", "AppareilPhoto", "Film", "Sensibilite", "Ouverture", "Vitesse", "Photo"];
+  displayedColumns = ["Nom", "Statut", "Sensibilite", "Ouverture", "Vitesse", "Photo"];
   dataSource = new MatTableDataSource<Vue>();
 
   // @ts-ignore
@@ -68,7 +68,7 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     }
 
     this.priseDeVueService.ajouterVue(this.modelVue).subscribe(
-      (response) => { console.log('response received') },
+      (response) => {  },
       (error) => {
         this.errorMessage = error;
       }
