@@ -84,8 +84,20 @@ public class PriseDeVueController {
             return priseDeVueService.ajouterVue(Long.valueOf(allParams.get("priseDeVue")),
                     Long.valueOf(allParams.get("appareilPhoto")),
                     Long.valueOf(allParams.get("film")));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-        catch (Exception e) {
+    }
+
+    @PostMapping("/vue/{id}/photo")
+    public void ajouterUnePhoto(@PathVariable long id, @RequestParam Map<String, String> allParams) {
+        try {
+            System.out.println("id = " + id + " params = " + allParams.size());
+            priseDeVueService.miseAJourVue(id,
+                    Long.valueOf(allParams.get("idOuverture")),
+                    Long.valueOf(allParams.get("idVitesse")),
+                    Long.valueOf(allParams.get("idStatut")));
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }

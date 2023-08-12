@@ -56,10 +56,12 @@ class AccueilFragment internal constructor() : Fragment() {
                 Navigation.findNavController(requireActivity(), R.id.fragment_container)
                     .navigate(
                         AccueilFragmentDirections.actionAccueilToCamera(
+                            androidVue.id,
                             androidVue.vitesses.toTypedArray(),
                             androidVue.ouvertures.toTypedArray(),
                             androidVue.nomAppareilPhoto.toString(),
-                            androidVue.sensibilite.toString())
+                            androidVue.sensibilite.toString()
+                        )
                     )
             }
         }
@@ -87,10 +89,8 @@ class AccueilFragment internal constructor() : Fragment() {
                         listOf(androidVueJSONObject.getJSONArray("vitesses").toString())
                     androidVue.ouvertures =
                         listOf(androidVueJSONObject.getJSONArray("ouvertures").toString())
-
                     fragmentAccueilBinding.appareilPhoto.setText(androidVue.nomAppareilPhoto)
                     fragmentAccueilBinding.sensibilite.setText(androidVue.sensibilite)
-
                 }
             }
         ) { error ->

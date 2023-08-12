@@ -17,7 +17,6 @@
 package life.light.android.apa.fragments
 
 import android.R.attr.value
-import android.annotation.SuppressLint
 import android.content.*
 import android.content.res.Configuration
 import android.graphics.Color
@@ -44,6 +43,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.window.layout.WindowInfoTracker
 import androidx.window.layout.WindowMetricsCalculator
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import kotlinx.coroutines.launch
 import life.light.android.apa.KEY_EVENT_ACTION
 import life.light.android.apa.KEY_EVENT_EXTRA
 import life.light.android.apa.R
@@ -53,10 +58,8 @@ import life.light.android.apa.utils.ANIMATION_FAST_MILLIS
 import life.light.android.apa.utils.ANIMATION_SLOW_MILLIS
 import life.light.android.apa.utils.MediaStoreUtils
 import life.light.android.apa.utils.simulateClick
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import kotlinx.coroutines.launch
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.ExecutorService
@@ -94,7 +97,7 @@ class CameraFragment : Fragment() {
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var windowManager: WindowInfoTracker
-    val args: CameraFragmentArgs by navArgs()
+    private val args: CameraFragmentArgs by navArgs()
     private var vitesses = ArrayList<String>()
     private var vitesse: String = ""
     private var idVitesse: Int = 0
@@ -102,10 +105,11 @@ class CameraFragment : Fragment() {
     private var ouverture: String = ""
     private var idOuverture: Int = 0
     private var iso = ""
+    private var idVue: Long = 0
     private val luxToEv: MutableMap<Double, Double> = HashMap()
     private val idEvs: MutableMap<Double, Int> = HashMap()
     private val idOuvertures: MutableMap<Double, Int> = HashMap()
-    private val EvOuvertureToVitesse = Array(23) { arrayOfNulls<String>(23) }
+    private val evOuvertureToVitesse = Array(23) { arrayOfNulls<String>(23) }
     private var luma = 0.0
 
     private val displayManager by lazy {
@@ -192,7 +196,6 @@ class CameraFragment : Fragment() {
         }
     }
 
-    @SuppressLint("MissingPermission", "SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -230,6 +233,7 @@ class CameraFragment : Fragment() {
 
             cameraUiContainerBinding?.sensibilite?.setText(args.sensibilite + " ISO")
             iso = args.sensibilite
+            idVue = args.idVue
 
             ouvertures = listeDuTableau(args.listeOuveture[0].replace("[", "").replace("]", ""))
             val adapterOuverture =
@@ -255,7 +259,7 @@ class CameraFragment : Fragment() {
         for (caractere in tableau) {
             if ((caractere == '"') && (!trouve)) {
                 trouve = true
-            } else if ((trouve == true) && (caractere != '"')) {
+            } else if (trouve && (caractere != '"')) {
                 element += caractere
             } else if ((caractere == '"') && (trouve)) {
                 trouve = false
@@ -391,7 +395,7 @@ class CameraFragment : Fragment() {
         if (luxToEv.containsKey(luma)) {
             ev = luxToEv[luma]!!
         } else {
-            luxToEv.forEach { lux, valeur ->
+            luxToEv.forEach { (lux, valeur) ->
                 if (luma < lux && ev == 0.0) {
                     ev = valeur
                 }
@@ -407,9 +411,9 @@ class CameraFragment : Fragment() {
                 ouverture = ouvertures[idOuverture]
                 val idListeOuverture = idOuvertures[ouverture.toDouble()]
                 val idListeEV = idEvs[ev]
-                vitesse = EvOuvertureToVitesse[idListeEV!!][idListeOuverture!!].toString()
+                vitesse = evOuvertureToVitesse[idListeEV!!][idListeOuverture!!].toString()
                 for ((i, v) in vitesses.withIndex()) {
-                    if (v.equals(vitesse)) {
+                    if (v == vitesse) {
                         idVitesse = i
                         break
                     }
@@ -639,6 +643,8 @@ class CameraFragment : Fragment() {
                                     Intent(android.hardware.Camera.ACTION_NEW_PICTURE, savedUri)
                                 )
                             }
+                            // Sauvegarde la photo sur le serveur
+                            postVolley()
                         }
                     })
 
@@ -697,6 +703,29 @@ class CameraFragment : Fragment() {
                 cameraUiContainerBinding?.ouverture?.setSelection(idOuverture)
             }
         }
+    }
+
+
+    fun postVolley() {
+        val queue = Volley.newRequestQueue(requireContext())
+        val url = "http://10.0.2.2:8081/vue/$idVue/photo"
+        val requestBody = "idOuverture=$idOuverture&idVitesse=$idVitesse&idStatut=2"
+        val stringReq: StringRequest =
+            object : StringRequest(Method.POST, url,
+                Response.Listener { response ->
+                    // response
+                    var strResp = response.toString()
+                    Log.d("API", strResp)
+                },
+                Response.ErrorListener { error ->
+                    Log.d("API", "error => $error")
+                }
+            ) {
+                override fun getBody(): ByteArray {
+                    return requestBody.toByteArray(Charset.defaultCharset())
+                }
+            }
+        queue.add(stringReq)
     }
 
     /** Enabled or disabled a button to switch cameras depending on the available cameras */
@@ -872,191 +901,190 @@ class CameraFragment : Fragment() {
 
     private fun initEvOuvertureToVitesse() {
         // Ouverture 1
-        EvOuvertureToVitesse[0][0] = "60"
-        EvOuvertureToVitesse[1][0] = "30"
-        EvOuvertureToVitesse[2][0] = "15"
-        EvOuvertureToVitesse[3][0] = "8"
-        EvOuvertureToVitesse[4][0] = "4"
-        EvOuvertureToVitesse[5][0] = "2"
-        EvOuvertureToVitesse[6][0] = "1"
-        EvOuvertureToVitesse[7][0] = "1/2"
-        EvOuvertureToVitesse[8][0] = "1/4"
-        EvOuvertureToVitesse[9][0] = "1/8"
-        EvOuvertureToVitesse[10][0] = "1/15"
-        EvOuvertureToVitesse[11][0] = "1/30"
-        EvOuvertureToVitesse[12][0] = "1/60"
-        EvOuvertureToVitesse[12][0] = "1/125"
-        EvOuvertureToVitesse[13][0] = "1/250"
-        EvOuvertureToVitesse[14][0] = "1/500"
-        EvOuvertureToVitesse[15][0] = "1/1000"
-        EvOuvertureToVitesse[16][0] = "1/2000"
-        EvOuvertureToVitesse[17][0] = "1/4000"
-        EvOuvertureToVitesse[18][0] = "1/8000"
+        evOuvertureToVitesse[0][0] = "60"
+        evOuvertureToVitesse[1][0] = "30"
+        evOuvertureToVitesse[2][0] = "15"
+        evOuvertureToVitesse[3][0] = "8"
+        evOuvertureToVitesse[4][0] = "4"
+        evOuvertureToVitesse[5][0] = "2"
+        evOuvertureToVitesse[6][0] = "1"
+        evOuvertureToVitesse[7][0] = "1/2"
+        evOuvertureToVitesse[8][0] = "1/4"
+        evOuvertureToVitesse[9][0] = "1/8"
+        evOuvertureToVitesse[10][0] = "1/15"
+        evOuvertureToVitesse[11][0] = "1/30"
+        evOuvertureToVitesse[12][0] = "1/60"
+        evOuvertureToVitesse[12][0] = "1/125"
+        evOuvertureToVitesse[13][0] = "1/250"
+        evOuvertureToVitesse[14][0] = "1/500"
+        evOuvertureToVitesse[15][0] = "1/1000"
+        evOuvertureToVitesse[16][0] = "1/2000"
+        evOuvertureToVitesse[17][0] = "1/4000"
+        evOuvertureToVitesse[18][0] = "1/8000"
 
         // Ouverture 2.8
-        EvOuvertureToVitesse[0][3] = "8m"
-        EvOuvertureToVitesse[1][3] = "4m"
-        EvOuvertureToVitesse[2][3] = "2m"
-        EvOuvertureToVitesse[3][3] = "60"
-        EvOuvertureToVitesse[4][3] = "30"
-        EvOuvertureToVitesse[5][3] = "15"
-        EvOuvertureToVitesse[6][3] = "8"
-        EvOuvertureToVitesse[7][3] = "4"
-        EvOuvertureToVitesse[8][3] = "2"
-        EvOuvertureToVitesse[9][3] = "1"
-        EvOuvertureToVitesse[10][3] = "1/2"
-        EvOuvertureToVitesse[11][3] = "1/4"
-        EvOuvertureToVitesse[12][3] = "1/8"
-        EvOuvertureToVitesse[13][3] = "1/15"
-        EvOuvertureToVitesse[14][3] = "1/30"
-        EvOuvertureToVitesse[15][3] = "1/60"
-        EvOuvertureToVitesse[16][3] = "1/125"
-        EvOuvertureToVitesse[17][3] = "1/250"
-        EvOuvertureToVitesse[18][3] = "1/500"
+        evOuvertureToVitesse[0][3] = "8m"
+        evOuvertureToVitesse[1][3] = "4m"
+        evOuvertureToVitesse[2][3] = "2m"
+        evOuvertureToVitesse[3][3] = "60"
+        evOuvertureToVitesse[4][3] = "30"
+        evOuvertureToVitesse[5][3] = "15"
+        evOuvertureToVitesse[6][3] = "8"
+        evOuvertureToVitesse[7][3] = "4"
+        evOuvertureToVitesse[8][3] = "2"
+        evOuvertureToVitesse[9][3] = "1"
+        evOuvertureToVitesse[10][3] = "1/2"
+        evOuvertureToVitesse[11][3] = "1/4"
+        evOuvertureToVitesse[12][3] = "1/8"
+        evOuvertureToVitesse[13][3] = "1/15"
+        evOuvertureToVitesse[14][3] = "1/30"
+        evOuvertureToVitesse[15][3] = "1/60"
+        evOuvertureToVitesse[16][3] = "1/125"
+        evOuvertureToVitesse[17][3] = "1/250"
+        evOuvertureToVitesse[18][3] = "1/500"
 
         // Ouverture 4
-        EvOuvertureToVitesse[0][4] = "16m"
-        EvOuvertureToVitesse[1][4] = "8m"
-        EvOuvertureToVitesse[2][4] = "4m"
-        EvOuvertureToVitesse[3][4] = "2m"
-        EvOuvertureToVitesse[1][4] = "60"
-        EvOuvertureToVitesse[5][4] = "30"
-        EvOuvertureToVitesse[6][4] = "15"
-        EvOuvertureToVitesse[7][4] = "8"
-        EvOuvertureToVitesse[8][4] = "4"
-        EvOuvertureToVitesse[9][4] = "2"
-        EvOuvertureToVitesse[10][4] = "1"
-        EvOuvertureToVitesse[11][4] = "1/2"
-        EvOuvertureToVitesse[12][4] = "1/4"
-        EvOuvertureToVitesse[13][4] = "1/8"
-        EvOuvertureToVitesse[14][4] = "1/15"
-        EvOuvertureToVitesse[15][4] = "1/30"
-        EvOuvertureToVitesse[16][4] = "1/60"
-        EvOuvertureToVitesse[17][4] = "1/125"
-        EvOuvertureToVitesse[18][4] = "1/250"
-        EvOuvertureToVitesse[19][4] = "1/500"
+        evOuvertureToVitesse[0][4] = "16m"
+        evOuvertureToVitesse[1][4] = "8m"
+        evOuvertureToVitesse[2][4] = "4m"
+        evOuvertureToVitesse[3][4] = "2m"
+        evOuvertureToVitesse[1][4] = "60"
+        evOuvertureToVitesse[5][4] = "30"
+        evOuvertureToVitesse[6][4] = "15"
+        evOuvertureToVitesse[7][4] = "8"
+        evOuvertureToVitesse[8][4] = "4"
+        evOuvertureToVitesse[9][4] = "2"
+        evOuvertureToVitesse[10][4] = "1"
+        evOuvertureToVitesse[11][4] = "1/2"
+        evOuvertureToVitesse[12][4] = "1/4"
+        evOuvertureToVitesse[13][4] = "1/8"
+        evOuvertureToVitesse[14][4] = "1/15"
+        evOuvertureToVitesse[15][4] = "1/30"
+        evOuvertureToVitesse[16][4] = "1/60"
+        evOuvertureToVitesse[17][4] = "1/125"
+        evOuvertureToVitesse[18][4] = "1/250"
+        evOuvertureToVitesse[19][4] = "1/500"
 
         // Ouverture 5.6
-        EvOuvertureToVitesse[0][5] = "32m"
-        EvOuvertureToVitesse[1][5] = "16m"
-        EvOuvertureToVitesse[2][5] = "8m"
-        EvOuvertureToVitesse[3][5] = "4m"
-        EvOuvertureToVitesse[4][5] = "2m"
-        EvOuvertureToVitesse[5][5] = "60"
-        EvOuvertureToVitesse[6][5] = "30"
-        EvOuvertureToVitesse[7][5] = "15"
-        EvOuvertureToVitesse[8][5] = "8"
-        EvOuvertureToVitesse[9][5] = "4"
-        EvOuvertureToVitesse[10][5] = "2"
-        EvOuvertureToVitesse[11][5] = "1"
-        EvOuvertureToVitesse[12][5] = "1/2"
-        EvOuvertureToVitesse[13][5] = "1/4"
-        EvOuvertureToVitesse[14][5] = "1/8"
-        EvOuvertureToVitesse[15][5] = "1/15"
-        EvOuvertureToVitesse[16][5] = "1/30"
-        EvOuvertureToVitesse[17][5] = "1/60"
-        EvOuvertureToVitesse[18][5] = "1/125"
-        EvOuvertureToVitesse[19][5] = "1/250"
-        EvOuvertureToVitesse[20][5] = "1/500"
+        evOuvertureToVitesse[0][5] = "32m"
+        evOuvertureToVitesse[1][5] = "16m"
+        evOuvertureToVitesse[2][5] = "8m"
+        evOuvertureToVitesse[3][5] = "4m"
+        evOuvertureToVitesse[4][5] = "2m"
+        evOuvertureToVitesse[5][5] = "60"
+        evOuvertureToVitesse[6][5] = "30"
+        evOuvertureToVitesse[7][5] = "15"
+        evOuvertureToVitesse[8][5] = "8"
+        evOuvertureToVitesse[9][5] = "4"
+        evOuvertureToVitesse[10][5] = "2"
+        evOuvertureToVitesse[11][5] = "1"
+        evOuvertureToVitesse[12][5] = "1/2"
+        evOuvertureToVitesse[13][5] = "1/4"
+        evOuvertureToVitesse[14][5] = "1/8"
+        evOuvertureToVitesse[15][5] = "1/15"
+        evOuvertureToVitesse[16][5] = "1/30"
+        evOuvertureToVitesse[17][5] = "1/60"
+        evOuvertureToVitesse[18][5] = "1/125"
+        evOuvertureToVitesse[19][5] = "1/250"
+        evOuvertureToVitesse[20][5] = "1/500"
 
         // Ouverture 8
-        EvOuvertureToVitesse[0][6] = "64m"
-        EvOuvertureToVitesse[1][6] = "32m"
-        EvOuvertureToVitesse[2][6] = "16m"
-        EvOuvertureToVitesse[3][6] = "8m"
-        EvOuvertureToVitesse[4][6] = "4m"
-        EvOuvertureToVitesse[5][6] = "2m"
-        EvOuvertureToVitesse[6][6] = "60"
-        EvOuvertureToVitesse[7][6] = "30"
-        EvOuvertureToVitesse[8][6] = "15"
-        EvOuvertureToVitesse[9][6] = "8"
-        EvOuvertureToVitesse[10][6] = "4"
-        EvOuvertureToVitesse[11][6] = "2"
-        EvOuvertureToVitesse[12][6] = "1"
-        EvOuvertureToVitesse[13][6] = "1/2"
-        EvOuvertureToVitesse[14][6] = "1/4"
-        EvOuvertureToVitesse[15][6] = "1/8"
-        EvOuvertureToVitesse[16][6] = "1/15"
-        EvOuvertureToVitesse[17][6] = "1/30"
-        EvOuvertureToVitesse[18][6] = "1/60"
-        EvOuvertureToVitesse[19][6] = "1/125"
-        EvOuvertureToVitesse[20][6] = "1/250"
-        EvOuvertureToVitesse[21][6] = "1/500"
+        evOuvertureToVitesse[0][6] = "64m"
+        evOuvertureToVitesse[1][6] = "32m"
+        evOuvertureToVitesse[2][6] = "16m"
+        evOuvertureToVitesse[3][6] = "8m"
+        evOuvertureToVitesse[4][6] = "4m"
+        evOuvertureToVitesse[5][6] = "2m"
+        evOuvertureToVitesse[6][6] = "60"
+        evOuvertureToVitesse[7][6] = "30"
+        evOuvertureToVitesse[8][6] = "15"
+        evOuvertureToVitesse[9][6] = "8"
+        evOuvertureToVitesse[10][6] = "4"
+        evOuvertureToVitesse[11][6] = "2"
+        evOuvertureToVitesse[12][6] = "1"
+        evOuvertureToVitesse[13][6] = "1/2"
+        evOuvertureToVitesse[14][6] = "1/4"
+        evOuvertureToVitesse[15][6] = "1/8"
+        evOuvertureToVitesse[16][6] = "1/15"
+        evOuvertureToVitesse[17][6] = "1/30"
+        evOuvertureToVitesse[18][6] = "1/60"
+        evOuvertureToVitesse[19][6] = "1/125"
+        evOuvertureToVitesse[20][6] = "1/250"
+        evOuvertureToVitesse[21][6] = "1/500"
 
         // Ouverture 11
-        EvOuvertureToVitesse[0][7] = "128m"
-        EvOuvertureToVitesse[1][7] = "64m"
-        EvOuvertureToVitesse[2][7] = "32m"
-        EvOuvertureToVitesse[3][7] = "16m"
-        EvOuvertureToVitesse[4][7] = "8m"
-        EvOuvertureToVitesse[5][7] = "4m"
-        EvOuvertureToVitesse[6][7] = "2m"
-        EvOuvertureToVitesse[7][7] = "60"
-        EvOuvertureToVitesse[8][7] = "30"
-        EvOuvertureToVitesse[9][7] = "15"
-        EvOuvertureToVitesse[10][7] = "8"
-        EvOuvertureToVitesse[11][7] = "4"
-        EvOuvertureToVitesse[12][7] = "2"
-        EvOuvertureToVitesse[13][7] = "1"
-        EvOuvertureToVitesse[14][7] = "1/2"
-        EvOuvertureToVitesse[15][7] = "1/4"
-        EvOuvertureToVitesse[16][7] = "1/8"
-        EvOuvertureToVitesse[17][7] = "1/15"
-        EvOuvertureToVitesse[18][7] = "1/30"
-        EvOuvertureToVitesse[19][7] = "1/60"
-        EvOuvertureToVitesse[20][7] = "1/125"
-        EvOuvertureToVitesse[21][7] = "1/250"
-        EvOuvertureToVitesse[22][7] = "1/500"
+        evOuvertureToVitesse[0][7] = "128m"
+        evOuvertureToVitesse[1][7] = "64m"
+        evOuvertureToVitesse[2][7] = "32m"
+        evOuvertureToVitesse[3][7] = "16m"
+        evOuvertureToVitesse[4][7] = "8m"
+        evOuvertureToVitesse[5][7] = "4m"
+        evOuvertureToVitesse[6][7] = "2m"
+        evOuvertureToVitesse[7][7] = "60"
+        evOuvertureToVitesse[8][7] = "30"
+        evOuvertureToVitesse[9][7] = "15"
+        evOuvertureToVitesse[10][7] = "8"
+        evOuvertureToVitesse[11][7] = "4"
+        evOuvertureToVitesse[12][7] = "2"
+        evOuvertureToVitesse[13][7] = "1"
+        evOuvertureToVitesse[14][7] = "1/2"
+        evOuvertureToVitesse[15][7] = "1/4"
+        evOuvertureToVitesse[16][7] = "1/8"
+        evOuvertureToVitesse[17][7] = "1/15"
+        evOuvertureToVitesse[18][7] = "1/30"
+        evOuvertureToVitesse[19][7] = "1/60"
+        evOuvertureToVitesse[20][7] = "1/125"
+        evOuvertureToVitesse[21][7] = "1/250"
+        evOuvertureToVitesse[22][7] = "1/500"
 
         // Ouverture 16
-        EvOuvertureToVitesse[0][8] = "256m"
-        EvOuvertureToVitesse[1][8] = "128m"
-        EvOuvertureToVitesse[2][8] = "64m"
-        EvOuvertureToVitesse[3][8] = "32m"
-        EvOuvertureToVitesse[4][8] = "16m"
-        EvOuvertureToVitesse[5][8] = "8m"
-        EvOuvertureToVitesse[6][8] = "4m"
-        EvOuvertureToVitesse[7][8] = "2m"
-        EvOuvertureToVitesse[8][8] = "60"
-        EvOuvertureToVitesse[9][8] = "30"
-        EvOuvertureToVitesse[10][8] = "15"
-        EvOuvertureToVitesse[11][8] = "8"
-        EvOuvertureToVitesse[12][8] = "4"
-        EvOuvertureToVitesse[13][8] = "2"
-        EvOuvertureToVitesse[14][8] = "1"
-        EvOuvertureToVitesse[15][8] = "1/2"
-        EvOuvertureToVitesse[16][8] = "1/4"
-        EvOuvertureToVitesse[17][8] = "1/8"
-        EvOuvertureToVitesse[18][8] = "1/15"
-        EvOuvertureToVitesse[19][8] = "1/30"
-        EvOuvertureToVitesse[20][8] = "1/60"
-        EvOuvertureToVitesse[21][8] = "1/125"
-        EvOuvertureToVitesse[22][8] = "1/250"
+        evOuvertureToVitesse[0][8] = "256m"
+        evOuvertureToVitesse[1][8] = "128m"
+        evOuvertureToVitesse[2][8] = "64m"
+        evOuvertureToVitesse[3][8] = "32m"
+        evOuvertureToVitesse[4][8] = "16m"
+        evOuvertureToVitesse[5][8] = "8m"
+        evOuvertureToVitesse[6][8] = "4m"
+        evOuvertureToVitesse[7][8] = "2m"
+        evOuvertureToVitesse[8][8] = "60"
+        evOuvertureToVitesse[9][8] = "30"
+        evOuvertureToVitesse[10][8] = "15"
+        evOuvertureToVitesse[11][8] = "8"
+        evOuvertureToVitesse[12][8] = "4"
+        evOuvertureToVitesse[13][8] = "2"
+        evOuvertureToVitesse[14][8] = "1"
+        evOuvertureToVitesse[15][8] = "1/2"
+        evOuvertureToVitesse[16][8] = "1/4"
+        evOuvertureToVitesse[17][8] = "1/8"
+        evOuvertureToVitesse[18][8] = "1/15"
+        evOuvertureToVitesse[19][8] = "1/30"
+        evOuvertureToVitesse[20][8] = "1/60"
+        evOuvertureToVitesse[21][8] = "1/125"
+        evOuvertureToVitesse[22][8] = "1/250"
 
         // Ouverture 22
-        EvOuvertureToVitesse[0][9] = "512m"
-        EvOuvertureToVitesse[1][9] = "256m"
-        EvOuvertureToVitesse[2][9] = "128m"
-        EvOuvertureToVitesse[3][9] = "64m"
-        EvOuvertureToVitesse[4][9] = "32m"
-        EvOuvertureToVitesse[5][9] = "16m"
-        EvOuvertureToVitesse[6][9] = "8m"
-        EvOuvertureToVitesse[7][9] = "4m"
-        EvOuvertureToVitesse[8][9] = "2m"
-        EvOuvertureToVitesse[9][9] = "60"
-        EvOuvertureToVitesse[10][9] = "30"
-        EvOuvertureToVitesse[11][9] = "15"
-        EvOuvertureToVitesse[12][9] = "8"
-        EvOuvertureToVitesse[13][9] = "4"
-        EvOuvertureToVitesse[14][9] = "2"
-        EvOuvertureToVitesse[15][9] = "1"
-        EvOuvertureToVitesse[16][9] = "1/2"
-        EvOuvertureToVitesse[17][9] = "1/4"
-        EvOuvertureToVitesse[18][9] = "1/8"
-        EvOuvertureToVitesse[19][9] = "1/15"
-        EvOuvertureToVitesse[20][9] = "1/30"
-        EvOuvertureToVitesse[21][9] = "1/60"
-        EvOuvertureToVitesse[22][9] = "1/125"
+        evOuvertureToVitesse[0][9] = "512m"
+        evOuvertureToVitesse[1][9] = "256m"
+        evOuvertureToVitesse[2][9] = "128m"
+        evOuvertureToVitesse[3][9] = "64m"
+        evOuvertureToVitesse[4][9] = "32m"
+        evOuvertureToVitesse[5][9] = "16m"
+        evOuvertureToVitesse[6][9] = "8m"
+        evOuvertureToVitesse[7][9] = "4m"
+        evOuvertureToVitesse[8][9] = "2m"
+        evOuvertureToVitesse[9][9] = "60"
+        evOuvertureToVitesse[10][9] = "30"
+        evOuvertureToVitesse[11][9] = "15"
+        evOuvertureToVitesse[12][9] = "8"
+        evOuvertureToVitesse[13][9] = "4"
+        evOuvertureToVitesse[14][9] = "2"
+        evOuvertureToVitesse[15][9] = "1"
+        evOuvertureToVitesse[16][9] = "1/2"
+        evOuvertureToVitesse[17][9] = "1/4"
+        evOuvertureToVitesse[18][9] = "1/8"
+        evOuvertureToVitesse[19][9] = "1/15"
+        evOuvertureToVitesse[20][9] = "1/30"
+        evOuvertureToVitesse[21][9] = "1/60"
+        evOuvertureToVitesse[22][9] = "1/125"
     }
-
 }

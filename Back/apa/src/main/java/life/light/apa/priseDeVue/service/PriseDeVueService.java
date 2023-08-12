@@ -6,10 +6,13 @@ import life.light.apa.priseDeVue.dao.*;
 import life.light.apa.priseDeVue.model.*;
 import life.light.apa.referentiel.dao.AppareilPhotoRepository;
 import life.light.apa.referentiel.dao.FilmRepository;
+import life.light.apa.referentiel.dao.OuvertureRepository;
+import life.light.apa.referentiel.dao.VitesseRepository;
 import life.light.apa.referentiel.model.*;
 import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.stream.FileImageOutputStream;
 import java.io.File;
@@ -41,6 +44,10 @@ public class PriseDeVueService {
     private FilmRepository filmRepository;
     @Autowired
     private PositionRepository positionRepository;
+    @Autowired
+    private OuvertureRepository ouvertureRepository;
+    @Autowired
+    private VitesseRepository vitesseRepository;
 
     public Optional<Vue> afficherUneVue(long id) throws IOException {
         Vue vue = vueRepository.findVuebyId(id);
@@ -253,5 +260,16 @@ public class PriseDeVueService {
             }
         }
         return appareilsPhoto;
+    }
+
+    public void miseAJourVue(long id, Long idOuverture, Long idVitesse, Long idStatut) {
+        Vue vue = vueRepository.findVuebyId(id);
+        StatutVue statut = statutVueRepository.findById(idStatut).get();
+        vue.setStatutVue(statut);
+        Ouverture ouverture= ouvertureRepository.findById(idOuverture).get();
+        vue.setOuverture(ouverture);
+        Vitesse vitesse = vitesseRepository.findById(idVitesse).get();
+        vue.setVitesse(vitesse);
+        vueRepository.save(vue);
     }
 }
