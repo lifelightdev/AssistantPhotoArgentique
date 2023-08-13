@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "statut_vue")
 public class StatutVue {
+
+    public static Long ARealiser = 1L;
+    public static Long Realiser = 2L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

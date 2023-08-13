@@ -32,10 +32,6 @@
 <h1>Liste des prises de vue</h1>
 <div>
   <table mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="ID">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.id}} </td>
-    </ng-container>
     <ng-container matColumnDef="Nom">
       <th mat-header-cell *matHeaderCellDef>Nom</th>
       <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.nom}} </td>
@@ -47,14 +43,6 @@
     <ng-container matColumnDef="Date">
       <th mat-header-cell *matHeaderCellDef>Date</th>
       <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.date | date: 'le dd/MM/yyyy à HH:mm'}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Position">
-      <th mat-header-cell *matHeaderCellDef>Position</th>
-      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.position?.nom}} </td>
-    </ng-container>
-    <ng-container matColumnDef="Remarque">
-      <th mat-header-cell *matHeaderCellDef>Remarque</th>
-      <td mat-cell *matCellDef="let priseDeVue"> {{priseDeVue.remarque}} </td>
     </ng-container>
     <ng-container matColumnDef="Tâche">
       <th mat-header-cell *matHeaderCellDef></th>

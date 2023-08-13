@@ -22,7 +22,7 @@ public interface VueRepository extends JpaRepository<Vue, Long>, JpaSpecificatio
 
     List<Vue> findVueByPriseDeVueId(Long id);
 
-    @Query("select v from Vue v join StatutVue s where s.id =:id")
+    @Query("select v from Vue v where v.statutVue.id =:id")
     Vue findVueByStatutVueId(Long id);
 
     @Query("select v from Vitesse v join Vue vue where vue.id =:id order by v.ordre")
