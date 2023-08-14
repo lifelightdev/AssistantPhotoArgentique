@@ -102,7 +102,6 @@ public class ProduitController {
 
     @RequestMapping(value = "/film/{id}")
     public Optional<Film> afficherUnFilm(@PathVariable long id) {
-        System.out.println("Recherche du film appartir du produit " + id);
         return filmRepository.findFilmByProduitId(id);
     }
 

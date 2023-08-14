@@ -6,8 +6,8 @@
 <mat-menu #menu="matMenu">
   <button mat-menu-item [matMenuTriggerFor]="referentiel"><mat-icon>apps</mat-icon><span>Référentiel</span></button>
   <button mat-menu-item [matMenuTriggerFor]="prise_de_vue"><mat-icon>local_see</mat-icon><span>Prise de vue</span></button>
-  <button mat-menu-item [matMenuTriggerFor]="developpement"><mat-icon>camera_rear</mat-icon><span>Développement</span></button>
-  <button mat-menu-item [matMenuTriggerFor]="tirage"><mat-icon>panorama</mat-icon><span>Tirage</span></button>
+  <button mat-menu-item [matMenuTriggerFor]="developpement"><mat-icon>camera_rear</mat-icon><span>Développement (Non implementé)</span></button>
+  <button mat-menu-item [matMenuTriggerFor]="tirage"><mat-icon>panorama</mat-icon><span>Tirage (Non implementé)</span></button>
 </mat-menu>
 
 <!--Second level Menu-->
@@ -16,13 +16,13 @@
     <mat-icon>format_list_bulleted</mat-icon> <span>Liste du matériel</span>
   </button>
   <button mat-menu-item><mat-icon>add</mat-icon>
-    <span>Ajout d'un matériel</span>
+    <span>Ajout d'un matériel (Non implementé)</span>
   </button>
   <button mat-menu-item routerLink="/produit.list" routerLinkActive="active-link">
     <mat-icon>format_list_bulleted</mat-icon><span>Liste des produits</span>
   </button>
   <button mat-menu-item>
-    <mat-icon>add</mat-icon><span>Ajout d'un produit</span>
+    <mat-icon>add</mat-icon><span>Ajout d'un produit (Non implementé)</span>
   </button>
 </mat-menu>
 <mat-menu #prise_de_vue="matMenu">
@@ -32,15 +32,15 @@
   <button mat-menu-item routerLink="/map" routerLinkActive="active-link">
     <mat-icon>format_list_bulleted</mat-icon><span>Carte des prises de vue</span>
   </button>
-  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'une prise de vue</span></button>
+  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'une prise de vue (Non implementé)</span></button>
 </mat-menu>
 <mat-menu #developpement="matMenu">
-  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des développements</span></button>
-  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'un développement</span></button>
-  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'un développement</span></button>
+  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des développements (Non implementé)</span></button>
+  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'un développement (Non implementé)</span></button>
+  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'un développement (Non implementé)</span></button>
 </mat-menu>
 <mat-menu #tirage="matMenu">
-  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des tirages</span></button>
-  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'un tirage</span></button>
-  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'un tirage</span></button>
+  <button mat-menu-item><mat-icon>format_list_bulleted</mat-icon><span>Liste des tirages (Non implementé)</span></button>
+  <button mat-menu-item><mat-icon>search</mat-icon><span>Recherche d'un tirage (Non implementé)</span></button>
+  <button mat-menu-item><mat-icon>add</mat-icon><span>Création d'un tirage (Non implementé)</span></button>
 </mat-menu>

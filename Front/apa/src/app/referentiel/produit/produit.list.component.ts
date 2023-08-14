@@ -38,7 +38,7 @@ export class ProduitListComponent implements OnInit, AfterViewInit {
     this.produitService.rechercheDesProduits(this.modelRechercheProduit).subscribe(data => { this.dataSource.data = data; });
   }
 
-  displayedColumns = ["ID", "Nom", "Type", "Statut", "Marque", "Modéle", "Photo", "Mode d'emploie", "Remarque", "Tâche"];
+  displayedColumns = ["Tâche", "Type", "Marque", "Modéle", "Photo", "Mode d'emploie"];
   dataSource = new MatTableDataSource<Produit>();
 
   // @ts-ignore
