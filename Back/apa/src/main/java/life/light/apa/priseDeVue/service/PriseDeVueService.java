@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.imageio.stream.FileImageOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +126,7 @@ public class PriseDeVueService {
             trouver = true;
         }
         if ((null != date) && (!"undefined".equals(date)) && (!date.trim().isEmpty())) {
-            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(dateLike(LocalDateTime.parse(date)))));
+            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(dateLike(LocalDate.parse(date)))));
             trouver = true;
         }
         if ((null != position) && (!"undefined".equals(position)) && (!"0".equals(position.trim()))) {
@@ -170,31 +171,31 @@ public class PriseDeVueService {
         return liste;
     }
 
-    public List<Vue> ajouterVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws PriseDeVueException {
-        List<Vue> vues;
+    public Vue ajouterUneVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws PriseDeVueException {
+        Vue vue;
         // Il ne peut y avoir qu'une seule vue à réaliser car l'application Android cherche la vue à réaliser
-        if (aucuneVueARealiser()) {
+        if (vueRepository.findVueARealiser().isEmpty()) {
             PriseDeVue priseDeVue = miseAJourPriseDeVue(idPriseDeVue);
             // Création de la vue au statut à réaliser
-            Vue vue = new Vue();
+            vue = new Vue();
             vue.setPriseDeVue(priseDeVue);
             vue.setAppareilPhoto(appareilPhotoRepository.findById(idAppareilPhoto).get());
             vue.setFilm(filmRepository.findById(idFilm).get());
             vue.setNom(generationDuNomDeLaVue(vue));
             vue.setStatutVue(statutVueRepository.findById(StatutVue.ARealiser).get());
             // Sauvegarde de la nouvelle vue
-            vueRepository.save(vue);
+            vue = vueRepository.save(vue);
             // Mise à jour de la prise de vue
             priseDeVueRepository.save(priseDeVue);
         } else {
             throw new PriseDeVueException("Impossible d'ajouter une vue car il y a déjà une vue au statut 'A réaliser'");
         }
         try {
-            vues = listeDesVuesDUnePriseDeVue(idPriseDeVue);
+            listeDesVuesDUnePriseDeVue(idPriseDeVue);
         } catch (IOException e) {
             throw new PriseDeVueException("Impossible d'ajouter une vue car il y a une erreur à la création d'un fichier.", e);
         }
-        return vues;
+        return vue;
     }
 
     /*
@@ -217,13 +218,6 @@ public class PriseDeVueService {
         // Mise à jour de la date
         priseDeVue.setDate(LocalDateTime.now());
         return priseDeVue;
-    }
-
-    /*
-    dit s'il y a une seule vue au statut à réaliser dans une prise de vue
-     */
-    boolean aucuneVueARealiser() {
-        return vueRepository.findVueARealiser().size() == 0;
     }
 
     public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(long id) {

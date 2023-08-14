@@ -79,9 +79,9 @@ public class PriseDeVueController {
     }
 
     @PostMapping("/vue")
-    public Iterable<Vue> ajouterVue(@RequestParam Map<String, String> allParams) {
+    public Vue ajouterVue(@RequestParam Map<String, String> allParams) {
         try {
-            return priseDeVueService.ajouterVue(Long.valueOf(allParams.get("priseDeVue")),
+            return priseDeVueService.ajouterUneVue(Long.valueOf(allParams.get("priseDeVue")),
                     Long.valueOf(allParams.get("appareilPhoto")),
                     Long.valueOf(allParams.get("film")));
         } catch (Exception e) {

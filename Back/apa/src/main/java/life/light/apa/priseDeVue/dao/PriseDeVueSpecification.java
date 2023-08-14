@@ -4,16 +4,19 @@ import jakarta.persistence.criteria.Join;
 import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
 import org.springframework.data.jpa.domain.Specification;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 
 public class PriseDeVueSpecification {
+
     public static Specification<PriseDeVue> nomLike(String nom) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("nom"), "%" + nom + "%");
     }
-    public static Specification<PriseDeVue> dateLike(LocalDateTime date) {
+
+    public static Specification<PriseDeVue> dateLike(LocalDate date) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("date"), "%" + date + "%");
     }
+
     public static Specification<PriseDeVue> positionLike(String position) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("position"), "%" + position + "%");
     }

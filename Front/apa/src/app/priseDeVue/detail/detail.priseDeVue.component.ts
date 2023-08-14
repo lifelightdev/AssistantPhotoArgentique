@@ -70,7 +70,7 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     }
 
     this.priseDeVueService.ajouterVue(this.modelVue).subscribe(
-      (response) => { location.reload(); },
+      () => { location.reload(); },
       (error) => {
         this.errorMessage = error;
       }
