@@ -20,6 +20,8 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/*
+!.idea/runConfigurations
 
 ### NetBeans ###
 /nbproject/private/
@@ -43,7 +45,6 @@ npm-debug.log
 yarn-error.log
 
 # IDEs and editors
-.idea/
 .project
 .classpath
 .c9/
@@ -105,10 +106,6 @@ proguard/
 
 # Android Studio captures folder
 captures/
-
-# IntelliJ
-.idea/*
-!.idea/runConfigurations
 
 # Keystore files
 *.jks
