@@ -60,6 +60,8 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     console.log("Vue" + vue.nom);
   }
 
+  protected readonly String = String;
+
   ajouter() {
     this.errorMessage = "";
     this.submitted = true;
@@ -68,7 +70,7 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     }
 
     this.priseDeVueService.ajouterVue(this.modelVue).subscribe(
-      (response) => {  },
+      (response) => { location.reload(); },
       (error) => {
         this.errorMessage = error;
       }

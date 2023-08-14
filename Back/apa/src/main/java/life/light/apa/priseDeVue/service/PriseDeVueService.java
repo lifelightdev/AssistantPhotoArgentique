@@ -173,7 +173,7 @@ public class PriseDeVueService {
     public List<Vue> ajouterVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws PriseDeVueException {
         List<Vue> vues;
         // Il ne peut y avoir qu'une seule vue à réaliser car l'application Android cherche la vue à réaliser
-        if (uneSeuleVueARealiser()) {
+        if (aucuneVueARealiser()) {
             PriseDeVue priseDeVue = miseAJourPriseDeVue(idPriseDeVue);
             // Création de la vue au statut à réaliser
             Vue vue = new Vue();
@@ -222,8 +222,8 @@ public class PriseDeVueService {
     /*
     dit s'il y a une seule vue au statut à réaliser dans une prise de vue
      */
-    boolean uneSeuleVueARealiser() {
-        return vueRepository.findVueARealiser().size() == 1;
+    boolean aucuneVueARealiser() {
+        return vueRepository.findVueARealiser().size() == 0;
     }
 
     public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(long id) {

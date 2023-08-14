@@ -1,9 +1,13 @@
 <div>
   <h1>Détail de la prise de vue</h1>
   <ul>
-    Position
+    <li>Nom : {{priseDeVue?.nom}}</li>
+    <li>Remarque : {{priseDeVue?.remarque}}</li>
+    <li>Statut : {{priseDeVue?.statutPriseDeVue?.nom}}</li>
+    <h2>Position</h2>
     <li>Latitude : {{priseDeVue?.position?.latitude}}</li>
     <li>Longitude : {{priseDeVue?.position?.longitude}}</li>
+    <br/>
     <li>Date : {{priseDeVue?.date | date: 'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="priseDeVue?.position?.ville"><a
       href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue?.position?.ville}}/{{priseDeVue?.position?.codePostal}}"
@@ -104,4 +108,7 @@
     </div>
     <button type="submit" class="btn btn-success">Ajouter</button>
   </form>
+</div>
+<div *ngIf="errorMessage" class="alert alert-error">
+  <strong>Erreur : </strong> {{errorMessage | json}}
 </div>
