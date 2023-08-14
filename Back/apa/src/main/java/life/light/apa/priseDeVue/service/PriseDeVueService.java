@@ -50,13 +50,12 @@ public class PriseDeVueService {
     private VitesseRepository vitesseRepository;
 
     public Optional<Vue> afficherUneVue(long id) throws IOException {
-        Vue vue = vueRepository.findVuebyId(id);
-        copieLaPhotoSurLeFront(vue);
-        return vueRepository.findById(id);
+        Optional<Vue> vue = vueRepository.findById(id);
+        copieLaPhotoSurLeFront(vue.get());
+        return vue;
     }
 
-    public List<Vue> listeDesVueDUnePriseDeVue(long id) throws IOException {
-        // Envoie des photos sur le serveur front en dur
+    public List<Vue> listeDesVuesDUnePriseDeVue(long id) throws IOException {
         List<Vue> vues = priseDeVueRepository.findVueByPriseDeVueId(id);
         for (Vue vue : vues) {
             copieLaPhotoSurLeFront(vue);
@@ -65,7 +64,7 @@ public class PriseDeVueService {
     }
 
     private static void copieLaPhotoSurLeFront(Vue vue) throws IOException {
-        // Envoie des photos sur le serveur front en dur
+        //TODO A remplacé par du dynamique car l'envoie des photos est en dur sur le serveur front
         if (null != vue.getPhoto()) {
             File file = new File(PATH_ASSETS_FRONT + "\\Images\\" + vue.getId() + "-" + vue.getNom() + ".jpg");
             file.createNewFile();
@@ -80,47 +79,31 @@ public class PriseDeVueService {
         List<AndroidVue> listeAndroidVue = new ArrayList<>();
         AndroidVue androidVue = new AndroidVue();
         androidVue.setId(vue.getId());
-        if (vue.getPriseDeVue().getPosition() != null) {
-            androidVue.setLatitude(vue.getPriseDeVue().getPosition().getLatitude());
-            androidVue.setLongitude(vue.getPriseDeVue().getPosition().getLongitude());
-            if (vue.getAppareilPhoto() != null) {
-                androidVue.setNomAppareilPhoto(vue.getAppareilPhoto().getMateriel().getNom());
-                if (vue.getAppareilPhoto().getFilmCharge() != null) {
-                    androidVue.setSensibilite(vue.getAppareilPhoto().getFilmCharge().getSensibilite().getNom());
-                } else if (vue.getAppareilPhoto().getChassis().getFilm() != null) {
-                    System.out.println("Il n'y a pas de film chargé dans cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
-                    androidVue.setSensibilite(vue.getAppareilPhoto().getChassis().getFilm().getSensibilite().getNom());
-                    List<String> ouvetures = new ArrayList<>();
-                    for (Ouverture o : vueRepository.findOuvertureByVueIdOrdreByOuvertureOrdre(vue.getId())) {
-                        ouvetures.add(o.getNom());
-                    }
-                    androidVue.setOuvertures(ouvetures);
-                    List<String> vitesses = new ArrayList<>();
-                    for (Vitesse v : vueRepository.findVitesseByVueIdOrdreByVitesseOrdre(vue.getId())) {
-                        vitesses.add(v.getNom());
-                    }
-                    androidVue.setVitesses(vitesses);
-                    if (androidVue.getSensibilite() != null
-                            && !androidVue.getOuvertures().isEmpty()
-                            && !androidVue.getVitesses().isEmpty()) {
-                        listeAndroidVue.add(androidVue);
-                    }
-                } else {
-                    System.out.println("Il n'y a pas de film chargé dans le chassis cet appareil photo " + vue.getAppareilPhoto().getMateriel().getNom());
-                }
-            } else {
-                System.out.println("Il n'y a pas d'appareil photo dans cette vue " + vue.getId());
-            }
-        } else {
-            System.out.println("Il n'y a pas de position dans cette vue " + vue.getId());
+        androidVue.setSensibilite(vue.getFilm().getSensibilite().getNom());
+        androidVue.setNomAppareilPhoto(vue.getAppareilPhoto().getMateriel().getNom());
+        List<String> ouvetures = new ArrayList<>();
+        for (Ouverture o : vueRepository.findOuvertureByVueIdOrdreByOuvertureOrdre(vue.getId())) {
+            ouvetures.add(o.getNom());
         }
+        androidVue.setOuvertures(ouvetures);
+        List<String> vitesses = new ArrayList<>();
+        for (Vitesse v : vueRepository.findVitesseByVueIdOrdreByVitesseOrdre(vue.getId())) {
+            vitesses.add(v.getNom());
+        }
+        androidVue.setVitesses(vitesses);
+        if (androidVue.getSensibilite() != null
+                && !androidVue.getOuvertures().isEmpty()
+                && !androidVue.getVitesses().isEmpty()) {
+            listeAndroidVue.add(androidVue);
+        }
+        // TODO Ajouter un logger
         System.out.println("Il y a " + listeAndroidVue.size() + " vue(s) ");
         Android android = new Android();
         android.setVues(listeAndroidVue);
         return android;
     }
 
-    public Optional<PriseDeVue> findById(long id) {
+    public Optional<PriseDeVue> afficherUnePriseDeVue(long id) {
         return priseDeVueRepository.findById(id);
     }
 
@@ -162,7 +145,7 @@ public class PriseDeVueService {
         if (!trouver) {
             liste = priseDeVueRepository.findAll();
         }
-        // TODO Déplacer la gestion de l'affichage
+        // TODO Déplacer la gestion de l'affichage de la carte
         GeoJson geoJson = new GeoJson();
         List<Feature> features = new ArrayList<>();
         for (PriseDeVue priseDeVue : liste) {
@@ -187,12 +170,13 @@ public class PriseDeVueService {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File(path), geoJson);
         } catch (IOException e) {
+            // TODO Générer une vrai erreur
             e.printStackTrace();
         }
         return liste;
     }
 
-    public List<Vue> ajouterVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws  PriseDeVueException {
+    public List<Vue> ajouterVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws PriseDeVueException {
         List<Vue> vues;
         PriseDeVue priseDeVue = priseDeVueRepository.findById(idPriseDeVue).get();
         priseDeVue.setDate(LocalDateTime.now());
@@ -206,7 +190,7 @@ public class PriseDeVueService {
                 " - " + (vueRepository.findVueByPriseDeVueId(vue.getPriseDeVue().getId()).size() + 1) +
                 " - " + vue.getAppareilPhoto().getMateriel().getNom();
         vue.setNom(nomDeLaVue);
-        StatutVue statut = statutVueRepository.findById(1L).get();
+        StatutVue statut = statutVueRepository.findById(StatutVue.ARealiser).get();
         vue.setStatutVue(statut);
         if (uneSeuleVueARealiser(idPriseDeVue)) {
             vueRepository.save(vue);
@@ -215,7 +199,7 @@ public class PriseDeVueService {
             throw new PriseDeVueException("Impossible d'ajouter une vue car il y a déjà une vue au statut '" + statut.getNom() + "'");
         }
         try {
-            vues = listeDesVueDUnePriseDeVue(idPriseDeVue);
+            vues = listeDesVuesDUnePriseDeVue(idPriseDeVue);
         } catch (IOException e) {
             throw new PriseDeVueException("Impossible d'ajouter une vue car il y a une erreur à la création d'un fichier.", e);
         }
@@ -223,14 +207,8 @@ public class PriseDeVueService {
     }
 
     boolean uneSeuleVueARealiser(Long idPriseDeVue) {
-        Boolean trouver = true;
-        for (Vue vue : vueRepository.findVueByPriseDeVueId(idPriseDeVue)) {
-            if (vue.getStatutVue().getId() == StatutVue.ARealiser) {
-                trouver = false;
-                break;
-            }
-        }
-        return trouver;
+        List<Vue> listeDeVuesARealiser = vueRepository.findVueARealiserByPriseDeVueId(idPriseDeVue);
+        return listeDeVuesARealiser.size() == 1;
     }
 
 
@@ -239,7 +217,7 @@ public class PriseDeVueService {
         List<Materiel> materiels = priseDeVue.get().getMateriels();
         List<Optional<AppareilPhoto>> appareilsPhoto = new ArrayList<>();
         for (Materiel materiel : materiels) {
-            if (!appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).isEmpty()) {
+            if (appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).isPresent()) {
                 Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findById(materiel.getId());
                 appareilsPhoto.add(appareilPhoto);
             }
@@ -251,7 +229,7 @@ public class PriseDeVueService {
         List<Produit> produits = priseDeVueRepository.findProduitsById(id);
         List<Optional<Film>> films = new ArrayList<>();
         for (Produit produit : produits) {
-            if (null != filmRepository.findById(produit.getId())) {
+            if (filmRepository.findById(produit.getId()).isPresent()) {
                 Optional<Film> film = filmRepository.findById(produit.getId());
                 films.add(film);
             }
@@ -259,24 +237,12 @@ public class PriseDeVueService {
         return films;
     }
 
-    private List<Optional<AppareilPhoto>> getAppareilsPhoto(long id) {
-        Optional<PriseDeVue> priseDeVue = priseDeVueRepository.findById(id);
-        List<Materiel> materiels = priseDeVue.get().getMateriels();
-        List<Optional<AppareilPhoto>> appareilsPhoto = new ArrayList<>();
-        for (Materiel materiel : materiels) {
-            if (!appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).isEmpty()) {
-                Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findById(materiel.getId());
-                appareilsPhoto.add(appareilPhoto);
-            }
-        }
-        return appareilsPhoto;
-    }
-
     public void miseAJourVue(long id, Long idOuverture, Long idVitesse, Long idStatut) {
-        Vue vue = vueRepository.findVuebyId(id);
+        Optional<Vue> vueOptional = vueRepository.findById(id);
+        Vue vue = vueOptional.get();
         StatutVue statut = statutVueRepository.findById(idStatut).get();
         vue.setStatutVue(statut);
-        Ouverture ouverture= ouvertureRepository.findById(idOuverture).get();
+        Ouverture ouverture = ouvertureRepository.findById(idOuverture).get();
         vue.setOuverture(ouverture);
         Vitesse vitesse = vitesseRepository.findById(idVitesse).get();
         vue.setVitesse(vitesse);

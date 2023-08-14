@@ -39,8 +39,8 @@ public class PriseDeVueController {
     }
 
     @RequestMapping(value = "/priseDeVue/materiel/{id}")
-    public Iterable<Materiel> afficherLesMateriels(@RequestParam Map<String, String> allParams) {
-        return priseDeVueService.afficherTousLesMaterielsdUnePriseDeVue(Long.valueOf(allParams.get("id")));
+    public Iterable<Materiel> afficherLesMateriels(@PathVariable long id) {
+        return priseDeVueService.afficherTousLesMaterielsdUnePriseDeVue(id);
     }
 
     @GetMapping(value = "/position")
@@ -50,7 +50,7 @@ public class PriseDeVueController {
 
     @RequestMapping(value = "/priseDeVue/{id}")
     public Optional<PriseDeVue> afficherUnMaterielePriseDeVue(@PathVariable long id) {
-        return priseDeVueService.findById(id);
+        return priseDeVueService.afficherUnePriseDeVue(id);
     }
 
     @RequestMapping(value = "/vue/{id}")
@@ -59,8 +59,8 @@ public class PriseDeVueController {
     }
 
     @RequestMapping(value = "/priseDeVue/{id}/vue")
-    public Iterable<Vue> listeDesVueDUnePriseDeVue(@PathVariable long id) throws IOException {
-        return priseDeVueService.listeDesVueDUnePriseDeVue(id);
+    public Iterable<Vue> listeDesVuesDUnePriseDeVue(@PathVariable long id) throws IOException {
+        return priseDeVueService.listeDesVuesDUnePriseDeVue(id);
     }
 
     @RequestMapping(value = "/priseDeVue/{id}/appareilPhoto")
@@ -74,7 +74,7 @@ public class PriseDeVueController {
     }
 
     @RequestMapping(value = "/android/vue")
-    public Optional<Android> listeAndroidVue() {
+    public Optional<Android> vueAndroid() {
         return Optional.of(priseDeVueService.getAndroid());
     }
 

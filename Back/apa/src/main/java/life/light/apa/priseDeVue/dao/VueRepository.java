@@ -7,18 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
-import java.util.Optional;
 
 public interface VueRepository extends JpaRepository<Vue, Long>, JpaSpecificationExecutor<Vue> {
-
-    @Override
-    Optional<Vue> findById(Long id);
-
-    @Query("select v from Vue v where v.id =:id")
-    Vue findVuebyId(Long id);
-
-    @Query("select v from Vue v")
-    List<Vue> findAll();
 
     List<Vue> findVueByPriseDeVueId(Long id);
 
@@ -31,4 +21,6 @@ public interface VueRepository extends JpaRepository<Vue, Long>, JpaSpecificatio
     @Query("select o from Ouverture o join Vue v where v.id =:id order by o.ordre")
     List<Ouverture> findOuvertureByVueIdOrdreByOuvertureOrdre(Long id);
 
+    @Query("select v from Vue v where v.priseDeVue.id =:id and v.statutVue.id = 1.0 ")
+    List<Vue> findVueARealiserByPriseDeVueId(Long id);
 }
