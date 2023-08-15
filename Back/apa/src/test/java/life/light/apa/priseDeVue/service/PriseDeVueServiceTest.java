@@ -109,8 +109,6 @@ class PriseDeVueServiceTest {
         AppareilPhoto appareilPhoto = new AppareilPhoto();
         appareilPhoto.setId(idAppareilPhoto);
         appareilPhoto.setMateriel(materiel);
-        StatutVue statutVue = new StatutVue();
-        statutVue.setId(StatutVue.ARealiser);
         Vue mockVue = new Vue();
         mockVue.setFilm(film);
         mockVue.setPriseDeVue(mockPriseDeVue);
@@ -130,21 +128,5 @@ class PriseDeVueServiceTest {
         assertThat(actualMessage).isEqualTo(expectedMessage);
 
     }
-
-    @Test
-    void uneSeuleVueARealiser() {
-        // Given
-        // When
-        // Then
-    }
-
-    @Test
-    void listeDesAppareilsPhotoDUnePriseDeVue() {
-    }
-
-    @Test
-    void listeDesFilmsDUnePriseDeVue() {
-    }
-
 
 }

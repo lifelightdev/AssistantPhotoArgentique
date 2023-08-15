@@ -1,13 +1,15 @@
-import {TestBed} from '@angular/core/testing';
-import {MaterielListComponent} from './materiel.list.component';
-import {AppComponent} from "../../app.component";
+import { TestBed } from "@angular/core/testing";
+import { MaterielListComponent } from "./materiel.list.component";
+import { AppComponent } from "../../app.component";
+import { TranslateModule } from "@ngx-translate/core";
 
-describe('MaterielListComponent', () => {
+describe("MaterielListComponent", () => {
   beforeEach(() => TestBed.configureTestingModule({
-    declarations: [MaterielListComponent]
+    imports: [ TranslateModule.forRoot() ],
+    declarations: [ MaterielListComponent ]
   }));
 
-  it('should create', () => {
+  it("should create", () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
