@@ -10,4 +10,5 @@ public interface VitesseRepository extends JpaRepository<Vitesse, Long>, JpaSpec
     @Query("select v from Vitesse v join Objectif objectif where objectif.id=:id")
     Iterable<Vitesse> findVitesseByObjectif(long id);
 
+    Vitesse findByNom(String valeurVitesse);
 }

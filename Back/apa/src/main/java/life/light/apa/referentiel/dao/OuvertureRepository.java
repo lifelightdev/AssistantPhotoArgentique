@@ -10,4 +10,5 @@ public interface OuvertureRepository extends JpaRepository<Ouverture, Long>, Jpa
     @Query("select o from Ouverture o join Objectif objectif where objectif.id=:id")
     Iterable<Ouverture> findOuvertureByObjectif(long id);
 
+    Ouverture findByNom(String valeurOuverture);
 }
