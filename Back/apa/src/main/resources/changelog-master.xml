@@ -1,0 +1,902 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="LifeLight" id="1692124292965-1">
+        <createTable tableName="appareil_photo">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="materiel_id" type="BIGINT"/>
+            <column name="type_appareil_photo_id" type="BIGINT"/>
+            <column name="type_fixation_objectif_id" type="BIGINT"/>
+            <column name="objectif_id" type="BIGINT"/>
+            <column name="type_fixation_flash_id" type="BIGINT"/>
+            <column name="type_fixation_pied_id" type="BIGINT"/>
+            <column name="chassis_id" type="BIGINT"/>
+            <column name="film_id" type="BIGINT"/>
+            <column name="type_mise_au_point_id" type="BIGINT"/>
+            <column name="flash_integre" type="BIT(1)"/>
+            <column name="nombre_pile" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-2">
+        <createTable tableName="chassis">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="materiel_id" type="BIGINT"/>
+            <column name="statut_chassis_id" type="BIGINT"/>
+            <column name="dimension_chassis_id" type="BIGINT"/>
+            <column name="film_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-3">
+        <createTable tableName="customer">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="name" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-4">
+        <createTable tableName="dimension_chassis">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-5">
+        <createTable tableName="film">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="produit_id" type="BIGINT"/>
+            <column name="statut_film_id" type="BIGINT"/>
+            <column name="taille_film_id" type="BIGINT"/>
+            <column name="type_film_id" type="BIGINT"/>
+            <column name="nb_vue_possible" type="INT"/>
+            <column name="taille_vue_id" type="BIGINT"/>
+            <column name="nb_vue_expose" type="INT"/>
+            <column name="sensibilite_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-6">
+        <createTable tableName="film_vue">
+            <column name="film_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="vue_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-7">
+        <createTable tableName="focal">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-8">
+        <createTable tableName="format_film">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-9">
+        <createTable tableName="marque">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-10">
+        <createTable tableName="materiel">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+            <column name="type_id" type="BIGINT"/>
+            <column name="sous_type_id" type="BIGINT"/>
+            <column name="statut_id" type="BIGINT"/>
+            <column name="modele_id" type="BIGINT"/>
+            <column name="photo" type="MEDIUMBLOB"/>
+            <column name="mode_emploie" type="MEDIUMBLOB"/>
+            <column name="remarque" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-11">
+        <createTable tableName="modele">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="marque" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-12">
+        <createTable tableName="objectif">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="materiel_id" type="BIGINT"/>
+            <column name="type_fixation_objectif_id" type="BIGINT"/>
+            <column name="type_fixation_flash_id" type="BIGINT"/>
+            <column name="type_fixation_pied_id" type="BIGINT"/>
+            <column name="type_fixation_filtre_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-13">
+        <createTable tableName="objectif_compatible">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="materiel_id" type="BIGINT"/>
+            <column name="objectif_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-14">
+        <createTable tableName="objectif_ouverture">
+            <column name="objectif_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="ouverture_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-15">
+        <createTable tableName="objectif_vitesse">
+            <column name="objectif_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="vitesse_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-16">
+        <createTable tableName="ouverture">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="ordre" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-17">
+        <createTable tableName="pied">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="materiel_id" type="BIGINT"/>
+            <column name="dimension_ouvert" type="VARCHAR(45)"/>
+            <column name="dimension_ferme" type="VARCHAR(10)"/>
+            <column name="pas_de_vis" type="VARCHAR(10)"/>
+            <column name="rotule_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-18">
+        <createTable tableName="position">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(100)"/>
+            <column name="ville" type="VARCHAR(100)"/>
+            <column name="code_postal" type="VARCHAR(10)"/>
+            <column name="latitude" type="DECIMAL(10, 8)"/>
+            <column name="longitude" type="DECIMAL(11, 8)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-19">
+        <createTable tableName="prise_de_vue">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="date" type="datetime"/>
+            <column name="remarque" type="VARCHAR(255)"/>
+            <column name="statut_id" type="BIGINT"/>
+            <column name="position_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-20">
+        <createTable tableName="prise_de_vue_materiel">
+            <column name="prise_de_vue_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="materiel_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-21">
+        <createTable tableName="prise_de_vue_produit">
+            <column name="prise_de_vue_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="produit_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-22">
+        <createTable tableName="produit">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="type_id" type="BIGINT"/>
+            <column name="statut_id" type="BIGINT"/>
+            <column name="modele_id" type="BIGINT"/>
+            <column name="photo" type="MEDIUMBLOB"/>
+            <column name="mode_emploie" type="MEDIUMBLOB"/>
+            <column name="remarque" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-23">
+        <createTable tableName="rotule">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="materiel_id" type="BIGINT"/>
+            <column name="pas_de_vis_materiel" type="VARCHAR(10)"/>
+            <column name="pas_de_vis_pied" type="VARCHAR(10)"/>
+            <column defaultValueBoolean="false" name="avec_fixation_rapide" type="BIT(1)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-24">
+        <createTable tableName="sensibilite">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(10)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-25">
+        <createTable tableName="sous_type_materiel">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="type_id" type="BIGINT"/>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-26">
+        <createTable tableName="statut_chassis">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-27">
+        <createTable tableName="statut_chimie">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-28">
+        <createTable tableName="statut_developpement">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-29">
+        <createTable tableName="statut_film">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-30">
+        <createTable tableName="statut_materiel">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-31">
+        <createTable tableName="statut_papier">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-32">
+        <createTable tableName="statut_prise_de_vue">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-33">
+        <createTable tableName="statut_produit">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-34">
+        <createTable tableName="statut_tirage">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-35">
+        <createTable tableName="statut_vue">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-36">
+        <createTable tableName="taille_film">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="taille" type="VARCHAR(45)"/>
+            <column name="format_film_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-37">
+        <createTable tableName="taille_vue">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(10)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-38">
+        <createTable tableName="type_appareil_photo">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-39">
+        <createTable tableName="type_film">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-40">
+        <createTable tableName="type_fixation">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="sous_type_materiel" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-41">
+        <createTable tableName="type_materiel">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-42">
+        <createTable tableName="type_mise_au_point_photo">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-43">
+        <createTable tableName="type_processus">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-44">
+        <createTable tableName="type_produit">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-45">
+        <createTable tableName="vitesse">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="ordre" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-46">
+        <createTable tableName="vue">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" unique="true"/>
+            </column>
+            <column name="prise_de_vue_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="statut_vue_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nom" type="VARCHAR(45)"/>
+            <column name="appareil_photo_id" type="BIGINT"/>
+            <column name="position_id" type="BIGINT"/>
+            <column name="film_id" type="BIGINT"/>
+            <column name="ouverture_id" type="BIGINT"/>
+            <column name="vitesse_id" type="BIGINT"/>
+            <column name="photo" type="MEDIUMBLOB"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-47">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_CHASSIS" tableName="appareil_photo">
+            <column name="chassis_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-48">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_FILM" tableName="appareil_photo">
+            <column name="film_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-49">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_MATERIEL" tableName="appareil_photo">
+            <column name="materiel_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-50">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_OBJECTIF" tableName="appareil_photo">
+            <column name="objectif_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-51">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_TYPE_APPAREIL_PHOTO" tableName="appareil_photo">
+            <column name="type_appareil_photo_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-52">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_TYPE_FIXATION_FLASH" tableName="appareil_photo">
+            <column name="type_fixation_flash_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-53">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_TYPE_FIXATION_OBJECTIF" tableName="appareil_photo">
+            <column name="type_fixation_objectif_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-54">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_TYPE_FIXATION_PIED" tableName="appareil_photo">
+            <column name="type_fixation_pied_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-55">
+        <createIndex indexName="FK_APPAREIL_PHOTO_ON_TYPE_MISE_AU_POINT" tableName="appareil_photo">
+            <column name="type_mise_au_point_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-56">
+        <createIndex indexName="FK_CHASSIS_ON_DIMENSION_CHASSIS" tableName="chassis">
+            <column name="dimension_chassis_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-57">
+        <createIndex indexName="FK_CHASSIS_ON_FILM" tableName="chassis">
+            <column name="film_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-58">
+        <createIndex indexName="FK_CHASSIS_ON_MATERIEL" tableName="chassis">
+            <column name="materiel_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-59">
+        <createIndex indexName="FK_CHASSIS_ON_STATUT_CHASSIS" tableName="chassis">
+            <column name="statut_chassis_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-60">
+        <createIndex indexName="FK_FILM_ON_APPARIEL_PHOTO_idx" tableName="vue">
+            <column name="appareil_photo_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-61">
+        <createIndex indexName="FK_FILM_ON_PRODUIT_idx" tableName="film">
+            <column name="produit_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-62">
+        <createIndex indexName="FK_FILM_ON_SENSIBITLITE_idx" tableName="film">
+            <column name="sensibilite_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-63">
+        <createIndex indexName="FK_FILM_ON_STATUT_FILM" tableName="film">
+            <column name="statut_film_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-64">
+        <createIndex indexName="FK_FILM_ON_TAILLE_FILM" tableName="film">
+            <column name="taille_film_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-65">
+        <createIndex indexName="FK_FILM_ON_TAILLE_VUE_idx" tableName="film">
+            <column name="taille_vue_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-66">
+        <createIndex indexName="FK_FILM_ON_TYPE_FILM" tableName="film">
+            <column name="type_film_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-67">
+        <createIndex indexName="FK_FILM_VUES_ON_VUE_idx" tableName="film_vue">
+            <column name="vue_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-68">
+        <createIndex indexName="FK_MATERIEL_ON_MODELE_idx" tableName="materiel">
+            <column name="modele_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-69">
+        <createIndex indexName="FK_MATERIEL_ON_SOUS_TYPE" tableName="materiel">
+            <column name="sous_type_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-70">
+        <createIndex indexName="FK_MATERIEL_ON_STATUS" tableName="materiel">
+            <column name="statut_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-71">
+        <createIndex indexName="FK_MATERIEL_ON_TYPE" tableName="materiel">
+            <column name="type_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-72">
+        <createIndex indexName="FK_OBJECTIF_ON_TYPE_FIXATION_FILTRE" tableName="objectif">
+            <column name="type_fixation_filtre_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-73">
+        <createIndex indexName="FK_OBJECTIF_ON_TYPE_FIXATION_FLASH" tableName="objectif">
+            <column name="type_fixation_flash_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-74">
+        <createIndex indexName="FK_OBJECTIF_ON_TYPE_FIXATION_OBJECTIF" tableName="objectif">
+            <column name="type_fixation_objectif_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-75">
+        <createIndex indexName="FK_OBJECTIF_ON_TYPE_FIXATION_PIED" tableName="objectif">
+            <column name="type_fixation_pied_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-76">
+        <createIndex indexName="FK_OBJECTIF_OUVERTURE_ON_OUVERTURE_idx" tableName="objectif_ouverture">
+            <column name="ouverture_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-77">
+        <createIndex indexName="FK_OBJECTIF_VITESSE_ON_VITESSE_idx" tableName="objectif_vitesse">
+            <column name="vitesse_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-78">
+        <createIndex indexName="FK_PIED_ON_MATERIEL_idx" tableName="pied">
+            <column name="materiel_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-79">
+        <createIndex indexName="FK_PRISE_DE_VUE_MATERIEL_ON_MATERIEL_idx" tableName="prise_de_vue_materiel">
+            <column name="materiel_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-80">
+        <createIndex indexName="FK_PRISE_DE_VUE_MATERIEL_ON_PRISE_DE_VUE_idx" tableName="prise_de_vue_materiel">
+            <column name="prise_de_vue_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-81">
+        <createIndex indexName="FK_PRISE_DE_VUE_ON_POSITION_idx" tableName="prise_de_vue">
+            <column name="position_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-82">
+        <createIndex indexName="FK_PRISE_DE_VUE_ON_STATUS_idx" tableName="prise_de_vue">
+            <column name="statut_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-83">
+        <createIndex indexName="FK_PRODUIT_ON_MODELE" tableName="produit">
+            <column name="modele_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-84">
+        <createIndex indexName="FK_PRODUIT_ON_STATUT_PRODUIT" tableName="produit">
+            <column name="statut_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-85">
+        <createIndex indexName="FK_PRODUIT_ON_TYPE_PRODUIT" tableName="produit">
+            <column name="type_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-86">
+        <createIndex indexName="FK_ROTULE_ON_MATERIEL_idx" tableName="rotule">
+            <column name="materiel_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-87">
+        <createIndex indexName="FK_ROTULE_ON_ROTULE_idx" tableName="pied">
+            <column name="rotule_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-88">
+        <createIndex indexName="FK_SOUS_TYPE_MATERIEL_ON_TYPE" tableName="sous_type_materiel">
+            <column name="type_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-89">
+        <createIndex indexName="FK_VUE_ON_FILM_idx" tableName="vue">
+            <column name="film_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-90">
+        <createIndex indexName="FK_VUE_ON_OUVERTURE_idx" tableName="vue">
+            <column name="ouverture_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-91">
+        <createIndex indexName="FK_VUE_ON_POSITION_idx" tableName="vue">
+            <column name="position_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-92">
+        <createIndex indexName="FK_VUE_ON_PRISE_DE_VUE_idx" tableName="vue">
+            <column name="prise_de_vue_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-93">
+        <createIndex indexName="FK_VUE_ON_STATUT_VUE_idx" tableName="vue">
+            <column name="statut_vue_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-94">
+        <createIndex indexName="FK_VUE_ON_VITESSE_idx" tableName="vue">
+            <column name="vitesse_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-95">
+        <createIndex indexName="format_idx" tableName="taille_film">
+            <column name="format_film_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-96">
+        <createIndex indexName="marque_idx" tableName="modele">
+            <column name="marque"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-97">
+        <createIndex indexName="materiel_id_idx" tableName="objectif">
+            <column name="materiel_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-98">
+        <createIndex indexName="materiel_idx" tableName="objectif_compatible">
+            <column name="materiel_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-99">
+        <createIndex indexName="objectif_idx" tableName="objectif_compatible">
+            <column name="objectif_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-100">
+        <createIndex indexName="sous_type_materiel_idx" tableName="type_fixation">
+            <column name="sous_type_materiel"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-101">
+        <addForeignKeyConstraint baseColumnNames="chassis_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_CHASSIS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="chassis" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-102">
+        <addForeignKeyConstraint baseColumnNames="film_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_FILM" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-103">
+        <addForeignKeyConstraint baseColumnNames="materiel_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-104">
+        <addForeignKeyConstraint baseColumnNames="objectif_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_OBJECTIF" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="objectif" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-105">
+        <addForeignKeyConstraint baseColumnNames="type_appareil_photo_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_TYPE_APPAREIL_PHOTO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_appareil_photo" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-106">
+        <addForeignKeyConstraint baseColumnNames="type_fixation_flash_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_TYPE_FIXATION_FLASH" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_fixation" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-107">
+        <addForeignKeyConstraint baseColumnNames="type_fixation_objectif_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_TYPE_FIXATION_OBJECTIF" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_fixation" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-108">
+        <addForeignKeyConstraint baseColumnNames="type_fixation_pied_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_TYPE_FIXATION_PIED" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_fixation" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-109">
+        <addForeignKeyConstraint baseColumnNames="type_mise_au_point_id" baseTableName="appareil_photo" constraintName="FK_APPAREIL_PHOTO_ON_TYPE_MISE_AU_POINT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_mise_au_point_photo" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-110">
+        <addForeignKeyConstraint baseColumnNames="dimension_chassis_id" baseTableName="chassis" constraintName="FK_CHASSIS_ON_DIMENSION_CHASSIS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="dimension_chassis" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-111">
+        <addForeignKeyConstraint baseColumnNames="film_id" baseTableName="chassis" constraintName="FK_CHASSIS_ON_FILM" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="type_film_id" referencedTableName="film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-112">
+        <addForeignKeyConstraint baseColumnNames="materiel_id" baseTableName="chassis" constraintName="FK_CHASSIS_ON_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-113">
+        <addForeignKeyConstraint baseColumnNames="statut_chassis_id" baseTableName="chassis" constraintName="FK_CHASSIS_ON_STATUT_CHASSIS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="statut_chassis" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-114">
+        <addForeignKeyConstraint baseColumnNames="produit_id" baseTableName="film" constraintName="FK_FILM_ON_PRODUIT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="produit" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-115">
+        <addForeignKeyConstraint baseColumnNames="sensibilite_id" baseTableName="film" constraintName="FK_FILM_ON_SENSIBITLITE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sensibilite" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-116">
+        <addForeignKeyConstraint baseColumnNames="statut_film_id" baseTableName="film" constraintName="FK_FILM_ON_STATUT_FILM" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="statut_film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-117">
+        <addForeignKeyConstraint baseColumnNames="taille_film_id" baseTableName="film" constraintName="FK_FILM_ON_TAILLE_FILM" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="taille_film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-118">
+        <addForeignKeyConstraint baseColumnNames="taille_vue_id" baseTableName="film" constraintName="FK_FILM_ON_TAILLE_VUE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="taille_vue" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-119">
+        <addForeignKeyConstraint baseColumnNames="type_film_id" baseTableName="film" constraintName="FK_FILM_ON_TYPE_FILM" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-120">
+        <addForeignKeyConstraint baseColumnNames="film_id" baseTableName="film_vue" constraintName="FK_FILM_VUES_ON_FILM" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-121">
+        <addForeignKeyConstraint baseColumnNames="vue_id" baseTableName="film_vue" constraintName="FK_FILM_VUES_ON_VUE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="vue" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-122">
+        <addForeignKeyConstraint baseColumnNames="modele_id" baseTableName="materiel" constraintName="FK_MATERIEL_ON_MODELE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="modele" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-123">
+        <addForeignKeyConstraint baseColumnNames="sous_type_id" baseTableName="materiel" constraintName="FK_MATERIEL_ON_SOUS_TYPE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sous_type_materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-124">
+        <addForeignKeyConstraint baseColumnNames="statut_id" baseTableName="materiel" constraintName="FK_MATERIEL_ON_STATUS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="statut_materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-125">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="materiel" constraintName="FK_MATERIEL_ON_TYPE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-126">
+        <addForeignKeyConstraint baseColumnNames="marque" baseTableName="modele" constraintName="FK_MODELE_ON_MARQUE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="marque" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-127">
+        <addForeignKeyConstraint baseColumnNames="materiel_id" baseTableName="objectif_compatible" constraintName="FK_OBJECTIF_COMPATIBLE_ON_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-128">
+        <addForeignKeyConstraint baseColumnNames="objectif_id" baseTableName="objectif_compatible" constraintName="FK_OBJECTIF_COMPATIBLE_ON_OBJECTIF" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-129">
+        <addForeignKeyConstraint baseColumnNames="materiel_id" baseTableName="objectif" constraintName="FK_OBJECTIF_ON_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-130">
+        <addForeignKeyConstraint baseColumnNames="type_fixation_filtre_id" baseTableName="objectif" constraintName="FK_OBJECTIF_ON_TYPE_FIXATION_FILTRE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_fixation" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-131">
+        <addForeignKeyConstraint baseColumnNames="type_fixation_flash_id" baseTableName="objectif" constraintName="FK_OBJECTIF_ON_TYPE_FIXATION_FLASH" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_fixation" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-132">
+        <addForeignKeyConstraint baseColumnNames="type_fixation_objectif_id" baseTableName="objectif" constraintName="FK_OBJECTIF_ON_TYPE_FIXATION_OBJECTIF" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_fixation" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-133">
+        <addForeignKeyConstraint baseColumnNames="type_fixation_pied_id" baseTableName="objectif" constraintName="FK_OBJECTIF_ON_TYPE_FIXATION_PIED" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_fixation" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-134">
+        <addForeignKeyConstraint baseColumnNames="objectif_id" baseTableName="objectif_ouverture" constraintName="FK_OBJECTIF_OUVERTURE_ON_OBJECTIF" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="objectif" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-135">
+        <addForeignKeyConstraint baseColumnNames="ouverture_id" baseTableName="objectif_ouverture" constraintName="FK_OBJECTIF_OUVERTURE_ON_OUVERTURE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="ouverture" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-136">
+        <addForeignKeyConstraint baseColumnNames="objectif_id" baseTableName="objectif_vitesse" constraintName="FK_OBJECTIF_VITESSE_ON_OBJECTIF" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="objectif" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-137">
+        <addForeignKeyConstraint baseColumnNames="vitesse_id" baseTableName="objectif_vitesse" constraintName="FK_OBJECTIF_VITESSE_ON_VITESSE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="vitesse" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-138">
+        <addForeignKeyConstraint baseColumnNames="materiel_id" baseTableName="pied" constraintName="FK_PIED_ON_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-139">
+        <addForeignKeyConstraint baseColumnNames="materiel_id" baseTableName="prise_de_vue_materiel" constraintName="FK_PRISE_DE_VUE_MATERIEL_ON_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-140">
+        <addForeignKeyConstraint baseColumnNames="prise_de_vue_id" baseTableName="prise_de_vue_materiel" constraintName="FK_PRISE_DE_VUE_MATERIEL_ON_PRISE_DE_VUE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="prise_de_vue" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-141">
+        <addForeignKeyConstraint baseColumnNames="position_id" baseTableName="prise_de_vue" constraintName="FK_PRISE_DE_VUE_ON_POSITION" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="position" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-142">
+        <addForeignKeyConstraint baseColumnNames="statut_id" baseTableName="prise_de_vue" constraintName="FK_PRISE_DE_VUE_ON_STATUS" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="statut_prise_de_vue" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-143">
+        <addForeignKeyConstraint baseColumnNames="prise_de_vue_id" baseTableName="prise_de_vue_produit" constraintName="FK_PRISE_DE_VUE_PRODUIT_ON_PRISE_DE_VUE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="prise_de_vue" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-144">
+        <addForeignKeyConstraint baseColumnNames="produit_id" baseTableName="prise_de_vue_produit" constraintName="FK_PRISE_DE_VUE_PRODUIT_ON_PRODUIT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="produit" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-145">
+        <addForeignKeyConstraint baseColumnNames="modele_id" baseTableName="produit" constraintName="FK_PRODUIT_ON_MODELE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="modele" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-146">
+        <addForeignKeyConstraint baseColumnNames="statut_id" baseTableName="produit" constraintName="FK_PRODUIT_ON_STATUT_PRODUIT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="statut_produit" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-147">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="produit" constraintName="FK_PRODUIT_ON_TYPE_PRODUIT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_produit" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-148">
+        <addForeignKeyConstraint baseColumnNames="materiel_id" baseTableName="rotule" constraintName="FK_ROTULE_ON_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-149">
+        <addForeignKeyConstraint baseColumnNames="rotule_id" baseTableName="pied" constraintName="FK_ROTULE_ON_ROTULE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="rotule" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-150">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="sous_type_materiel" constraintName="FK_SOUS_TYPE_MATERIEL_ON_TYPE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="type_materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-151">
+        <addForeignKeyConstraint baseColumnNames="format_film_id" baseTableName="taille_film" constraintName="FK_TAILLE_FILM_ON_FORMAT" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="format_film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-152">
+        <addForeignKeyConstraint baseColumnNames="sous_type_materiel" baseTableName="type_fixation" constraintName="FK_TYPE_FIXATION_ON_SOUS_TYPE_MATERIEL" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="sous_type_materiel" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-153">
+        <addForeignKeyConstraint baseColumnNames="appareil_photo_id" baseTableName="vue" constraintName="FK_VUE_ON_APPARIEL_PHOTO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="appareil_photo" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-154">
+        <addForeignKeyConstraint baseColumnNames="film_id" baseTableName="vue" constraintName="FK_VUE_ON_FILM" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="film" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-155">
+        <addForeignKeyConstraint baseColumnNames="ouverture_id" baseTableName="vue" constraintName="FK_VUE_ON_OUVERTURE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="ouverture" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-156">
+        <addForeignKeyConstraint baseColumnNames="position_id" baseTableName="vue" constraintName="FK_VUE_ON_POSITION" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="position" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-157">
+        <addForeignKeyConstraint baseColumnNames="prise_de_vue_id" baseTableName="vue" constraintName="FK_VUE_ON_PRISE_DE_VUE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="prise_de_vue" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-158">
+        <addForeignKeyConstraint baseColumnNames="statut_vue_id" baseTableName="vue" constraintName="FK_VUE_ON_STATUT_VUE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="statut_vue" validate="true"/>
+    </changeSet>
+    <changeSet author="LifeLight" id="1692124292965-159">
+        <addForeignKeyConstraint baseColumnNames="vitesse_id" baseTableName="vue" constraintName="FK_VUE_ON_VITESSE" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="vitesse" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
