@@ -92,8 +92,8 @@ public class PriseDeVueController {
     @PostMapping("/vue/{id}/photo")
     public void ajouterUnePhoto(@PathVariable long id, @RequestParam Map<String, String> allParams) {
         priseDeVueService.miseAJourVue(id,
-                Long.valueOf(allParams.get("idOuverture")),
-                Long.valueOf(allParams.get("idVitesse")),
+                String.valueOf(allParams.get("valeurVitesse")),
+                String.valueOf(allParams.get("valeurOuverture")),
                 Long.valueOf(allParams.get("idStatut")));
     }
 

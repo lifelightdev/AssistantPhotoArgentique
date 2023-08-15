@@ -245,14 +245,14 @@ public class PriseDeVueService {
         return films;
     }
 
-    public void miseAJourVue(long id, Long idOuverture, Long idVitesse, Long idStatut) {
+    public void miseAJourVue(long id, String valeurVitesse, String valeurOuverture, Long idStatut) {
         Optional<Vue> vueOptional = vueRepository.findById(id);
         Vue vue = vueOptional.get();
         StatutVue statut = statutVueRepository.findById(idStatut).get();
         vue.setStatutVue(statut);
-        Ouverture ouverture = ouvertureRepository.findById(idOuverture).get();
+        Ouverture ouverture = ouvertureRepository.findByNom(valeurOuverture);
         vue.setOuverture(ouverture);
-        Vitesse vitesse = vitesseRepository.findById(idVitesse).get();
+        Vitesse vitesse = vitesseRepository.findByNom(valeurVitesse);
         vue.setVitesse(vitesse);
         vue = vueRepository.save(vue);
         PriseDeVue priseDeVue = miseAJourPriseDeVue(vue.getPriseDeVue().getId());

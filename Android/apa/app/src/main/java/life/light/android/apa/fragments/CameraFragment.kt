@@ -709,7 +709,9 @@ class CameraFragment : Fragment() {
     fun postVolley() {
         val queue = Volley.newRequestQueue(requireContext())
         val url = "http://10.0.2.2:8081/vue/$idVue/photo"
-        val requestBody = "idOuverture=$idOuverture&idVitesse=$idVitesse&idStatut=2"
+        val valeurOuverture = ouvertures[idOuverture]
+        val valeurVitesse = vitesses[idVitesse]
+        val requestBody = "valeurOuverture=$valeurOuverture&valeurVitesse=$valeurVitesse&idStatut=2"
         val stringReq: StringRequest =
             object : StringRequest(Method.POST, url,
                 Response.Listener { response ->

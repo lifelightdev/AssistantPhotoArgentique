@@ -82,8 +82,6 @@ class AccueilFragment internal constructor() : Fragment() {
                     val androidVueJSONObject = vueObject.getJSONObject(i)
                     androidVue.id = androidVueJSONObject.getLong("id")
                     androidVue.nomAppareilPhoto = androidVueJSONObject.getString("nomAppareilPhoto")
-                    androidVue.latitude = androidVueJSONObject.getDouble("latitude")
-                    androidVue.longitude = androidVueJSONObject.getDouble("longitude")
                     androidVue.sensibilite = androidVueJSONObject.getString("sensibilite")
                     androidVue.vitesses =
                         listOf(androidVueJSONObject.getJSONArray("vitesses").toString())
