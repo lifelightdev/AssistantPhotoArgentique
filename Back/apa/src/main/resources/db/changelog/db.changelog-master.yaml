@@ -1,0 +1,301 @@
+databaseChangeLog:
+  - include:
+      - file: classpath:/db/changelog/changes/001-initial-schema-apa.sql
+  - include:
+      - file: classpath:/db/changelog/changes/002-create-table-dimension_chassis.sql
+  - include:
+      - file: classpath:/db/changelog/changes/003-create-table-focal.sql
+  - include:
+      - file: classpath:/db/changelog/changes/004-create-table-format_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/004-1-format_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/004-2-format_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/004-3-format_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/004-4-format_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-create-table-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-1-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-2-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-3-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-4-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-5-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-6-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-7-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-8-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-9-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/005-10-marque.sql
+  - include:
+      - file: classpath:/db/changelog/changes/006-create-table-modele.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-create-table-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-1-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-2-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-3-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-4-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-5-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-6-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-7-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/007-8-ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/008-create-table-position.sql
+  - include:
+      - file: classpath:/db/changelog/changes/009-create-table-sensibilite.sql
+  - include:
+      - file: classpath:/db/changelog/changes/009-1-sensibilite.sql
+  - include:
+      - file: classpath:/db/changelog/changes/009-2-sensibilite.sql
+  - include:
+      - file: classpath:/db/changelog/changes/009-3-sensibilite.sql
+  - include:
+      - file: classpath:/db/changelog/changes/010-create-table-statut_chassis.sql
+  - include:
+      - file: classpath:/db/changelog/changes/011-create-table-statut_chimie.sql
+  - include:
+      - file: classpath:/db/changelog/changes/011-1-statut_chimie.sql
+  - include:
+      - file: classpath:/db/changelog/changes/011-2-statut_chimie.sql
+  - include:
+      - file: classpath:/db/changelog/changes/011-3-statut_chimie.sql
+  - include:
+      - file: classpath:/db/changelog/changes/011-4-statut_chimie.sql
+  - include:
+      - file: classpath:/db/changelog/changes/012-create-table-statut_developpement.sql
+  - include:
+      - file: classpath:/db/changelog/changes/013-create-table-statut_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/013-1-statut_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/013-2-statut_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/013-3-statut_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/013-4-statut_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/013-5-statut_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/014-create-table-statut_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/015-create-table-statut_papier.sql
+  - include:
+      - file: classpath:/db/changelog/changes/016-create-table-statut_prise_de_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/016-1-statut_prise_de_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/016-2-statut_prise_de_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/016-3-statut_prise_de_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/016-4-statut_prise_de_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/016-5-statut_prise_de_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/017-create-table-prise_de_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/018-create-table-statut_produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/019-create-table-statut_tirage.sql
+  - include:
+      - file: classpath:/db/changelog/changes/020-create-table-statut_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/020-1-statut_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/020-2-statut_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/021-create-table-taille_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/021-1-taille_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/021-2-taille_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/021-3-taille_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/021-4-taille_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/021-5-taille_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/021-6-taille_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/022-create-table-taille_vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/023-create-table-type_appareil_photo.sql
+  - include:
+      - file: classpath:/db/changelog/changes/023-1-type_appareil_photo.sql
+  - include:
+      - file: classpath:/db/changelog/changes/023-2-type_appareil_photo.sql
+  - include:
+      - file: classpath:/db/changelog/changes/023-3-type_appareil_photo.sql
+  - include:
+      - file: classpath:/db/changelog/changes/024-create-table-type_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/024-1-type_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/024-2-type_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/024-3-type_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/024-4-type_film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/025-create-table-type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/025-1-type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/025-2-type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/025-3-type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-create-table-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-1-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-2-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-3-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-4-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-5-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-6-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-7-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-8-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-9-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-10-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-11-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-12-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-13-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-14-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-15-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-16-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-17-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-18-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-19-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/026-20-sous_type_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/027-create-table-materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/028-create-table-objectif_compatible.sql
+  - include:
+      - file: classpath:/db/changelog/changes/029-create-table-prise_de_vue_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/changes/030-create-table-rotule.sql
+  - include:
+      - file: classpath:/db/changelog/changes/031-create-table-pied.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-create-table-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-1-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-2-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-3-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-4-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-5-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-6-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-7-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/032-8-type_fixation.sql
+  - include:
+      - file: classpath:/db/changelog/changes/033-create-table-objectif.sql
+  - include:
+      - file: classpath:/db/changelog/changes/034-create-table-objectif_ouverture.sql
+  - include:
+      - file: classpath:/db/changelog/changes/035-create-table-type_mise_au_point_photo.sql
+  - include:
+      - file: classpath:/db/changelog/changes/035-1-type_mise_au_point_photo.sql
+  - include:
+      - file: classpath:/db/changelog/changes/036-create-table-type_processus.sql
+  - include:
+      - file: classpath:/db/changelog/changes/036-1-type_processus.sql
+  - include:
+      - file: classpath:/db/changelog/changes/036-2-type_processus.sql
+  - include:
+      - file: classpath:/db/changelog/changes/036-3-type_processus.sql
+  - include:
+      - file: classpath:/db/changelog/changes/037-create-table-type_produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/037-1-type_produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/037-2-type_produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/037-3-type_produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/037-4-type_produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/038-create-table-produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/039-create-table-film.sql
+  - include:
+      - file: classpath:/db/changelog/changes/040-create-table-chassis.sql
+  - include:
+      - file: classpath:/db/changelog/changes/041-create-table-appareil_photo.sql
+  - include:
+      - file: classpath:/db/changelog/changes/042-create-table-prise_de_vue_produit.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-create-table-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-1-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-2-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-3-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-4-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-5-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-6-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-7-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-8-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-9-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-10-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/043-11-vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/044-create-table-objectif_vitesse.sql
+  - include:
+      - file: classpath:/db/changelog/changes/045-create-table-vue.sql
+  - include:
+      - file: classpath:/db/changelog/changes/046-create-table-film_vue.sql

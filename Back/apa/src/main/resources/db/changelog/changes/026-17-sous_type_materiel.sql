@@ -1,0 +1,1 @@
+INSERT INTO apa.sous_type_materiel (type_id, nom) VALUES (2, 'Accessoire');

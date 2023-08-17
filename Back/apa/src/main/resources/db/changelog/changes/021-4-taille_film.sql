@@ -1,0 +1,1 @@
+INSERT INTO apa.taille_film (nom, taille, format_film_id) VALUES ('Plan film 9x12 cm', '9x12', 2);

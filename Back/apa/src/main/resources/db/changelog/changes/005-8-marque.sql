@@ -1,0 +1,1 @@
+INSERT INTO apa.marque (nom) VALUES ('Cokin');

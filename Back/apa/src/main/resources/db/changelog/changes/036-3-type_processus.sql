@@ -1,0 +1,1 @@
+INSERT INTO apa.type_processus (nom) VALUES ('Tirage');

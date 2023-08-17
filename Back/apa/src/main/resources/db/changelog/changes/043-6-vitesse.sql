@@ -1,0 +1,1 @@
+INSERT INTO apa.vitesse (nom, ordre) VALUES ('15', 6);

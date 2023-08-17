@@ -1,0 +1,1 @@
+INSERT INTO apa.type_fixation (nom, sous_type_materiel) VALUES ('Ecrou de pied au pas de W 3/8"', 5);

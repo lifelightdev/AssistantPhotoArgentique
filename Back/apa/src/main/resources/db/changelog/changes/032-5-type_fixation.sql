@@ -1,0 +1,1 @@
+INSERT INTO apa.type_fixation (nom, sous_type_materiel) VALUES ('Sur l\'objectif', null);

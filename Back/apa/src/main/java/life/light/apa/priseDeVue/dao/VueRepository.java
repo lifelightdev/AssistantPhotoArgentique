@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface VueRepository extends JpaRepository<Vue, Long>, JpaSpecificationExecutor<Vue> {
 
-    List<Vue> findVueByPriseDeVueId(Long id);
+    List<Vue> findVuesByPriseDeVueId(Long id);
 
     @Query("select v from Vue v where v.statutVue.id =:id")
     Vue findVueByStatutVueId(Long id);

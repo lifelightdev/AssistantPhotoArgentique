@@ -57,7 +57,7 @@ public class PriseDeVueService {
     }
 
     public List<Vue> listeDesVuesDUnePriseDeVue(long id) throws IOException {
-        List<Vue> vues = priseDeVueRepository.findVueByPriseDeVueId(id);
+        List<Vue> vues = vueRepository.findVuesByPriseDeVueId(id);
         for (Vue vue : vues) {
             copieLaPhotoSurLeFront(vue);
         }
@@ -205,7 +205,7 @@ public class PriseDeVueService {
      */
     private String generationDuNomDeLaVue(Vue vue) {
         return vue.getPriseDeVue().getNom() +
-                " - " + (vueRepository.findVueByPriseDeVueId(vue.getPriseDeVue().getId()).size() + 1) +
+                " - " + (vueRepository.findVuesByPriseDeVueId(vue.getPriseDeVue().getId()).size() + 1) +
                 " - " + vue.getAppareilPhoto().getMateriel().getNom();
     }
 
@@ -234,9 +234,9 @@ public class PriseDeVueService {
     }
 
     public List<Optional<Film>> listeDesFilmsDUnePriseDeVue(long id) {
-        List<Produit> produits = priseDeVueRepository.findProduitsById(id);
+        PriseDeVue priseDeVue = priseDeVueRepository.findById(id).get();
         List<Optional<Film>> films = new ArrayList<>();
-        for (Produit produit : produits) {
+        for (Produit produit : priseDeVue.getProduits()) {
             if (filmRepository.findById(produit.getId()).isPresent()) {
                 Optional<Film> film = filmRepository.findById(produit.getId());
                 films.add(film);
