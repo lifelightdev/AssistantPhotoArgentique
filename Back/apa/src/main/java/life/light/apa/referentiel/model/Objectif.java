@@ -30,20 +30,14 @@ public class Objectif {
     @JoinTable(name = "objectif_ouverture",
             joinColumns = @JoinColumn(name = "objectif_id"),
             inverseJoinColumns = @JoinColumn(name = "ouverture_id"))
+    @OrderBy(value="ordre")
     private List<Ouverture> ouvertures = new ArrayList<>();
     @ManyToMany
     @JoinTable(name = "objectif_vitesse",
             joinColumns = @JoinColumn(name = "objectif_id"),
             inverseJoinColumns = @JoinColumn(name = "vitesse_id"))
+    @OrderBy(value="ordre")
     private List<Vitesse> vitesses = new ArrayList<>();
-
-    // private List<Focal> ListeFocales;
-
-    // private List<Flash> ListeFlashsCompatible;
-    // private List<Filte> ListeFiltresCompatible;
-    // private List<PorteFilte> ListePortesFiltreCompatible;
-    // private List<TailleFilm> ListeTaillesFilmCompatible;
-    // private List<AppareilPhoto> listeAppareilsPhotoCompatible;
 
 
     public Long getId() {

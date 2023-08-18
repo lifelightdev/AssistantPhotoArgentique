@@ -83,12 +83,12 @@ public class PriseDeVueService {
         androidVue.setSensibilite(vue.getFilm().getSensibilite().getNom());
         androidVue.setNomAppareilPhoto(vue.getAppareilPhoto().getMateriel().getNom());
         List<String> ouvetures = new ArrayList<>();
-        for (Ouverture o : vueRepository.findOuvertureByVueIdOrdreByOuvertureOrdre(vue.getId())) {
+        for (Ouverture o : vue.getAppareilPhoto().getObjectif().getOuvertures()) {
             ouvetures.add(o.getNom());
         }
         androidVue.setOuvertures(ouvetures);
         List<String> vitesses = new ArrayList<>();
-        for (Vitesse v : vueRepository.findVitesseByVueIdOrdreByVitesseOrdre(vue.getId())) {
+        for (Vitesse v : vue.getAppareilPhoto().getObjectif().getVitesses()) {
             vitesses.add(v.getNom());
         }
         androidVue.setVitesses(vitesses);
@@ -107,7 +107,7 @@ public class PriseDeVueService {
     }
 
     public Iterable<Materiel> afficherTousLesMaterielsdUnePriseDeVue(Long id) {
-        return priseDeVueRepository.findMaterielsById(id);
+        return priseDeVueRepository.findById(id).get().getMateriels();
     }
 
     public Iterable<StatutPriseDeVue> listeTousLesStatutsPriseDeVue() {
@@ -225,8 +225,8 @@ public class PriseDeVueService {
         List<Materiel> materiels = priseDeVue.get().getMateriels();
         List<Optional<AppareilPhoto>> appareilsPhoto = new ArrayList<>();
         for (Materiel materiel : materiels) {
-            if (appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).isPresent()) {
-                Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findById(materiel.getId());
+            Optional<AppareilPhoto>  appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId());
+            if (appareilPhoto.isPresent()) {
                 appareilsPhoto.add(appareilPhoto);
             }
         }

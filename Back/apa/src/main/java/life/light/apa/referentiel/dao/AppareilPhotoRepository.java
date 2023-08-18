@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface AppareilPhotoRepository extends JpaRepository<AppareilPhoto, Long>, JpaSpecificationExecutor<AppareilPhoto> {
 
-    Optional<AppareilPhoto> findAppareilPhotoByMaterielId(long id);
+    Optional<AppareilPhoto> findAppareilPhotoByMaterielId(Long id);
 }
