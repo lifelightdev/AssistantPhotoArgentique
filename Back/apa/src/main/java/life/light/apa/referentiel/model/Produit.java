@@ -19,10 +19,10 @@ public class Produit {
     @JoinColumn(name = "modele_id")
     private Modele modele;
     @Lob
-    @Column(name = "photo", columnDefinition="BLOB")
+    @Column(name = "photo", columnDefinition="MEDIUMBLOB")
     private byte[] photo;
     @Lob
-    @Column(name = "mode_emploie", columnDefinition="BLOB")
+    @Column(name = "mode_emploie", columnDefinition="MEDIUMBLOB")
     private byte[] modeEmploie;
     private String remarque;
 

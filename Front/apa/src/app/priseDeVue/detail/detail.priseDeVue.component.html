@@ -8,7 +8,7 @@
     <li>Latitude : {{priseDeVue?.position?.latitude}}</li>
     <li>Longitude : {{priseDeVue?.position?.longitude}}</li>
     <br/>
-    <li>Date : {{priseDeVue?.date | date: 'HH:mm le dd/MM/yyyy'}}</li>
+    <li>Date indicative de la prochaine vue : {{priseDeVue?.date | date: 'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="priseDeVue?.position?.ville"><a
       href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue?.position?.ville}}/{{priseDeVue?.position?.codePostal}}"
       target="_blank" rel="noopener noreferrer"> Afficher la météo </a>

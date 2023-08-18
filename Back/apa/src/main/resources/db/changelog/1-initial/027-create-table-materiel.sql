@@ -6,7 +6,7 @@ create table if not exists apa.materiel
     sous_type_id bigint       null,
     statut_id    bigint       null,
     modele_id    bigint       null,
-    photo        blob         null,
+    photo        mediumblob   null,
     mode_emploie mediumblob   null,
     remarque     varchar(255) null,
     constraint id_UNIQUE unique (id),
