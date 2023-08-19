@@ -1,12 +1,12 @@
 package life.light.apa.fichier;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import life.light.apa.priseDeVue.dao.PriseDeVueRepository;
+import life.light.apa.priseDeVue.dao.PositionRepository;
 import life.light.apa.priseDeVue.dto.Feature;
 import life.light.apa.priseDeVue.dto.FeatureProperties;
 import life.light.apa.priseDeVue.dto.GeoJson;
 import life.light.apa.priseDeVue.dto.Geometry;
-import life.light.apa.priseDeVue.model.PriseDeVue;
+import life.light.apa.priseDeVue.model.Position;
 import life.light.apa.referentiel.dao.MaterielRepository;
 import life.light.apa.referentiel.dao.ProduitRepository;
 import life.light.apa.referentiel.model.Materiel;
@@ -35,26 +35,26 @@ public class FichierController {
     @Autowired
     private ProduitRepository produitRepository;
     @Autowired
-    private PriseDeVueRepository priseDeVueRepository;
+    private PositionRepository positionRepository;
 
     @GetMapping(value = "/fichiers")
     public void copieLesFichiersSurLeFront() {
         List<Materiel> listeMateriel = materielRepository.findAll();
         for (Materiel materiel : listeMateriel) {
             if (null != materiel.getPhoto()) {
-                ecrireUnFichierSurLeFront("\\Images\\" ,materiel.getNom() + ".jpg", materiel.getPhoto());
+                ecrireUnFichierSurLeFront("\\Images\\", materiel.getNom() + ".jpg", materiel.getPhoto());
             }
             if (null != materiel.getModeEmploie()) {
-                ecrireUnFichierSurLeFront("\\ModeEmploie\\",materiel.getNom() + ".pdf", materiel.getModeEmploie());
+                ecrireUnFichierSurLeFront("\\ModeEmploie\\", materiel.getNom() + ".pdf", materiel.getModeEmploie());
             }
         }
         List<Produit> listeProduit = produitRepository.findAll();
         for (Produit produit : listeProduit) {
             if (null != produit.getPhoto()) {
-                ecrireUnFichierSurLeFront("\\Images\\" ,produit.getNom() + ".jpg", produit.getPhoto());
+                ecrireUnFichierSurLeFront("\\Images\\", produit.getNom() + ".jpg", produit.getPhoto());
             }
             if (null != produit.getModeEmploie()) {
-                ecrireUnFichierSurLeFront("\\ModeEmploie\\",produit.getNom() + ".pdf", produit.getModeEmploie());
+                ecrireUnFichierSurLeFront("\\ModeEmploie\\", produit.getNom() + ".pdf", produit.getModeEmploie());
             }
         }
     }
@@ -63,7 +63,7 @@ public class FichierController {
     public void copieLaPhotoDuMaterielSurLeFront(@PathVariable long id) {
         Materiel materiel = materielRepository.findById(id).get();
         if (null != materiel.getPhoto()) {
-            ecrireUnFichierSurLeFront("\\Images\\" ,materiel.getNom() + ".jpg", materiel.getPhoto());
+            ecrireUnFichierSurLeFront("\\Images\\", materiel.getNom() + ".jpg", materiel.getPhoto());
         }
     }
 
@@ -71,7 +71,7 @@ public class FichierController {
     public void copieLeModeEmploieDuMaterielSurLeFront(@PathVariable long id) {
         Materiel materiel = materielRepository.findById(id).get();
         if (null != materiel.getModeEmploie()) {
-            ecrireUnFichierSurLeFront("\\ModeEmploie\\",materiel.getNom() + ".pdf", materiel.getModeEmploie());
+            ecrireUnFichierSurLeFront("\\ModeEmploie\\", materiel.getNom() + ".pdf", materiel.getModeEmploie());
         }
     }
 
@@ -79,7 +79,7 @@ public class FichierController {
     public void copieLaPhotoDuProduitSurLeFront(@PathVariable long id) {
         Produit produit = produitRepository.findById(id).get();
         if (null != produit.getPhoto()) {
-            ecrireUnFichierSurLeFront("\\Images\\" ,produit.getNom() + ".jpg", produit.getPhoto());
+            ecrireUnFichierSurLeFront("\\Images\\", produit.getNom() + ".jpg", produit.getPhoto());
         }
     }
 
@@ -87,44 +87,56 @@ public class FichierController {
     public void copieLeModeEmploieDuProduitSurLeFront(@PathVariable long id) {
         Produit produit = produitRepository.findById(id).get();
         if (null != produit.getModeEmploie()) {
-            ecrireUnFichierSurLeFront("\\ModeEmploie\\",produit.getNom() + ".pdf", produit.getModeEmploie());
+            ecrireUnFichierSurLeFront("\\ModeEmploie\\", produit.getNom() + ".pdf", produit.getModeEmploie());
         }
     }
 
     private void ecrireUnFichierSurLeFront(String path, String nomDuFichier, byte[] fichier) {
         try {
             File file = new File(PATH_ASSETS_FRONT + path + nomDuFichier);
-            file.createNewFile();
-            FileImageOutputStream fos = new FileImageOutputStream(file);
-            fos.write(fichier);
-            fos.close();
+            if (lesFichiersSontSimilaire(fichier, file)) {
+                file.createNewFile();
+                FileImageOutputStream fos = new FileImageOutputStream(file);
+                fos.write(fichier);
+                fos.close();
+            }
         } catch (Exception e) {
             System.out.println("impossible d'écrire le fichier " + nomDuFichier + " sur le serveur front.");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
+    private static boolean lesFichiersSontSimilaire(byte[] fichier, File file) {
+        boolean creerLeFichier = false;
+        if (file.exists()) {
+            if (file.length() != fichier.length) {
+                creerLeFichier = true;
+            }
+        } else {
+            creerLeFichier = true;
+        }
+        return creerLeFichier;
+    }
+
 
     @GetMapping(value = "/carte")
     public void copieLesCartesSurLeFront() {
-        List<PriseDeVue> liste = priseDeVueRepository.findAll();
+        List<Position> liste = positionRepository.findAll();
         GeoJson geoJson = new GeoJson();
         List<Feature> features = new ArrayList<>();
-        for (PriseDeVue priseDeVue : liste) {
-            if (null != priseDeVue.getPosition()) {
-                Feature feature = new Feature();
-                List<Double> coordinates = new ArrayList<>();
-                coordinates.add(priseDeVue.getPosition().getLongitude());
-                coordinates.add(priseDeVue.getPosition().getLatitude());
-                Geometry geometry = new Geometry();
-                geometry.setCoordinates(coordinates);
-                feature.setGeometry(geometry);
-                FeatureProperties featureProperties = new FeatureProperties();
-                featureProperties.setNom(priseDeVue.getPosition().getNom());
-                featureProperties.setAdresse(priseDeVue.getPosition().getVille() + " - " + priseDeVue.getPosition().getCodePostal());
-                feature.setProperties(featureProperties);
-                features.add(feature);
-            }
+        for (Position position : liste) {
+            Feature feature = new Feature();
+            List<Double> coordinates = new ArrayList<>();
+            coordinates.add(position.getLongitude());
+            coordinates.add(position.getLatitude());
+            Geometry geometry = new Geometry();
+            geometry.setCoordinates(coordinates);
+            feature.setGeometry(geometry);
+            FeatureProperties featureProperties = new FeatureProperties();
+            featureProperties.setNom(position.getNom());
+            featureProperties.setAdresse(position.getVille() + " - " + position.getCodePostal());
+            feature.setProperties(featureProperties);
+            features.add(feature);
         }
         geoJson.setFeatures(features);
         String path = PATH_ASSETS_FRONT + "\\Data\\photo.geojson";
