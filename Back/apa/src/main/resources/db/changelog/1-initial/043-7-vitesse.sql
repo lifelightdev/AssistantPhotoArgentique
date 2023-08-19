@@ -1,1 +1,0 @@
-INSERT INTO apa.vitesse (nom, ordre) VALUES ('8', 7);

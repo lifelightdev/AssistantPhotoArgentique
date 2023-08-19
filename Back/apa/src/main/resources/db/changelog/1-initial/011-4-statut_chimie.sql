@@ -1,1 +1,0 @@
-INSERT INTO apa.statut_chimie (nom) VALUES ('A recyclé');

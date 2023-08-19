@@ -1,1 +1,0 @@
-INSERT INTO apa.taille_film (nom, taille, format_film_id) VALUES ('Rouleau de 120 cm', '120', 1);

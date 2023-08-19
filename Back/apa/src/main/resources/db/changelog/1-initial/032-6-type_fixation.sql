@@ -1,1 +1,0 @@
-INSERT INTO apa.type_fixation (nom, sous_type_materiel) VALUES ('HasselBlad', 5);
