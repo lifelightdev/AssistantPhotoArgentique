@@ -1,162 +1,78 @@
 package life.light.apa.referentiel.controller;
 
-import life.light.apa.referentiel.dao.*;
 import life.light.apa.referentiel.model.*;
-import org.apache.commons.collections4.ListUtils;
+import life.light.apa.referentiel.service.MaterielService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.stream.FileImageOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static life.light.apa.referentiel.dao.MaterielSpecification.*;
-import static org.springframework.data.jpa.domain.Specification.where;
 
 @CrossOrigin(origins = "http://127.0.0.1:4200")
 @RestController
 public class MaterielController {
 
     @Autowired
-    private MaterielRepository materielRepository;
-    @Autowired
-    private AppareilPhotoRepository appareilPhotoRepository;
-    @Autowired
-    private ObjectifRepository objectifRepository;
-    @Autowired
-    private PiedRepository piedRepository;
-    @Autowired
-    private OuvertureRepository ouvertureRepository;
-    @Autowired
-    private VitesseRepository vitesseRepository;
+    private MaterielService materielService;
 
     @RequestMapping(value = "/materiel/{id}")
-    public Optional<Materiel> afficherUnMateriel(@PathVariable long id) {
-        return materielRepository.findById(id);
+    public Optional<Materiel> afficherUnMateriel(@PathVariable Long id) {
+        return materielService.afficherUnMateriel(id);
     }
 
     @GetMapping(value = "/materiel")
     @ResponseBody
-    public Iterable<Materiel> rechercheMateriels(@RequestParam Map<String, String> allParams) throws IOException {
-        List<Materiel> liste = new ArrayList<>();
-        if (allParams.entrySet().isEmpty()) {
-            liste = materielRepository.findAll();
-        } else {
-            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!allParams.get("nom").trim().isEmpty())){
-                liste = ListUtils.union(liste, materielRepository.findAll(where(nomLike(allParams.get("nom")))));
-            }
-            if ((allParams.containsKey("typeMateriel")) && (!"undefined".equals(allParams.get("typeMateriel"))) && (!"0".equals(allParams.get("typeMateriel").trim()))){
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idTypeLike(Long.valueOf(allParams.get("typeMateriel"))))));
-            }
-            if ((allParams.containsKey("sousType")) && (!"undefined".equals(allParams.get("sousType"))) && (!"0".equals(allParams.get("sousType").trim()))){
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idSousTypeLike(Long.valueOf(allParams.get("sousType"))))));
-            }
-            if ((allParams.containsKey("statutMateriel")) && (!"undefined".equals(allParams.get("statutMateriel"))) && (!"0".equals(allParams.get("statutMateriel").trim()))){
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idStatutLike(Long.valueOf(allParams.get("statutMateriel"))))));
-            }
-            if ((allParams.containsKey("marque")) && (!"undefined".equals(allParams.get("marque"))) && (!"0".equals(allParams.get("marque").trim()))){
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idMarqueLike(Long.valueOf(allParams.get("marque"))))));
-            }
-            if ((allParams.containsKey("modele")) && (!"undefined".equals(allParams.get("modele"))) && (!"0".equals(allParams.get("modele").trim()))){
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idModeleLike(Long.valueOf(allParams.get("modele"))))));
-            }
-            if ((allParams.containsKey("remarque")) && (!"undefined".equals(allParams.get("remarque")))){
-                liste = ListUtils.union(liste, materielRepository.findAll(where(remarqueLike(allParams.get("remarque")))));
-            }
-        }
-        for (Materiel materiel : liste) {
-            if (null != materiel.getPhoto()) {
-                String imageFileName = materiel.getNom();
-                String extension = ".jpg";
-                File file = new File("F:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\Images\\" + imageFileName + extension);
-                file.createNewFile();
-                FileImageOutputStream fos = new FileImageOutputStream(file);
-                if (materiel.getPhoto() != null) {
-                    fos.write(materiel.getPhoto());
-                }
-                fos.close();
-            }
-            if (null != materiel.getModeEmploie()) {
-                String modeEmploieFileName = materiel.getNom();
-                String extension = ".pdf";
-                File file = new File("F:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets\\ModeEmploie\\" + modeEmploieFileName + extension);
-                file.createNewFile();
-                FileImageOutputStream fos = new FileImageOutputStream(file);
-                if (materiel.getModeEmploie() != null) {
-                    fos.write(materiel.getModeEmploie());
-                }
-                fos.close();
-            }
-        }
-        return liste;
+    public Iterable<Materiel> rechercheMateriels(@RequestParam Map<String, String> allParams)  {
+        return materielService.rechercheMateriels(allParams);
     }
-
-    @Autowired
-    private TypeMaterielRepository typeMateriel;
 
     @GetMapping(value = "/typeMateriel")
     public Iterable<TypeMateriel> listeTypeMateriel() {
-        return typeMateriel.findAll();
+        return materielService.listeTypeMateriel();
     }
-
-    @Autowired
-    private SousTypeMaterielRepository sousTypeMateriel;
 
     @GetMapping(value = "/sousTypeMateriel")
     public Iterable<SousTypeMateriel> listeSousTypeMateriel() {
-        return sousTypeMateriel.findAll();
+        return materielService.listeSousTypeMateriel();
     }
-
-    @Autowired
-    private ModeleRepository modele;
 
     @GetMapping(value = "/modele")
     public Iterable<Modele> listeModele() {
-        return modele.findAll();
+        return materielService.listeModele();
     }
-
-    @Autowired
-    private MarqueRepository marque;
 
     @GetMapping(value = "/marque")
     public Iterable<Marque> listeMarque() {
-        return marque.findAll();
+        return materielService.listeMarque();
     }
-
-    @Autowired
-    private StatutMaterielRepository statutMateriel;
 
     @GetMapping(value = "/statutMateriel")
     public Iterable<StatutMateriel> listeStatutMateriel() {
-        return statutMateriel.findAll();
+        return materielService.listeStatutMateriel();
     }
 
     @RequestMapping(value = "/appareilPhoto/{id}")
-    public Optional<AppareilPhoto> afficherUnAppareilPhoto(@PathVariable String id) {
-        return appareilPhotoRepository.findAppareilPhotoByMaterielId(Long.parseLong(id));
+    public Optional<AppareilPhoto> afficherUnAppareilPhoto(@PathVariable Long id) {
+        return materielService.afficherUnAppareilPhoto(id);
     }
 
     @RequestMapping(value = "/objectif/{id}")
-    public Optional<Objectif> afficherUnObjectif(@PathVariable String id) {
-        return objectifRepository.findObjectifByMaterielId(Long.parseLong(id));
+    public Optional<Objectif> afficherUnObjectif(@PathVariable Long id) {
+        return materielService.afficherUnObjectif(id);
     }
 
     @RequestMapping(value = "/pied/{id}")
-    public Optional<Pied> afficherUnPied(@PathVariable String id) {
-        return piedRepository.findPiedByMaterielId(Long.parseLong(id));
+    public Optional<Pied> afficherUnPied(@PathVariable Long id) {
+        return materielService.afficherUnPied(id);
     }
 
     @RequestMapping(value = "/ouvertures/{id}")
-    public Iterable<Ouverture> listeOuverture(@PathVariable long id) {
-        return ouvertureRepository.findOuvertureByObjectif(id);
+    public Iterable<Ouverture> listeOuverture(@PathVariable Long id) {
+        return materielService.listeOuverture(id);
     }
 
     @RequestMapping(value = "/vitesses/{id}")
-    public Iterable<Vitesse> listeVitesse(@PathVariable long id) {
-        return vitesseRepository.findVitesseByObjectif(id);
+    public Iterable<Vitesse> listeVitesse(@PathVariable Long id) {
+        return materielService.listeVitesse(id);
     }
 }

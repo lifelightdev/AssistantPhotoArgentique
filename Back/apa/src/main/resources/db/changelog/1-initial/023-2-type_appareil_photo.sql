@@ -1,1 +1,0 @@
-INSERT INTO apa.type_appareil_photo (nom) VALUES ('Reflex');

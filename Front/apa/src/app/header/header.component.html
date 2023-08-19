@@ -4,6 +4,7 @@
 
 <!--First level Menu-->
 <mat-menu #menu="matMenu">
+  <button mat-menu-item routerLink="/accueil" routerLinkActive="active-link"><mat-icon>home</mat-icon><span>Accueil</span></button>
   <button mat-menu-item [matMenuTriggerFor]="referentiel"><mat-icon>apps</mat-icon><span>Référentiel</span></button>
   <button mat-menu-item [matMenuTriggerFor]="prise_de_vue"><mat-icon>local_see</mat-icon><span>Prise de vue</span></button>
   <button mat-menu-item [matMenuTriggerFor]="developpement"><mat-icon>camera_rear</mat-icon><span>Développement (Non implementé)</span></button>

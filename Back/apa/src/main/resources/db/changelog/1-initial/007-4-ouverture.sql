@@ -1,1 +1,0 @@
-INSERT INTO apa.ouverture (nom, ordre) VALUES ('5.6', 4);

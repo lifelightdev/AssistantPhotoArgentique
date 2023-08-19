@@ -1,1 +1,0 @@
-INSERT INTO apa.type_produit (nom) VALUES ('Papier');
