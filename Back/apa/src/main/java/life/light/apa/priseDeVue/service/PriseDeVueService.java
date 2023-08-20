@@ -1,6 +1,5 @@
 package life.light.apa.priseDeVue.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import life.light.apa.priseDeVue.PriseDeVueException;
 import life.light.apa.priseDeVue.dao.*;
 import life.light.apa.priseDeVue.dto.*;
@@ -14,8 +13,6 @@ import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.stream.FileImageOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,7 +27,6 @@ import static org.springframework.data.jpa.domain.Specification.where;
 @Service
 public class PriseDeVueService {
 
-    public static final String PATH_ASSETS_FRONT = "F:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets";
     @Autowired
     private PriseDeVueRepository priseDeVueRepository;
     @Autowired
@@ -51,28 +47,11 @@ public class PriseDeVueService {
     private VitesseRepository vitesseRepository;
 
     public Optional<Vue> afficherUneVue(long id) throws IOException {
-        Optional<Vue> vue = vueRepository.findById(id);
-        copieLaPhotoSurLeFront(vue.get());
-        return vue;
+        return vueRepository.findById(id);
     }
 
     public List<Vue> listeDesVuesDUnePriseDeVue(long id) throws IOException {
-        List<Vue> vues = vueRepository.findVuesByPriseDeVueId(id);
-        for (Vue vue : vues) {
-            copieLaPhotoSurLeFront(vue);
-        }
-        return vues;
-    }
-
-    private static void copieLaPhotoSurLeFront(Vue vue) throws IOException {
-        //TODO A remplacé par du dynamique car l'envoie des photos est en dur sur le serveur front
-        if (null != vue.getPhoto()) {
-            File file = new File(PATH_ASSETS_FRONT + "\\Images\\" + vue.getId() + "-" + vue.getNom() + ".jpg");
-            file.createNewFile();
-            FileImageOutputStream fos = new FileImageOutputStream(file);
-            fos.write(vue.getPhoto());
-            fos.close();
-        }
+        return vueRepository.findVuesByPriseDeVueId(id);
     }
 
     public Android getAndroid() {
@@ -140,34 +119,6 @@ public class PriseDeVueService {
         if (!trouver) {
             liste = priseDeVueRepository.findAll();
         }
-        // TODO Déplacer la gestion de l'affichage de la carte
-        GeoJson geoJson = new GeoJson();
-        List<Feature> features = new ArrayList<>();
-        for (PriseDeVue priseDeVue : liste) {
-            if (null != priseDeVue.getPosition()) {
-                Feature feature = new Feature();
-                List<Double> coordinates = new ArrayList<>();
-                coordinates.add(priseDeVue.getPosition().getLongitude());
-                coordinates.add(priseDeVue.getPosition().getLatitude());
-                Geometry geometry = new Geometry();
-                geometry.setCoordinates(coordinates);
-                feature.setGeometry(geometry);
-                FeatureProperties featureProperties = new FeatureProperties();
-                featureProperties.setNom(priseDeVue.getPosition().getNom());
-                featureProperties.setAdresse(priseDeVue.getPosition().getVille() + " - " + priseDeVue.getPosition().getCodePostal());
-                feature.setProperties(featureProperties);
-                features.add(feature);
-            }
-        }
-        geoJson.setFeatures(features);
-        String path = PATH_ASSETS_FRONT + "\\Data\\photo.geojson";
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(new File(path), geoJson);
-        } catch (IOException e) {
-            // TODO Générer une vrai erreur
-            e.printStackTrace();
-        }
         return liste;
     }
 
@@ -225,7 +176,7 @@ public class PriseDeVueService {
         List<Materiel> materiels = priseDeVue.get().getMateriels();
         List<Optional<AppareilPhoto>> appareilsPhoto = new ArrayList<>();
         for (Materiel materiel : materiels) {
-            Optional<AppareilPhoto>  appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId());
+            Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId());
             if (appareilPhoto.isPresent()) {
                 appareilsPhoto.add(appareilPhoto);
             }
@@ -246,10 +197,16 @@ public class PriseDeVueService {
     }
 
     public void miseAJourVue(long id, String valeurVitesse, String valeurOuverture, Long idStatut) {
-        Optional<Vue> vueOptional = vueRepository.findById(id);
-        Vue vue = vueOptional.get();
-        StatutVue statut = statutVueRepository.findById(idStatut).get();
-        vue.setStatutVue(statut);
+        Vue vue = vueRepository.findById(id).get();
+        if (vue.getStatutVue().getId() != idStatut) {
+            StatutVue statut = statutVueRepository.findById(idStatut).get();
+            vue.setStatutVue(statut);
+            if (idStatut == StatutVue.Realiser) {
+                Film film = vue.getFilm();
+                film.setNbVueExpose(film.getNbVueExpose() + 1);
+                filmRepository.save(film);
+            }
+        }
         Ouverture ouverture = ouvertureRepository.findByNom(valeurOuverture);
         vue.setOuverture(ouverture);
         Vitesse vitesse = vitesseRepository.findByNom(valeurVitesse);
