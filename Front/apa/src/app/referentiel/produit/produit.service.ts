@@ -51,4 +51,9 @@ export class ProduitService {
   getFilm(id: number) {
     return this.http.get<Film>(this.serveurUrl + '/film/' + id, optionRequete);
   }
+
+  rechercheTousLesFilmsDisponible() {
+    return this.http.get<Film[]>(this.serveurUrl + `/film?statutFilm=1`, optionRequete);
+
+  }
 }

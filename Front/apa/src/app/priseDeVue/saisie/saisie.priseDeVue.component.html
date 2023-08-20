@@ -1,0 +1,54 @@
+<hr>
+<h1>Prise de vue</h1>
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input matInput [(ngModel)]="priseDeVue.nom" name="nom">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Statut</mat-label>
+      <mat-select [(ngModel)]="priseDeVue.statutPriseDeVue" name="statut">
+        <mat-option *ngFor="let statut of statuts" [value]="statut">{{statut.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <input matInput type="datetime-local" name="meeting-time" [(ngModel)]="priseDeVue.date">
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Remarque</mat-label>
+      <textarea matInput [(ngModel)]="priseDeVue.remarque" name="remarque"></textarea>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Position</mat-label>
+      <mat-select [(ngModel)]="priseDeVue.position" name="position">
+        <mat-option *ngFor="let position of positions" [value]="position">{{position.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Materiels</mat-label>
+      <mat-select [(ngModel)]="priseDeVue.materiels" multiple name="materiels">
+        <mat-option *ngFor="let materiel of materiels" [value]="materiel">{{materiel.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Films</mat-label>
+      <mat-select [(ngModel)]="priseDeVue.films" multiple name="films">
+        <mat-option *ngFor="let film of films" [value]="film">{{film.produit?.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <button mat-button type="submit">Enregistrer</button>
+</form>

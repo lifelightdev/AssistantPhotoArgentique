@@ -90,4 +90,14 @@ export class PriseDeVueService {
   rechercheTousLesFilmsDUnuePriseDeVue(id: number) {
     return this.http.get<Film[]>(this.serveurUrl + '/priseDeVue/' + id + '/film', optionRequete);
   }
+
+  enregistreUnePriseDeVue(priseDeVue: PriseDeVue) {
+    console.log("priseDeVue.statutPriseDeVue " + priseDeVue.statutPriseDeVue)
+    return this.http.post<PriseDeVue>(`${this.serveurUrl}/priseDeVue/saisie`, priseDeVue
+      ).pipe(
+      catchError((err) => {
+        console.error(err.error.message);
+        return throwError(err.error.message);
+      }));
+  }
 }

@@ -97,4 +97,9 @@ public class PriseDeVueController {
                 Long.valueOf(allParams.get("idStatut")));
     }
 
+    @PostMapping("/priseDeVue/saisie")
+    public void ajouterUnePriseDeVue(@RequestBody PriseDeVue priseDeVue) {
+        priseDeVueService.EnregistreUnePriseDeVue(priseDeVue);
+    }
+
 }

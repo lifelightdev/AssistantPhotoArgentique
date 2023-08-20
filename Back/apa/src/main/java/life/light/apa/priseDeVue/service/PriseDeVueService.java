@@ -46,7 +46,7 @@ public class PriseDeVueService {
     @Autowired
     private VitesseRepository vitesseRepository;
 
-    public Optional<Vue> afficherUneVue(long id) throws IOException {
+    public Optional<Vue> afficherUneVue(long id) {
         return vueRepository.findById(id);
     }
 
@@ -213,6 +213,10 @@ public class PriseDeVueService {
         vue.setVitesse(vitesse);
         vue = vueRepository.save(vue);
         PriseDeVue priseDeVue = miseAJourPriseDeVue(vue.getPriseDeVue().getId());
+        priseDeVueRepository.save(priseDeVue);
+    }
+
+    public void EnregistreUnePriseDeVue(PriseDeVue priseDeVue) {
         priseDeVueRepository.save(priseDeVue);
     }
 }

@@ -31,6 +31,7 @@ import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { AccueilComponent } from "./accueil/accueil.component";
+import { SaisiePriseDeVueComponent } from './priseDeVue/saisie/saisie.priseDeVue.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { AccueilComponent } from "./accueil/accueil.component";
     PriseDeVueListComponent,
     DetailPriseDeVueComponent,
     MapComponent,
-    AccueilComponent
+    AccueilComponent,
+    SaisiePriseDeVueComponent
   ],
   imports: [
     BrowserModule,

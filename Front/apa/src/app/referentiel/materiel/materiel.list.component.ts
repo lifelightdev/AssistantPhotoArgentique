@@ -24,7 +24,7 @@ export class MaterielListComponent implements OnInit, AfterViewInit {
   statuts: StatutMateriel[] = [];
 
   ngOnInit(): void {
-    this.materielService.rechercheTousLesMateriel().subscribe(data => {
+    this.materielService.rechercheTousLesMateriels().subscribe(data => {
       this.dataSource.data = data;
     });
     this.materielService.rechercheToutesLesMarques().subscribe(data => {

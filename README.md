@@ -14,3 +14,5 @@ Ce Projet est en cours de développement avec IntelliJ IDE et Android Studio.
 `grant alter, create, delete, drop, event,  index, insert, lock tables,  select, update on apa.* to AppareilPhoto@localhost;`
 
 * Pour l'application Android, il faut créer un device de type Pixel Pro avec un API Level 34 et ajouter la webCam à la camera du device.
+
+Adresse GitHub : https://github.com/lifelightdev/AssistantPhotoArgentique

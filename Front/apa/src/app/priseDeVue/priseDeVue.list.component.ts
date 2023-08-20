@@ -4,7 +4,6 @@ import {MatPaginator} from "@angular/material/paginator";
 import {
   ModelRecherchePriseDeVue,
   Position,
-  PositionSoleil,
   PriseDeVue,
   StatutPriseDeVue
 } from "./priseDeVue";
@@ -22,7 +21,6 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
   }
 
   priseDeVue: PriseDeVue = new PriseDeVue();
-  positionSoleil: PositionSoleil = new PositionSoleil();
   modelRecherchePriseDeVue: ModelRecherchePriseDeVue = new ModelRecherchePriseDeVue();
   statuts: StatutPriseDeVue[] = [];
   positions: Position[] = [];

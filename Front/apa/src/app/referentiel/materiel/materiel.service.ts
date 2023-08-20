@@ -30,7 +30,7 @@ export class MaterielService {
     private http: HttpClient) {
   }
 
-  rechercheTousLesMateriel(): Observable<Materiel[]> {
+  rechercheTousLesMateriels(): Observable<Materiel[]> {
     return this.http.get<Materiel[]>(this.serveurUrl + `/materiel`, optionRequete);
   }
 
@@ -78,4 +78,7 @@ export class MaterielService {
     return this.http.get<Pied>(this.serveurUrl + '/pied/' + id, optionRequete)
   }
 
+  rechercheTousLesMaterielsDisponible() {
+    return this.http.get<Materiel[]>(`${this.serveurUrl}/materiel?statutMateriel=1`, optionRequete)
+  }
 }
