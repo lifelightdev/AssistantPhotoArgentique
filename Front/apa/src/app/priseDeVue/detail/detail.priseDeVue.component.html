@@ -7,7 +7,7 @@
     <h2>Position</h2>
     <li>Latitude : {{priseDeVue?.position?.latitude}}</li>
     <li>Longitude : {{priseDeVue?.position?.longitude}}</li>
-    <br/>
+    <br />
     <li>Date indicative de la prochaine vue : {{priseDeVue?.date | date: 'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="priseDeVue?.position?.ville"><a
       href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue?.position?.ville}}/{{priseDeVue?.position?.codePostal}}"
@@ -95,18 +95,23 @@
   <h1>Ajouter une vue</h1>
   <form (ngSubmit)="ajouter()">
     <div>
-      <label>Appareil photo : </label>
-      <select [(ngModel)]="modelVue.appareilPhoto" name="appareil">
-        <option *ngFor="let appareilPhoto of appareilsPhoto" [value]="appareilPhoto.id">{{appareilPhoto.materiel?.nom}}</option>
-      </select>
+      <mat-form-field>
+        <mat-label>Appareil photo</mat-label>
+        <mat-select [(value)]="modelVue.appareilPhoto">
+          <mat-option [value]="appareilPhoto.id"
+                      *ngFor="let appareilPhoto of appareilsPhoto">{{appareilPhoto.materiel?.nom}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div>
-      <label>Film : </label>
-      <select [(ngModel)]="modelVue.film" name="film">
-        <option *ngFor="let film of films" [value]="film.id">{{film.produit?.nom}}</option>
-      </select>
+      <mat-form-field>
+        <mat-label>Film</mat-label>
+        <mat-select [(value)]="modelVue.film">
+          <mat-option [value]="film.id" *ngFor="let film of films">{{film.produit?.nom}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <button type="submit" class="btn btn-success">Ajouter</button>
+    <button mat-button type="submit">Ajouter</button>
   </form>
 </div>
 <div *ngIf="errorMessage" class="alert alert-error">
