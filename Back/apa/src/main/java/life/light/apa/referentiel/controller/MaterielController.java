@@ -66,13 +66,13 @@ public class MaterielController {
         return materielService.afficherUnPied(id);
     }
 
-    @RequestMapping(value = "/ouvertures/{id}")
-    public Iterable<Ouverture> listeOuverture(@PathVariable Long id) {
-        return materielService.listeOuverture(id);
+    @RequestMapping(value = "/objectif/{id}/ouvertures")
+    public Iterable<Ouverture> listeOuvertureDUnObjectif(@PathVariable Long id) {
+        return materielService.listeOuvertureDUnObjectif(id);
     }
 
-    @RequestMapping(value = "/vitesses/{id}")
-    public Iterable<Vitesse> listeVitesse(@PathVariable Long id) {
-        return materielService.listeVitesse(id);
+    @RequestMapping(value = "/objectif/{id}/vitesses")
+    public Iterable<Vitesse> listeVitesseDUnObjectif(@PathVariable Long id) {
+        return materielService.listeVitesseDUnObjectif(id);
     }
 }

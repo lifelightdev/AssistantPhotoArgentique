@@ -10,14 +10,22 @@
   <div>
     <mat-form-field>
       <mat-label>Statut</mat-label>
-      <mat-select [(ngModel)]="priseDeVue.statutPriseDeVue" name="statut">
-        <mat-option *ngFor="let statut of statuts" [value]="statut">{{statut.nom}}</mat-option>
+      <mat-select [(value)]="selectedStatus">
+        <mat-option [value]="statut.id" *ngFor="let statut of statuts">{{statut.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
-      <input matInput type="datetime-local" name="meeting-time" [(ngModel)]="priseDeVue.date">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" name="Date" [(ngModel)]="datePriseDeVue">
+      <mat-hint>DD/MM/YYYY</mat-hint>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Heure</mat-label>
+      <input matInput type="time" name="Heure" [(ngModel)]="heurePriseDeVue">
     </mat-form-field>
   </div>
   <div>
@@ -29,8 +37,8 @@
   <div>
     <mat-form-field>
       <mat-label>Position</mat-label>
-      <mat-select [(ngModel)]="priseDeVue.position" name="position">
-        <mat-option *ngFor="let position of positions" [value]="position">{{position.nom}}</mat-option>
+      <mat-select [(value)]="selectedPosition">
+        <mat-option [value]="position.id" *ngFor="let position of positions">{{position.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
@@ -52,3 +60,6 @@
   </div>
   <button mat-button type="submit">Enregistrer</button>
 </form>
+<div *ngIf="errorMessage" class="alert alert-error">
+  <strong>Erreur : </strong> {{errorMessage | json}}
+</div>

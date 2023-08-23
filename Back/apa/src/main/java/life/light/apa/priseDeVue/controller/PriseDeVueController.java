@@ -28,24 +28,19 @@ public class PriseDeVueController {
 
     @GetMapping(value = "/priseDeVue")
     @ResponseBody
-    public Iterable<PriseDeVue> recherchePriseDeVues(@RequestParam Map<String, String> allParams) {
-        return priseDeVueService.listeDesPriseDeVue(allParams.get("nom"), allParams.get("statutPriseDeVue"),
+    public Iterable<PriseDeVue> rechercheToutesLesPrisesDeVues(@RequestParam Map<String, String> allParams) {
+        return priseDeVueService.listeDesPrisesDeVues(allParams.get("nom"), allParams.get("statutPriseDeVue"),
                 allParams.get("date"), allParams.get("position"), allParams.get("remarque"));
     }
 
     @GetMapping(value = "/statutPriseDeVue")
     public Iterable<StatutPriseDeVue> listeStatutPriseDeVue() {
-        return priseDeVueService.listeTousLesStatutsPriseDeVue();
-    }
-
-    @RequestMapping(value = "/priseDeVue/materiel/{id}")
-    public Iterable<Materiel> afficherLesMateriels(@PathVariable long id) {
-        return priseDeVueService.afficherTousLesMaterielsdUnePriseDeVue(id);
+        return priseDeVueService.listeTousLesStatutsPrisesDeVues();
     }
 
     @GetMapping(value = "/position")
     public Iterable<Position> listePosition() {
-        return priseDeVueService.trouveToutesLesPosition();
+        return priseDeVueService.trouveToutesLesPositions();
     }
 
     @RequestMapping(value = "/priseDeVue/{id}")
@@ -54,7 +49,7 @@ public class PriseDeVueController {
     }
 
     @RequestMapping(value = "/vue/{id}")
-    public Optional<Vue> afficherUneVue(@PathVariable long id) throws IOException {
+    public Optional<Vue> afficherUneVue(@PathVariable long id) {
         return priseDeVueService.afficherUneVue(id);
     }
 
@@ -63,30 +58,49 @@ public class PriseDeVueController {
         return priseDeVueService.listeDesVuesDUnePriseDeVue(id);
     }
 
+    @PostMapping("priseDeVue/{id}/vue")
+    public Vue ajouterVue(@PathVariable long id, @RequestParam Map<String, String> allParams) {
+        try {
+            return priseDeVueService.ajouterUneVue(id,
+                    Long.valueOf(allParams.get("appareilPhoto")),
+                    Long.valueOf(allParams.get("film")));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
     @RequestMapping(value = "/priseDeVue/{id}/appareilPhoto")
     public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(@PathVariable long id) {
         return priseDeVueService.listeDesAppareilsPhotoDUnePriseDeVue(id);
     }
 
     @RequestMapping(value = "/priseDeVue/{id}/film")
-    public List<Optional<Film>> listeDesFilmsDUnePriseDeVue(@PathVariable long id) {
+    public Iterable<Film> listeDesFilmsDUnePriseDeVue(@PathVariable long id) {
         return priseDeVueService.listeDesFilmsDUnePriseDeVue(id);
+    }
+
+    @PostMapping("/priseDeVue/saisie")
+    public PriseDeVue ajouterUnePriseDeVue(@RequestBody PriseDeVue priseDeVue) {
+        try {
+            return priseDeVueService.EnregistreUnePriseDeVue(priseDeVue);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/priseDeVue/{id}/materielsDisponible")
+    public Iterable<Materiel> afficherLesMateriels(@PathVariable long id) {
+        return priseDeVueService.listeDesMaterielsDisponiblePourUnePriseDeVue(id);
+    }
+
+    @RequestMapping(value = "/priseDeVue/{id}/filmsDisponible")
+    public Iterable<Film> listeDesFilmsDisponiblePourUnePriseDeVue(@PathVariable long id) {
+        return priseDeVueService.listeDesFilmsDisponiblePourUnePriseDeVue(id);
     }
 
     @RequestMapping(value = "/android/vue")
     public Optional<Android> vueAndroid() {
         return Optional.of(priseDeVueService.getAndroid());
-    }
-
-    @PostMapping("/vue")
-    public Vue ajouterVue(@RequestParam Map<String, String> allParams) {
-        try {
-            return priseDeVueService.ajouterUneVue(Long.valueOf(allParams.get("priseDeVue")),
-                    Long.valueOf(allParams.get("appareilPhoto")),
-                    Long.valueOf(allParams.get("film")));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
     }
 
     @PostMapping("/vue/{id}/photo")
@@ -95,11 +109,6 @@ public class PriseDeVueController {
                 String.valueOf(allParams.get("valeurVitesse")),
                 String.valueOf(allParams.get("valeurOuverture")),
                 Long.valueOf(allParams.get("idStatut")));
-    }
-
-    @PostMapping("/priseDeVue/saisie")
-    public void ajouterUnePriseDeVue(@RequestBody PriseDeVue priseDeVue) {
-        priseDeVueService.EnregistreUnePriseDeVue(priseDeVue);
     }
 
 }

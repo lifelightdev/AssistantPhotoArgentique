@@ -13,13 +13,14 @@ import { SaisiePriseDeVueComponent } from "./priseDeVue/saisie/saisie.priseDeVue
 const routes: Routes = [
   { path: "", redirectTo: "/accueil", pathMatch: "full" },
   { path: "accueil", component: AccueilComponent },
-  { path: "materiel.list", component: MaterielListComponent },
+  { path: "materiel/list", component: MaterielListComponent },
   { path: "materiel/detail/:id", component: DetailMaterielComponent },
-  { path: "produit.list", component: ProduitListComponent },
+  { path: "produit/list", component: ProduitListComponent },
   { path: "produit/detail/:id", component: DetailProduitComponent },
   { path: "priseDeVue/list", component: PriseDeVueListComponent },
   { path: "priseDeVue/detail/:id/:latitude/:longitude/:date", component: DetailPriseDeVueComponent },
   { path: "priseDeVue/saisie", component: SaisiePriseDeVueComponent },
+  { path: "priseDeVue/saisie/:id", component: SaisiePriseDeVueComponent },
   { path: "map", component: MapComponent }
 ];
 

@@ -60,15 +60,10 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     console.log("Vue" + vue.nom);
   }
 
-  protected readonly String = String;
-
   ajouter() {
     this.errorMessage = "";
     this.submitted = true;
-    if (this.priseDeVue?.id) {
-      this.modelVue.id = this.priseDeVue?.id;
-    }
-
+    this.modelVue.priseDeVue = this.priseDeVue;
     this.priseDeVueService.ajouterVue(this.modelVue).subscribe(
       () => { location.reload(); },
       (error) => {

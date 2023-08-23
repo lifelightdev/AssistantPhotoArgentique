@@ -75,4 +75,5 @@ export class ModelVue {
   id = 0;
   appareilPhoto: number | undefined;
   film: number | undefined;
+  priseDeVue: PriseDeVue | undefined;
 }

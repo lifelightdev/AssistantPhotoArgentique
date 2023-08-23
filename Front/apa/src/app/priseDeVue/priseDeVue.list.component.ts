@@ -26,8 +26,8 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
   positions: Position[] = [];
 
   ngOnInit(): void {
-    this.priseDeVueService.rechercheTousLesPriseDeVue().subscribe(data => { this.dataSource.data = data; });
-    this.priseDeVueService.rechercheTousLesStatutPriseDeVue().subscribe(data => { this.statuts = data; });
+    this.priseDeVueService.rechercheToutesLesPrisesDeVues().subscribe(data => { this.dataSource.data = data; });
+    this.priseDeVueService.rechercheTousLesStatutsPrisesDeVues().subscribe(data => { this.statuts = data; });
     this.priseDeVueService.recherchePosition().subscribe(data => { this.positions = data; });
   }
 
@@ -35,7 +35,7 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.submitted = true;
-    this.priseDeVueService.rechercheDesPriseDeVues(this.modelRecherchePriseDeVue).subscribe(data => { this.dataSource.data = data; });
+    this.priseDeVueService.rechercheDesPrisesDeVues(this.modelRecherchePriseDeVue).subscribe(data => { this.dataSource.data = data; });
   }
 
   displayedColumns = ["Tâche", "Nom", "Statut", "Date"];

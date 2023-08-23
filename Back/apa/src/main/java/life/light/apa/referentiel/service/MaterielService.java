@@ -107,11 +107,11 @@ public class MaterielService {
         return piedRepository.findPiedByMaterielId(id);
     }
 
-    public Iterable<Ouverture> listeOuverture(Long id) {
+    public Iterable<Ouverture> listeOuvertureDUnObjectif(Long id) {
         return ouvertureRepository.findOuvertureByObjectif(id);
     }
 
-    public Iterable<Vitesse> listeVitesse(Long id) {
+    public Iterable<Vitesse> listeVitesseDUnObjectif(Long id) {
         return vitesseRepository.findVitesseByObjectif(id);
     }
 }
