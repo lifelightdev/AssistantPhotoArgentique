@@ -1,41 +1,60 @@
 <hr>
 <h1>Recherche de matériel</h1>
 <form (ngSubmit)="onSubmit()">
-
-  <label>Nom : </label>
-  <input type="text" [(ngModel)]="modelRecherche.nom" name="Nom">
-
   <div>
-    <label>Type : </label>
-    <select [(ngModel)]="modelRecherche.typeMateriel" name="type">
-      <option *ngFor="let type of types" [value]="type.id">{{type.nom}}</option>
-    </select>
-    <label>Sous type : </label>
-    <select [(ngModel)]="modelRecherche.sousType" name="sousType">
-      <option *ngFor="let type of sousTypes" [value]="type.id">{{type.nom}}</option>
-    </select>
-  </div>
-
-  <label>Statut : </label>
-  <select [(ngModel)]="modelRecherche.statutMateriel" name="statut">
-    <option *ngFor="let statut of statuts" [value]="statut.id">{{statut.nom}}</option>
-  </select>
-
-  <div>
-    <label>Marque : </label>
-    <select [(ngModel)]="modelRecherche.marque" name="marque">
-      <option *ngFor="let marque of marques" [value]="marque.id">{{marque.nom}}</option>
-    </select>
-    <label>Modéle : </label>
-    <select [(ngModel)]="modelRecherche.modele" name="modele">
-      <option *ngFor="let modele of modeles" [value]="modele.id">{{modele.nom}}</option>
-    </select>
+    <mat-form-field>
+      <mat-label>Nom</mat-label>
+      <input matInput [(ngModel)]="modelRecherche.nom" name="nom">
+    </mat-form-field>
   </div>
   <div>
-    <label>Remarque : </label>
-    <input type="text" [(ngModel)]="modelRecherche.remarque" name="remarque">
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <mat-select [(value)]="modelRecherche.typeMateriel">
+        <mat-option></mat-option>
+        <mat-option [value]="type.id" *ngFor="let type of types">{{type.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Sous type</mat-label>
+      <mat-select [(value)]="modelRecherche.sousType">
+        <mat-option></mat-option>
+        <mat-option [value]="type.id" *ngFor="let type of sousTypes">{{type.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
   </div>
-  <button type="submit" class="btn btn-success">Rechercher</button>
+  <div>
+    <mat-form-field>
+      <mat-label>Statut</mat-label>
+      <mat-select [(value)]="modelRecherche.statutMateriel">
+        <mat-option></mat-option>
+        <mat-option [value]="statut.id" *ngFor="let statut of statuts">{{statut.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Marque</mat-label>
+      <mat-select [(value)]="modelRecherche.marque">
+        <mat-option></mat-option>
+        <mat-option [value]="marque.id" *ngFor="let marque of marques">{{marque.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Modéle</mat-label>
+      <mat-select [(value)]="modelRecherche.modele">
+        <mat-option></mat-option>
+        <mat-option [value]="modele.id" *ngFor="let modele of modeles">{{modele.nom}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Remarque</mat-label>
+      <textarea matInput [(ngModel)]="modelRecherche.remarque" name="remarque"></textarea>
+    </mat-form-field>
+  </div>
+  <button mat-raised-button type="submit">Rechercher</button>
 </form>
 <hr>
 <h1>Liste des matériels</h1>
@@ -62,7 +81,7 @@
   <ng-container matColumnDef="Photo">
     <th mat-header-cell *matHeaderCellDef>Photo</th>
     <td mat-cell *matCellDef="let materiel">
-      <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo"/>
+      <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo" />
     </td>
   </ng-container>
   <ng-container matColumnDef="Mode d'emploie">

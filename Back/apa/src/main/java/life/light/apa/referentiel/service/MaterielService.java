@@ -2,14 +2,10 @@ package life.light.apa.referentiel.service;
 
 import life.light.apa.referentiel.dao.*;
 import life.light.apa.referentiel.model.*;
-import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static life.light.apa.referentiel.dao.MaterielSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -45,32 +41,33 @@ public class MaterielService {
         return materielRepository.findById(id);
     }
 
-    public Iterable<Materiel> rechercheMateriels(Map<String, String> allParams) {
-        List<Materiel> liste = new ArrayList<>();
-        if (allParams.entrySet().isEmpty()) {
-            liste = materielRepository.findAll();
-        } else {
-            if ((allParams.containsKey("nom")) && (!"undefined".equals(allParams.get("nom"))) && (!allParams.get("nom").trim().isEmpty())) {
-                liste = ListUtils.union(liste, materielRepository.findAll(where(nomLike(allParams.get("nom")))));
-            }
-            if ((allParams.containsKey("typeMateriel")) && (!"undefined".equals(allParams.get("typeMateriel"))) && (!"0".equals(allParams.get("typeMateriel").trim()))) {
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idTypeLike(Long.valueOf(allParams.get("typeMateriel"))))));
-            }
-            if ((allParams.containsKey("sousType")) && (!"undefined".equals(allParams.get("sousType"))) && (!"0".equals(allParams.get("sousType").trim()))) {
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idSousTypeLike(Long.valueOf(allParams.get("sousType"))))));
-            }
-            if ((allParams.containsKey("statutMateriel")) && (!"undefined".equals(allParams.get("statutMateriel"))) && (!"0".equals(allParams.get("statutMateriel").trim()))) {
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idStatutLike(Long.valueOf(allParams.get("statutMateriel"))))));
-            }
-            if ((allParams.containsKey("marque")) && (!"undefined".equals(allParams.get("marque"))) && (!"0".equals(allParams.get("marque").trim()))) {
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idMarqueLike(Long.valueOf(allParams.get("marque"))))));
-            }
-            if ((allParams.containsKey("modele")) && (!"undefined".equals(allParams.get("modele"))) && (!"0".equals(allParams.get("modele").trim()))) {
-                liste = ListUtils.union(liste, materielRepository.findAll(where(idModeleLike(Long.valueOf(allParams.get("modele"))))));
-            }
-            if ((allParams.containsKey("remarque")) && (!"undefined".equals(allParams.get("remarque")))) {
-                liste = ListUtils.union(liste, materielRepository.findAll(where(remarqueLike(allParams.get("remarque")))));
-            }
+    public Iterable<Materiel> rechercheMateriels(String nom, String typeMateriel, String sousType, String statutMateriel,
+                                                 String marque, String modele, String remarque) {
+        Set<Materiel> liste = new HashSet<>();
+        boolean trouver = false;
+        if ((null != nom) && (!"undefined".equals(nom)) && (!nom.trim().isEmpty())) {
+            liste.addAll(materielRepository.findAll(where(nomLike(nom))));trouver = true;
+        }
+        if ((null != typeMateriel) && (!"undefined".equals(typeMateriel)) && (!typeMateriel.trim().isEmpty())) {
+            liste.addAll(materielRepository.findAll(where(idTypeLike(Long.valueOf(typeMateriel)))));trouver = true;
+        }
+        if ((null != sousType) && (!"undefined".equals(sousType)) && (!sousType.trim().isEmpty())) {
+            liste.addAll(materielRepository.findAll(where(idSousTypeLike(Long.valueOf(sousType)))));trouver = true;
+        }
+        if ((null != statutMateriel) && (!"undefined".equals(statutMateriel)) && (!statutMateriel.trim().isEmpty())) {
+            liste.addAll(materielRepository.findAll(where(idStatutLike(Long.valueOf(statutMateriel)))));trouver = true;
+        }
+        if ((null != marque) && (!"undefined".equals(marque)) && (!marque.trim().isEmpty())) {
+            liste.addAll(materielRepository.findAll(where(idMarqueLike(Long.valueOf(marque)))));trouver = true;
+        }
+        if ((null != modele) && (!"undefined".equals(modele)) && (!modele.trim().isEmpty())) {
+            liste.addAll(materielRepository.findAll(where(idModeleLike(Long.valueOf(modele)))));trouver = true;
+        }
+        if ((null != remarque) && (!"undefined".equals(remarque)) && (!remarque.trim().isEmpty())) {
+            liste.addAll(materielRepository.findAll(where(remarqueLike(remarque))));trouver = true;
+        }
+        if (!trouver) {
+            liste.addAll(materielRepository.findAll());
         }
         return liste;
     }

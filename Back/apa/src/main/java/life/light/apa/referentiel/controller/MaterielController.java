@@ -22,8 +22,10 @@ public class MaterielController {
 
     @GetMapping(value = "/materiel")
     @ResponseBody
-    public Iterable<Materiel> rechercheMateriels(@RequestParam Map<String, String> allParams)  {
-        return materielService.rechercheMateriels(allParams);
+    public Iterable<Materiel> rechercheMateriels(@RequestParam Map<String, String> allParams) {
+        return materielService.rechercheMateriels(allParams.get("nom"), allParams.get("typeMateriel"),
+                allParams.get("sousType"), allParams.get("statutMateriel"), allParams.get("marque"),
+                allParams.get("modele"), allParams.get("remarque"));
     }
 
     @GetMapping(value = "/typeMateriel")
