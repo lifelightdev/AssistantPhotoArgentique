@@ -1,1 +1,3 @@
-INSERT INTO apa.statut_materiel (nom) VALUES ('Disponible');
+INSERT INTO apa.statut_materiel (nom)
+VALUES ('Disponible'),
+        ('Indissociable');
