@@ -31,7 +31,7 @@ public class PriseDeVueController {
     @ResponseBody
     public Iterable<PriseDeVue> rechercheToutesLesPrisesDeVues(@RequestParam Map<String, String> allParams) {
         return priseDeVueService.listeDesPrisesDeVues(allParams.get("nom"), allParams.get("statutPriseDeVue"),
-                allParams.get("date"), allParams.get("position"), allParams.get("remarque"));
+                allParams.get("date"), allParams.get("heure"), allParams.get("position"), allParams.get("remarque"));
     }
 
     @GetMapping(value = "/statutPriseDeVue")

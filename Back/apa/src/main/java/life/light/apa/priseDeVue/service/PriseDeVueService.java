@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 import static org.springframework.data.jpa.domain.Specification.where;
@@ -86,7 +87,7 @@ public class PriseDeVueService {
         return statutPriseDeVueRepository.findAll();
     }
 
-    public Iterable<PriseDeVue> listeDesPrisesDeVues(String nom, String statut, String date, String position, String remarque) {
+    public Iterable<PriseDeVue> listeDesPrisesDeVues(String nom, String statut, String date, String heure, String position, String remarque) {
         Set<PriseDeVue> liste = new HashSet<>();
         boolean trouver = false;
         if ((null != nom) && (!"undefined".equals(nom)) && (!nom.trim().isEmpty())) {
@@ -99,6 +100,10 @@ public class PriseDeVueService {
         }
         if ((null != date) && (!"undefined".equals(date)) && (!date.trim().isEmpty())) {
             liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.dateLike(LocalDate.parse(date)))));
+            trouver = true;
+        }
+        if ((null != heure) && (!"undefined".equals(heure)) && (!heure.trim().isEmpty())) {
+            liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.heureLike(LocalTime.parse(heure)))));
             trouver = true;
         }
         if ((null != position) && (!"undefined".equals(position)) && (!"0".equals(position.trim()))) {

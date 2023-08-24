@@ -48,6 +48,4 @@ export class PriseDeVueListComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  onSelect(priseDeVue: PriseDeVue) {  }
-
 }

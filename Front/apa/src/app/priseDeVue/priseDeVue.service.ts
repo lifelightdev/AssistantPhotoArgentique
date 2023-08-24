@@ -39,7 +39,19 @@ export class PriseDeVueService {
   }
 
   rechercheDesPrisesDeVues(term: ModelRecherchePriseDeVue) {
-    return this.http.get<PriseDeVue[]>(`${this.serveurUrl}/priseDeVue?nom=${term.nom}&statutPriseDeVue=${term.statutPriseDeVue}&date=${term.date}&remarque=${term.remarque}`, optionRequete);
+    let date;
+    if (term.date) {
+      var jour = term.date?.getDate().toString();
+      var mois = (term.date?.getMonth() + 1).toString();
+      date = term.date?.getFullYear()
+        + "-" + (mois.length != 2 ? "0" + mois : mois)
+        + "-" + (jour.length != 2 ? "0" + jour : jour);
+    }
+    return this.http.get<PriseDeVue[]>(`${this.serveurUrl}/priseDeVue?nom=${term.nom}`
+      + `&statutPriseDeVue=${term.statutPriseDeVue}`
+      + `&position=${term.position}`
+      + `&date=${date}` + `&heure=${term.heure}`
+      + `&remarque=${term.remarque}`, optionRequete);
   }
 
   rechercheTousLesStatutsPrisesDeVues(): Observable<StatutPriseDeVue[]> {

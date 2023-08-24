@@ -29,7 +29,8 @@ export class StatutPriseDeVue {
 export class ModelRecherchePriseDeVue {
   nom: string | undefined;
   remarque: string | undefined;
-  date: string | undefined;
+  date: Date | undefined;
+  heure: string | undefined;
   position: string | undefined;
   statutPriseDeVue: StatutPriseDeVue | undefined;
 }

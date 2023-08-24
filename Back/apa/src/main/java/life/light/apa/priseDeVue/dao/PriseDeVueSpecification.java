@@ -5,6 +5,7 @@ import life.light.apa.priseDeVue.model.PriseDeVue;
 import life.light.apa.priseDeVue.model.StatutPriseDeVue;
 import org.springframework.data.jpa.domain.Specification;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 
 public class PriseDeVueSpecification {
@@ -15,6 +16,10 @@ public class PriseDeVueSpecification {
 
     public static Specification<PriseDeVue> dateLike(LocalDate date) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("date"), "%" + date + "%");
+    }
+
+    public static Specification<PriseDeVue> heureLike(LocalTime heure) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("date"), "%" + heure + "%");
     }
 
     public static Specification<PriseDeVue> positionLike(String position) {
