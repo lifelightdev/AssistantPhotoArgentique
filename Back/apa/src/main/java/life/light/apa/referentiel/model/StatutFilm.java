@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "statut_film")
 public class StatutFilm {
+
+    public static final Long DISPONIBLE = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,15 +16,12 @@ public class StatutFilm {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public String getNom() {
         return nom;
     }
-
     public void setNom(String nom) {
         this.nom = nom;
     }

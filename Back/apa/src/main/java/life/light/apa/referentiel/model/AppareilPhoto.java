@@ -38,20 +38,6 @@ public class AppareilPhoto {
     private TypeMiseAuPoint typeMiseAuPoint;
     private Integer nombrePile;
 
-    // private List<Pile> listePiles;
-    // private List<Objectif> listeObjectifsCompatible;
-    // private List<Mouvement> listeMouvements;
-    // private List<Overture> listeOuvertures;
-    // private List<Vitesse> listeVitesses;
-    // private Liste<Focal> listeForal;
-    // private List<Chassis> listeChassisCompatible;
-    // private List<Film> listeFilmsCompatible;
-    // private List<TaillePriseDeVue> listeTaillesPriseDeVue;
-    // private List<Focal> listeFocales;
-    // private list<Flash> listeFlashesCompatiqble;
-    // private list<PorteFiltre> listePorteFiltreCompatible;
-
-
     public Long getId() {
         return id;
     }

@@ -19,7 +19,6 @@
     <mat-form-field>
       <mat-label>Date</mat-label>
       <input matInput [matDatepicker]="picker" name="Date" [(ngModel)]="datePriseDeVue">
-      <mat-hint>DD/MM/YYYY</mat-hint>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -45,16 +44,16 @@
   <div>
     <mat-form-field>
       <mat-label>Materiels</mat-label>
-      <mat-select [(ngModel)]="priseDeVue.materiels" multiple name="materiels">
-        <mat-option *ngFor="let materiel of materiels" [value]="materiel">{{materiel.nom}}</mat-option>
+      <mat-select [(value)]="selectedMateriels" multiple>
+        <mat-option [value]="materiel.id" *ngFor="let materiel of materiels">{{materiel.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
-      <mat-label>Films</mat-label>
-      <mat-select [(ngModel)]="priseDeVue.films" multiple name="films">
-        <mat-option *ngFor="let film of films" [value]="film">{{film.produit?.nom}}</mat-option>
+      <mat-label>Produits</mat-label>
+      <mat-select [(value)]="selectedProduits" multiple>
+        <mat-option [value]="produit.id" *ngFor="let produit of produits">{{produit.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>

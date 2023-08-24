@@ -2,8 +2,8 @@ package life.light.apa.referentiel.model;
 
 import jakarta.persistence.*;
 import life.light.apa.priseDeVue.model.Vue;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "film")
@@ -35,10 +35,7 @@ public class Film {
     @JoinTable(name = "film_vue",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "vue_id"))
-    private List<Vue> vues = new ArrayList<>();
-
-    // private List<AppareilPhoto> listeAppareilPhotoCompatible;
-    // private List<Chassis> listeChassisCompatible;
+    private Set<Vue> vues = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -96,6 +93,14 @@ public class Film {
         this.nbVueExpose = nbVueExpose;
     }
 
+    public Sensibilite getSensibilite() {
+        return sensibilite;
+    }
+
+    public void setSensibilite(Sensibilite sensibilite) {
+        this.sensibilite = sensibilite;
+    }
+
     public TailleVue getTailleVue() {
         return tailleVue;
     }
@@ -104,19 +109,11 @@ public class Film {
         this.tailleVue = tailleVue;
     }
 
-    public List<Vue> getVues() {
+    public Set<Vue> getVues() {
         return vues;
     }
 
-    public void setVues(List<Vue> vues) {
+    public void setVues(Set<Vue> vues) {
         this.vues = vues;
-    }
-
-    public Sensibilite getSensibilite() {
-        return sensibilite;
-    }
-
-    public void setSensibilite(Sensibilite sensibilite) {
-        this.sensibilite = sensibilite;
     }
 }

@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "statut_produit")
 public class StatutProduit {
+
+    public static final Long DISPONIBLE = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

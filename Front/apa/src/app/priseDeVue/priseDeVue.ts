@@ -1,5 +1,5 @@
 import {AppareilPhoto, Materiel, Ouverture, Vitesse} from "../referentiel/materiel/materiel";
-import {Film} from "../referentiel/produit/produit";
+import { Film, Produit } from "../referentiel/produit/produit";
 
 export class PriseDeVue {
   id: number | undefined;
@@ -9,8 +9,7 @@ export class PriseDeVue {
   position: Position | undefined;
   remarque: string | undefined;
   materiels: Materiel[] | undefined;
-  films: Film[] | undefined;
-  vues: Vue[] | undefined;
+  produits: Produit[] | undefined;
 }
 
 export class Position {

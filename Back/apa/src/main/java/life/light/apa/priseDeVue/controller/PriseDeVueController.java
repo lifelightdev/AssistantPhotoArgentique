@@ -9,15 +9,16 @@ import life.light.apa.priseDeVue.service.PriseDeVueService;
 import life.light.apa.referentiel.model.AppareilPhoto;
 import life.light.apa.referentiel.model.Film;
 import life.light.apa.referentiel.model.Materiel;
+import life.light.apa.referentiel.model.Produit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://127.0.0.1:4200")
 @RestController
@@ -70,7 +71,7 @@ public class PriseDeVueController {
     }
 
     @RequestMapping(value = "/priseDeVue/{id}/appareilPhoto")
-    public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(@PathVariable long id) {
+    public Set<AppareilPhoto> listeDesAppareilsPhotoDUnePriseDeVue(@PathVariable long id) {
         return priseDeVueService.listeDesAppareilsPhotoDUnePriseDeVue(id);
     }
 
@@ -91,6 +92,11 @@ public class PriseDeVueController {
     @RequestMapping(value = "/priseDeVue/{id}/materielsDisponible")
     public Iterable<Materiel> afficherLesMateriels(@PathVariable long id) {
         return priseDeVueService.listeDesMaterielsDisponiblePourUnePriseDeVue(id);
+    }
+
+    @RequestMapping(value = "/priseDeVue/{id}/produitsDisponible")
+    public Iterable<Produit> afficherLesProduitsDisponible(@PathVariable long id) {
+        return priseDeVueService.listeDesProduitsDisponiblePourUnePriseDeVue(id);
     }
 
     @RequestMapping(value = "/priseDeVue/{id}/filmsDisponible")

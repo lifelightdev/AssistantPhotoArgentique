@@ -55,4 +55,8 @@ export class ProduitService {
   rechercheTousLesFilmsDisponible() {
     return this.http.get<Film[]>(this.serveurUrl + `/film?statutFilm=1`, optionRequete);
   }
+
+  rechercheTousLesProduitsDisponible() {
+    return this.http.get<Produit[]>(this.serveurUrl + `/produit?statutProduit=1`, optionRequete);
+  }
 }

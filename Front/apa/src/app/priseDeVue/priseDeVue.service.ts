@@ -9,7 +9,7 @@ import {
   StatutPriseDeVue, Vue, ModelVue
 } from "./priseDeVue";
 import { AppareilPhoto, Materiel, Ouverture, Vitesse } from "../referentiel/materiel/materiel";
-import { Film } from "../referentiel/produit/produit";
+import { Film, Produit } from "../referentiel/produit/produit";
 
 const optionRequete = {
   headers: new HttpHeaders({
@@ -146,5 +146,9 @@ export class PriseDeVueService {
 
   rechercheTousLesFilmsDisponible(id: number) {
     return this.http.get<Film[]>(`${this.serveurUrl}/priseDeVue/${id}/filmsDisponible`, optionRequete);
+  }
+
+  rechercheTousLesProduitsDisponible(id: number) {
+    return this.http.get<Produit[]>(`${this.serveurUrl}/priseDeVue/${id}/produitsDisponible`, optionRequete);
   }
 }

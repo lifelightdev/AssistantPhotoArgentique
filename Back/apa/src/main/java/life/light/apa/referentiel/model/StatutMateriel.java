@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "statut_materiel")
 public class StatutMateriel {
+
+    public static Long DISPONIBLE = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,6 +21,7 @@ public class StatutMateriel {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getNom() {
         return nom;
     }

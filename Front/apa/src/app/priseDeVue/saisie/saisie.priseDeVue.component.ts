@@ -4,8 +4,8 @@ import { Position, PriseDeVue, StatutPriseDeVue } from "../priseDeVue";
 import { Materiel } from "../../referentiel/materiel/materiel";
 import { MaterielService } from "../../referentiel/materiel/materiel.service";
 import { ProduitService } from "../../referentiel/produit/produit.service";
-import { Film } from "../../referentiel/produit/produit";
 import { ActivatedRoute } from "@angular/router";
+import { Produit } from "../../referentiel/produit/produit";
 
 @Component({
   selector: "app-saisie.prise-de-vue",
@@ -25,10 +25,12 @@ export class SaisiePriseDeVueComponent {
   positions: Position[] = [];
   statuts: StatutPriseDeVue[] = [];
   materiels: Materiel[] = [];
-  films: Film[] = [];
+  produits: Produit[] = [];
   errorMessage: String | undefined;
   selectedStatus: number | undefined;
   selectedPosition: number | undefined;
+  selectedMateriels: number[] = [];
+  selectedProduits: number[] = [];
   datePriseDeVue: Date | undefined;
   heurePriseDeVue: String | undefined;
 
@@ -40,8 +42,8 @@ export class SaisiePriseDeVueComponent {
       this.materielService.rechercheTousLesMaterielsDisponible().subscribe(data => {
         this.materiels = data;
       });
-      this.produitService.rechercheTousLesFilmsDisponible().subscribe(data => {
-        this.films = data;
+      this.produitService.rechercheTousLesProduitsDisponible().subscribe(data => {
+        this.produits = data;
       });
       this.priseDeVueService.rechercheTousLesStatutsPrisesDeVues().subscribe(data => {
         this.statuts = data;
@@ -66,11 +68,21 @@ export class SaisiePriseDeVueComponent {
         this.priseDeVueService.recherchePosition().subscribe(data => {
           this.positions = data;
         });
+        // @ts-ignore
+        for (var materiel of this.priseDeVue.materiels) {
+          // @ts-ignore
+          this.selectedMateriels.push(materiel.id);
+        }
         this.priseDeVueService.rechercheTousLesMaterielsDisponible(id).subscribe(data => {
           this.materiels = data;
         });
-        this.priseDeVueService.rechercheTousLesFilmsDisponible(id).subscribe(data => {
-          this.films = data;
+        // @ts-ignore
+        for (var produit of this.priseDeVue.produits) {
+          // @ts-ignore
+          this.selectedProduits.push(produit.id);
+        }
+        this.priseDeVueService.rechercheTousLesProduitsDisponible(id).subscribe(data => {
+          this.produits = data;
         });
       });
     }
@@ -90,6 +102,26 @@ export class SaisiePriseDeVueComponent {
       const [hour, minute] = this.heurePriseDeVue.split(":");
       // @ts-ignore
       this.priseDeVue.date = new Date(Date.UTC(year, month - 1, day, hour, minute, 0));
+    }
+    if (this.selectedMateriels != undefined) {
+      this.priseDeVue.materiels = [];
+      for (var idMateriel of this.selectedMateriels) {
+        for (var materiel of this.materiels) {
+          if (materiel.id == idMateriel) {
+            this.priseDeVue.materiels?.push(materiel);
+          }
+        }
+      }
+    }
+    if (this.selectedProduits != undefined) {
+      this.priseDeVue.produits = [];
+      for (var idProduit of this.selectedProduits) {
+        for (var produit of this.produits) {
+          if (produit.id == idProduit) {
+            this.priseDeVue.produits?.push(produit);
+          }
+        }
+      }
     }
     this.priseDeVueService.enregistreUnePriseDeVue(this.priseDeVue).subscribe(
       () => {

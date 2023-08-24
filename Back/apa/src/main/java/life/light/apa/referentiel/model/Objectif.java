@@ -2,8 +2,8 @@ package life.light.apa.referentiel.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "objectif")
@@ -30,15 +30,14 @@ public class Objectif {
     @JoinTable(name = "objectif_ouverture",
             joinColumns = @JoinColumn(name = "objectif_id"),
             inverseJoinColumns = @JoinColumn(name = "ouverture_id"))
-    @OrderBy(value="ordre")
-    private List<Ouverture> ouvertures = new ArrayList<>();
+    @OrderBy(value = "ordre")
+    private Set<Ouverture> ouvertures = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "objectif_vitesse",
             joinColumns = @JoinColumn(name = "objectif_id"),
             inverseJoinColumns = @JoinColumn(name = "vitesse_id"))
-    @OrderBy(value="ordre")
-    private List<Vitesse> vitesses = new ArrayList<>();
-
+    @OrderBy(value = "ordre")
+    private Set<Vitesse> vitesses = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -88,19 +87,19 @@ public class Objectif {
         this.typeFixationFiltre = typeFixationFiltre;
     }
 
-    public List<Ouverture> getOuvertures() {
+    public Set<Ouverture> getOuvertures() {
         return ouvertures;
     }
 
-    public void setOuvertures(List<Ouverture> ouvertures) {
+    public void setOuvertures(Set<Ouverture> ouvertures) {
         this.ouvertures = ouvertures;
     }
 
-    public List<Vitesse> getVitesses() {
+    public Set<Vitesse> getVitesses() {
         return vitesses;
     }
 
-    public void setVitesses(List<Vitesse> vitesses) {
+    public void setVitesses(Set<Vitesse> vitesses) {
         this.vitesses = vitesses;
     }
 }

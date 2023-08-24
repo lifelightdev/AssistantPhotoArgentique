@@ -6,16 +6,13 @@ import life.light.apa.priseDeVue.dto.*;
 import life.light.apa.priseDeVue.model.*;
 import life.light.apa.referentiel.dao.*;
 import life.light.apa.referentiel.model.*;
-import org.apache.commons.collections4.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -41,6 +38,8 @@ public class PriseDeVueService {
     private OuvertureRepository ouvertureRepository;
     @Autowired
     private VitesseRepository vitesseRepository;
+    @Autowired
+    private ProduitRepository produitRepository;
     @Autowired
     private MaterielRepository materielRepository;
 
@@ -83,39 +82,35 @@ public class PriseDeVueService {
         return positionRepository.findAll();
     }
 
-    public Iterable<Materiel> afficherTousLesMaterielsdUnePriseDeVue(Long id) {
-        return priseDeVueRepository.findById(id).get().getMateriels();
-    }
-
     public Iterable<StatutPriseDeVue> listeTousLesStatutsPrisesDeVues() {
         return statutPriseDeVueRepository.findAll();
     }
 
     public Iterable<PriseDeVue> listeDesPrisesDeVues(String nom, String statut, String date, String position, String remarque) {
-        List<PriseDeVue> liste = new ArrayList<>();
+        Set<PriseDeVue> liste = new HashSet<>();
         boolean trouver = false;
         if ((null != nom) && (!"undefined".equals(nom)) && (!nom.trim().isEmpty())) {
-            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(PriseDeVueSpecification.nomLike(nom))));
+            liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.nomLike(nom))));
             trouver = true;
         }
         if ((null != statut) && (!"undefined".equals(statut)) && (!"0".equals(statut.trim()))) {
-            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(PriseDeVueSpecification.idStatutLike(Long.valueOf(statut)))));
+            liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.idStatutLike(Long.valueOf(statut)))));
             trouver = true;
         }
         if ((null != date) && (!"undefined".equals(date)) && (!date.trim().isEmpty())) {
-            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(PriseDeVueSpecification.dateLike(LocalDate.parse(date)))));
+            liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.dateLike(LocalDate.parse(date)))));
             trouver = true;
         }
         if ((null != position) && (!"undefined".equals(position)) && (!"0".equals(position.trim()))) {
-            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(PriseDeVueSpecification.positionLike(position))));
+            liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.positionLike(position))));
             trouver = true;
         }
         if ((null != remarque) && (!"undefined".equals(remarque))) {
-            liste = ListUtils.union(liste, priseDeVueRepository.findAll(where(PriseDeVueSpecification.remarqueLike(remarque))));
+            liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.remarqueLike(remarque))));
             trouver = true;
         }
         if (!trouver) {
-            liste = priseDeVueRepository.findAll();
+            liste.addAll(priseDeVueRepository.findAll());
         }
         return liste;
     }
@@ -169,22 +164,22 @@ public class PriseDeVueService {
         return priseDeVue;
     }
 
-    public List<Optional<AppareilPhoto>> listeDesAppareilsPhotoDUnePriseDeVue(long id) {
-        Optional<PriseDeVue> priseDeVue = priseDeVueRepository.findById(id);
-        List<Materiel> materiels = priseDeVue.get().getMateriels();
-        List<Optional<AppareilPhoto>> appareilsPhoto = new ArrayList<>();
+    public Set<AppareilPhoto> listeDesAppareilsPhotoDUnePriseDeVue(long id) {
+        PriseDeVue priseDeVue = priseDeVueRepository.findById(id).get();
+        Set<Materiel> materiels = priseDeVue.getMateriels();
+        Set<AppareilPhoto> appareilsPhoto = new HashSet<>();
         for (Materiel materiel : materiels) {
             Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId());
             if (appareilPhoto.isPresent()) {
-                appareilsPhoto.add(appareilPhoto);
+                appareilsPhoto.add(appareilPhoto.get());
             }
         }
         return appareilsPhoto;
     }
 
-    public List<Film> listeDesFilmsDUnePriseDeVue(long id) {
+    public Set<Film> listeDesFilmsDUnePriseDeVue(long id) {
         PriseDeVue priseDeVue = priseDeVueRepository.findById(id).get();
-        List<Film> films = new ArrayList<>();
+        Set<Film> films = new HashSet<>();
         for (Produit produit : priseDeVue.getProduits()) {
             if (filmRepository.findById(produit.getId()).isPresent()) {
                 Film film = filmRepository.findById(produit.getId()).get();
@@ -196,10 +191,10 @@ public class PriseDeVueService {
 
     public void miseAJourVue(long id, String valeurVitesse, String valeurOuverture, Long idStatut) {
         Vue vue = vueRepository.findById(id).get();
-        if (vue.getStatutVue().getId() != idStatut) {
+        if (!vue.getStatutVue().getId().equals(idStatut)) {
             StatutVue statut = statutVueRepository.findById(idStatut).get();
             vue.setStatutVue(statut);
-            if (idStatut == StatutVue.Realiser) {
+            if (idStatut.equals(StatutVue.Realiser)) {
                 Film film = vue.getFilm();
                 film.setNbVueExpose(film.getNbVueExpose() + 1);
                 filmRepository.save(film);
@@ -216,21 +211,27 @@ public class PriseDeVueService {
 
     public PriseDeVue EnregistreUnePriseDeVue(PriseDeVue priseDeVue) throws PriseDeVueException {
         try {
-            return priseDeVueRepository.save(priseDeVue);
+            return priseDeVueRepository.saveAndFlush(priseDeVue);
         } catch (Exception e) {
             throw new PriseDeVueException("Impossible d'ajouter une vue car il y a une erreur à la création d'un fichier.", e);
         }
     }
 
     public Iterable<Materiel> listeDesMaterielsDisponiblePourUnePriseDeVue(long id) {
-        List<Materiel> liste = priseDeVueRepository.findById(id).get().getMateriels();
-        liste = ListUtils.union(liste, materielRepository.findAll(where(MaterielSpecification.idStatutLike(1L))));
-        return liste;
+        Set<Materiel> materiels = priseDeVueRepository.findById(id).get().getMateriels();
+        materiels.addAll(materielRepository.findAll(where(MaterielSpecification.idStatutLike(StatutMateriel.DISPONIBLE))));
+        return materiels;
     }
 
     public Iterable<Film> listeDesFilmsDisponiblePourUnePriseDeVue(long id) {
-        List<Film> liste = listeDesFilmsDUnePriseDeVue(id);
-        liste = ListUtils.union(liste, filmRepository.findAll(where(FilmSpecification.idStatutFilmLike(1L))));
+        Set<Film> liste = listeDesFilmsDUnePriseDeVue(id);
+        liste.addAll(filmRepository.findAll(where(FilmSpecification.idStatutFilmLike(StatutFilm.DISPONIBLE))));
         return liste;
+    }
+
+    public Iterable<Produit> listeDesProduitsDisponiblePourUnePriseDeVue(long id) {
+        Set<Produit> produits = priseDeVueRepository.findById(id).get().getProduits();
+        produits.addAll(produitRepository.findAll(where(ProduitSpecification.idStatutLike(StatutProduit.DISPONIBLE))));
+        return produits;
     }
 }

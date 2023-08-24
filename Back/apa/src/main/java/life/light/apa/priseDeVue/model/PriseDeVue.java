@@ -3,9 +3,10 @@ package life.light.apa.priseDeVue.model;
 import jakarta.persistence.*;
 import life.light.apa.referentiel.model.Materiel;
 import life.light.apa.referentiel.model.Produit;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "prise_de_vue")
@@ -26,12 +27,12 @@ public class PriseDeVue {
     @JoinTable(name = "prise_de_vue_materiel",
             joinColumns = @JoinColumn(name = "prise_de_vue_id"),
             inverseJoinColumns = @JoinColumn(name = "materiel_id"))
-    private List<Materiel> materiels = new ArrayList<>();
+    private Set<Materiel> materiels = new HashSet<>();
     @ManyToMany
     @JoinTable(name = "prise_de_vue_produit",
             joinColumns = @JoinColumn(name = "prise_de_vue_id"),
             inverseJoinColumns = @JoinColumn(name = "produit_id"))
-    private List<Produit> produits = new ArrayList<>();
+    private Set<Produit> produits = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -81,19 +82,19 @@ public class PriseDeVue {
         this.statutPriseDeVue = statutPriseDeVue;
     }
 
-    public List<Materiel> getMateriels() {
+    public Set<Materiel> getMateriels() {
         return materiels;
     }
 
-    public void setMateriels(List<Materiel> materiels) {
+    public void setMateriels(Set<Materiel> materiels) {
         this.materiels = materiels;
     }
 
-    public List<Produit> getProduits() {
+    public Set<Produit> getProduits() {
         return produits;
     }
 
-    public void setProduits(List<Produit> produits) {
+    public void setProduits(Set<Produit> produits) {
         this.produits = produits;
     }
 
