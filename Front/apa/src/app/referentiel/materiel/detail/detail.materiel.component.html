@@ -4,9 +4,9 @@
   <li>Type : {{materiel?.typeMateriel?.nom}}</li>
   <li>Sous type : {{materiel?.sousType?.nom}}</li>
   <li>Statut : {{materiel?.statutMateriel?.nom}}</li>
-  <li>Marque : {{materiel?.modele?.marque?.nom}}</li>
-  <li>Modéle : {{materiel?.modele?.nom}}</li>
-  <li>Remaque : {{materiel?.remarque}}</li>
+  <li *ngIf="materiel?.modele?.marque">Marque : {{materiel?.modele?.marque?.nom}}</li>
+  <li *ngIf="materiel?.modele">Modéle : {{materiel?.modele?.nom}}</li>
+  <li *ngIf="materiel?.remarque">Remaque : {{materiel?.remarque}}</li>
   <li *ngIf="materiel?.modeEmploie">Mode d'emploie :
     <a href="assets/ModeEmploie/{{materiel?.nom}}.pdf" target="_blank" rel="noopener noreferrer">
       Afficher le mode d'emploie
@@ -15,13 +15,14 @@
   <img *ngIf="materiel?.photo" class="photo" src="assets/Images/{{materiel?.nom}}.jpg"
        alt="Photo de {{materiel?.nom}}" />
 </ul>
-<ng-container *ngIf="appareilPhoto;else materielChassis">
+<ng-container *ngIf="appareilPhoto;else materielObjectif">
   <ul>
     <h2>Détail de l'appareil photo</h2>
     <li>Le type d'appareil photo : {{appareilPhoto.typeAppareilPhoto?.nom}}</li>
     <li>Le type de fixation de l'objectif : {{appareilPhoto.typeFixationObjectif?.nom}}</li>
     <li>Nom de l'objectif : {{appareilPhoto.objectif?.materiel?.nom}}</li>
-    <li *ngIf="appareilPhoto.typeFixationFlash">Le type de fixation du flash : {{appareilPhoto.typeFixationFlash.nom}}</li>
+    <li *ngIf="appareilPhoto.typeFixationFlash">Le type de fixation du flash
+      : {{appareilPhoto.typeFixationFlash.nom}}</li>
     <li *ngIf="appareilPhoto.typeFixationPied">Le type de fixation du pied : {{appareilPhoto.typeFixationPied.nom}}</li>
     <li *ngIf="appareilPhoto.chassis">Le Chassis monté : {{appareilPhoto.chassis.materiel?.nom}}</li>
     <li *ngIf="appareilPhoto.film">Le film chargé : {{appareilPhoto.film}}</li>
@@ -30,8 +31,10 @@
   <ul>
     <h2>Détail de l'objectif</h2>
     <li>Nom : {{appareilPhoto.objectif?.materiel?.nom}}</li>
-    <li *ngIf="appareilPhoto.objectif?.materiel?.statutMateriel">Statut : {{appareilPhoto.objectif?.materiel?.statutMateriel?.nom}}</li>
-    <li *ngIf="appareilPhoto.objectif?.materiel?.modele">Marque : {{appareilPhoto.objectif?.materiel?.modele?.marque?.nom}}</li>
+    <li *ngIf="appareilPhoto.objectif?.materiel?.statutMateriel">Statut
+      : {{appareilPhoto.objectif?.materiel?.statutMateriel?.nom}}</li>
+    <li *ngIf="appareilPhoto.objectif?.materiel?.modele">Marque
+      : {{appareilPhoto.objectif?.materiel?.modele?.marque?.nom}}</li>
     <li *ngIf="appareilPhoto.objectif?.materiel?.modele">Modéle : {{appareilPhoto.objectif?.materiel?.modele?.nom}}</li>
     <li *ngIf="appareilPhoto.objectif?.materiel?.remarque">Remaque : {{appareilPhoto.objectif?.materiel?.remarque}}</li>
     <li *ngIf="appareilPhoto.objectif?.materiel?.modeEmploie">Mode d'emploie :
@@ -40,15 +43,43 @@
         Afficher le mode d'emploie
       </a>
     </li>
-    <li *ngIf="appareilPhoto.objectif?.typeFixationObjectif">Le type de fixation de l'objectif : {{appareilPhoto.objectif?.typeFixationObjectif?.nom}}</li>
-    <li *ngIf="appareilPhoto.objectif?.typeFixationFlash">Le type de fixation du flash : {{appareilPhoto.objectif?.typeFixationFlash?.nom}}</li>
-    <li *ngIf="appareilPhoto.objectif?.typeFixationPied">Le type de fixation du pied : {{appareilPhoto.objectif?.typeFixationPied?.nom}}</li>
-    <li *ngIf="appareilPhoto.objectif?.typeFixationFiltre">Le type de fixation du filtre : {{appareilPhoto.objectif?.typeFixationFiltre?.nom}}</li>
+    <li *ngIf="appareilPhoto.objectif?.typeFixationObjectif">Le type de fixation de l'objectif
+      : {{appareilPhoto.objectif?.typeFixationObjectif?.nom}}</li>
+    <li *ngIf="appareilPhoto.objectif?.typeFixationFlash">Le type de fixation du flash
+      : {{appareilPhoto.objectif?.typeFixationFlash?.nom}}</li>
+    <li *ngIf="appareilPhoto.objectif?.typeFixationPied">Le type de fixation du pied
+      : {{appareilPhoto.objectif?.typeFixationPied?.nom}}</li>
+    <li *ngIf="appareilPhoto.objectif?.typeFixationFiltre">Le type de fixation du filtre
+      : {{appareilPhoto.objectif?.typeFixationFiltre?.nom}}</li>
+    <li *ngIf="appareilPhoto.objectif?.ouvertures">Liste des ouvertures :
+      <span *ngFor="let ouverture of appareilPhoto.objectif?.ouvertures"> - {{ouverture.nom}} </span>
+    </li>
+    <li *ngIf="appareilPhoto.objectif?.vitesses">Liste des vitesses :
+      <span *ngFor="let vitesse of appareilPhoto.objectif?.vitesses"> - {{vitesse.nom}}  </span>
+    </li>
   </ul>
   <img *ngIf="appareilPhoto.objectif?.materiel?.photo" class="photo"
        src="assets/Images/{{appareilPhoto.objectif?.materiel?.nom}}.jpg"
        alt="Photo de {{appareilPhoto.objectif?.materiel?.nom}}" />
 </ng-container>
+<ng-template #materielObjectif>
+  <ng-container *ngIf="objectif;else materielChassis">
+    <ul>
+      <h2>Détail de l'objectif</h2>
+      <li *ngIf="objectif.typeFixationObjectif">Le type de fixation de l'objectif :
+        {{objectif.typeFixationObjectif.nom}}</li>
+      <li *ngIf="objectif.typeFixationFlash">Le type de fixation du flash : {{objectif.typeFixationFlash.nom}}</li>
+      <li *ngIf="objectif.typeFixationPied">Le type de fixation du pied : {{objectif.typeFixationPied.nom}}</li>
+      <li *ngIf="objectif.typeFixationFiltre">Le type de fixation du filtre : {{objectif.typeFixationFiltre.nom}}</li>
+      <li *ngIf="objectif.ouvertures">Liste des ouvertures :
+        <span *ngFor="let ouverture of objectif.ouvertures"> - {{ouverture.nom}} </span>
+      </li>
+      <li *ngIf="objectif.vitesses">Liste des vitesses :
+        <span *ngFor="let vitesse of objectif.vitesses"> - {{vitesse.nom}}  </span>
+      </li>
+    </ul>
+  </ng-container>
+</ng-template>
 <ng-template #materielChassis>
   <ng-container *ngIf="appareilPhoto?.chassis;else materielPied">
     <ul>

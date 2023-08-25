@@ -86,7 +86,7 @@ export class Objectif {
   typeFixationFlash: TypeFixation | undefined;
   typeFixationPied: TypeFixation | undefined;
   typeFixationFiltre: TypeFixation | undefined;
-  ouvetures: Ouverture[] | undefined;
+  ouvertures: Ouverture[] | undefined;
   vitesses: Vitesse[] | undefined;
 }
 
