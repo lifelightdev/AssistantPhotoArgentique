@@ -402,7 +402,7 @@ class CameraFragment : Fragment() {
             }
         }
 
-        if (iso == "100") {
+        //if (iso == "100") {
             initListeIdEv()
             initListeIdOuverture()
             initEvOuvertureToVitesse()
@@ -412,15 +412,26 @@ class CameraFragment : Fragment() {
                 val idListeOuverture = idOuvertures[ouverture.toDouble()]
                 val idListeEV = idEvs[ev]
                 vitesse = evOuvertureToVitesse[idListeEV!!][idListeOuverture!!].toString()
+                // Recherche de la vitesse exacte
+                var vitesseTrouvee = false;
                 for ((i, v) in vitesses.withIndex()) {
                     if (v == vitesse) {
                         idVitesse = i
+                        vitesseTrouvee = true
                         break
                     }
                 }
+                // Recherche de la vitesse la plus proche inferieur
+                if (! vitesseTrouvee){
+                    for ((i, v) in vitesses.withIndex()) {
+                        if (v < vitesse) {
+                            idVitesse = i
+                        }
+                    }
+                }
             }
-            //Log.d(TAG, " EV = " + ev + " Ouverture = " + ouverture + " Vitesse = " + vitesse)
-        }
+            Log.d(TAG, " EV = " + ev + " Ouverture = " + ouverture + " Id de la liste des ouvertures = " + idOuverture  + " Vitesse = " + vitesse + " Id de la liste des vitesses = " + idVitesse)
+        //}
     }
 
     private fun removeCameraStateObservers(cameraInfo: CameraInfo) {
@@ -716,7 +727,7 @@ class CameraFragment : Fragment() {
             object : StringRequest(Method.POST, url,
                 Response.Listener { response ->
                     // response
-                    var strResp = response.toString()
+                    val strResp = response.toString()
                     Log.d("API", strResp)
                 },
                 Response.ErrorListener { error ->
