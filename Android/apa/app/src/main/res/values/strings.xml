@@ -1,19 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Assistant de photo argentique</string>
-    <string name="capture_button_alt">Capture</string>
-    <string name="switch_camera_button_alt">Switch camera</string>
-    <string name="gallery_button_alt">Gallery</string>
-    <string name="ouverture_liste">Ouverture</string>
-    <string name="vitesse_list">Vitesse</string>
-    <string name="calcul_button">Calcul</string>
-    <string name="back_button_alt">Back</string>
-    <string name="share_button_alt">Share</string>
-    <string name="share_hint">Share using</string>
-    <string name="capture_mode_camera">Camera</string>
-    <string name="capture_mode_hdr">HDR</string>
-    <string name="capture_mode_night">Night</string>
-    <string name="delete_button_alt">Delete</string>
-    <string name="delete_dialog">Delete current photo?</string>
-    <string name="delete_title">Confirm</string>
+    <string name="app_name">Light meter</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="start_capture">Start Capture</string>
+    <string name="stop_capture">Stop Capture</string>
+    <string name="permissions">Permissions not granted by the user.</string>
+    <string name="binding">Use case binding failed</string>
+    <string name="photo_failed">Photo capture failed: </string>
+    <string name="photo_success">Photo capture succeeded: </string>
+    <string name="average_luminosity">Average luminosity: </string>
 </resources>
