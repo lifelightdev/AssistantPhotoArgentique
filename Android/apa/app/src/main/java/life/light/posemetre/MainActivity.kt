@@ -21,7 +21,12 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import life.light.posemetre.databinding.ActivityMainBinding
+import org.json.JSONArray
+import org.json.JSONObject
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -42,24 +47,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
-
-
-        val vitesses = ArrayList<String>()
-        vitesses.add("Vitesse 1")
-        vitesses.add("Vitesse 2")
-        val adapterVitesse = ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, vitesses)
-        viewBinding.vitesse.adapter = adapterVitesse
-
-        val ouvertures = ArrayList<String>()
-        ouvertures.add("Ouverture 1")
-        ouvertures.add("Ouverture 2")
-        val adapterOuverture = ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, ouvertures)
-        viewBinding.ouverture.adapter = adapterOuverture
-
-        viewBinding.Sensitivity.text = "400 ISO"
-        viewBinding.cameraName.text = "Lubitel 2"
-
-
+        getData()
         // Demander les autorisations
         if (allPermissionsGranted()) {
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -211,6 +199,56 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
+
+    private fun getData() {
+        val url = "http://10.0.2.2:8081/android/vue"
+        val androidVue = AndroidVue()
+        val mRequestQueue = Volley.newRequestQueue(baseContext)
+
+        val mStringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+                Log.i(TAG, "-----Response :$response")
+                val vueJsonObject = JSONObject(response)
+                val vueObject = vueJsonObject.getJSONArray("vues")
+                for (i in 0 until (vueObject.length())) {
+                    val androidVueJSONObject = vueObject.getJSONObject(i)
+                    androidVue.id = androidVueJSONObject.getLong("id")
+                    androidVue.nomAppareilPhoto = androidVueJSONObject.getString("nomAppareilPhoto")
+                    androidVue.sensibilite = androidVueJSONObject.getString("sensibilite")
+                    androidVue.vitesses =
+                        jsonArrayToArrayList(androidVueJSONObject.getJSONArray("vitesses"))
+                    androidVue.ouvertures =
+                        jsonArrayToArrayList(androidVueJSONObject.getJSONArray("ouvertures"))
+                    viewBinding.Sensitivity.text = androidVue.sensibilite
+                    viewBinding.cameraName.text = androidVue.nomAppareilPhoto
+                    val adapterVitesse = ArrayAdapter(
+                        baseContext,
+                        android.R.layout.simple_spinner_item,
+                        androidVue.vitesses
+                    )
+                    viewBinding.vitesse.adapter = adapterVitesse
+                    val adapterOuverture = ArrayAdapter(
+                        baseContext,
+                        android.R.layout.simple_spinner_item,
+                        androidVue.ouvertures
+                    )
+                    viewBinding.ouverture.adapter = adapterOuverture
+                }
+            }
+        ) { error ->
+            Log.e(TAG, "------Error :$error")
+        }
+        mRequestQueue.add(mStringRequest)
+    }
+
+    private fun jsonArrayToArrayList(jArray: JSONArray): ArrayList<String> {
+        val listdata = ArrayList<String>()
+        for (i in 0 until jArray.length()) {
+            listdata.add(jArray.getString(i))
+        }
+        return listdata
     }
 
     private class LuminosityAnalyzer(private val listener: LumaListener) : ImageAnalysis.Analyzer {
