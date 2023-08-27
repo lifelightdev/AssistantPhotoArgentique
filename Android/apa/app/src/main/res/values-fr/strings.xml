@@ -13,4 +13,5 @@
     <string name="aperture">Ouverture</string>
     <string name="speed">Vitesse</string>
     <string name="automatic">Automatique</string>
+    <string name="check_provider">Vérifier le mode de localisation</string>
 </resources>

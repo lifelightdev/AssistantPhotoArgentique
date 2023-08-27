@@ -12,4 +12,5 @@
     <string name="aperture">Aperture</string>
     <string name="speed">Speed</string>
     <string name="automatic">Automatic</string>
+    <string name="check_provider">Check your provider</string>
 </resources>

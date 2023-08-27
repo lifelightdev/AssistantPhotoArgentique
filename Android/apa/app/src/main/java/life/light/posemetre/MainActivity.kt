@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             val provider = locationManager.allProviders
             val location = locationManager.getLastKnownLocation(provider.first())
             if (location == null) {
-                Toast.makeText(this, "Check your provider 1 ", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, getString(R.string.check_provider), Toast.LENGTH_SHORT).show()
             } else {
                 Log.i(TAG, "Latitude: " + location.latitude)
                 Log.i(TAG, "Longitude: " + location.longitude)
