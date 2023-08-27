@@ -228,13 +228,13 @@ class MainActivity : AppCompatActivity() {
                         android.R.layout.simple_spinner_item,
                         androidVue.vitesses
                     )
-                    viewBinding.vitesse.adapter = adapterVitesse
+                    viewBinding.vitesses.adapter = adapterVitesse
                     val adapterOuverture = ArrayAdapter(
                         baseContext,
                         android.R.layout.simple_spinner_item,
                         androidVue.ouvertures
                     )
-                    viewBinding.ouverture.adapter = adapterOuverture
+                    viewBinding.ouvertures.adapter = adapterOuverture
                 }
             }
         ) { error ->
