@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Posemetre</string>
-    <string name="take_photo">Prendre une photo</string>
-    <string name="start_capture">Démarrer l\'enregistrement</string>
-    <string name="stop_capture">Arrêter l\'enregistrement</string>
+    <string name="take_photo">Photo</string>
+    <string name="compute">Calcul</string>
     <string name="permissions">Autorisations non accordées par l\'utilisateur.</string>
     <string name="binding">Échec de la liaison du cas d\'utilisation</string>
     <string name="photo_failed">Échec de la capture de photo : </string>
     <string name="photo_success">Prise de photo réussie : </string>
     <string name="average_luminosity">Luminosité moyenne : </string>
+    <string name="camera_name_text">Nom de l\'appareil photo</string>
+    <string name="sensitivity_text">Sensibilité du film</string>
+    <string name="aperture">Ouverture</string>
+    <string name="speed">Vitesse</string>
+    <string name="automatic">Automatique</string>
 </resources>

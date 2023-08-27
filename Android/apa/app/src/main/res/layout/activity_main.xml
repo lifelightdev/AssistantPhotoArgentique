@@ -4,35 +4,113 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".MainActivity">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"></androidx.camera.view.PreviewView>
+
+    <Spinner
+        android:id="@+id/ouverture"
+        android:layout_width="100dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="70dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/vertical_centerline"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/camera_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:text="@string/camera_name_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/image_capture_button"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="50dp"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginBottom="30dp"
         android:elevation="2dp"
         android:text="@string/take_photo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/vertical_centerline" />
+        app:layout_constraintEnd_toStartOf="@id/vertical_centerline"
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
-        android:id="@+id/video_capture_button"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:layout_marginBottom="50dp"
+        android:id="@+id/calculation_button"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
         android:layout_marginStart="50dp"
+        android:layout_marginBottom="30dp"
         android:elevation="2dp"
-        android:text="@string/start_capture"
+        android:text="@string/compute"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/vertical_centerline" />
+
+    <TextView
+        android:id="@+id/Sensitivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/antiquewhite"
+        android:elevation="2dp"
+        android:text="@string/sensitivity_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Spinner
+        android:id="@+id/vitesse"
+        android:layout_width="100dp"
+        android:layout_height="22dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginBottom="70dp"
+        android:background="@color/antiquewhite"
+        android:elevation="2dp"
+        android:text="@string/compute"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/vertical_centerline" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="100dp"
+        android:background="@color/antiquewhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+        <RadioButton
+            android:id="@+id/AutomatiqueRB"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:checked="true"
+            android:text="@string/automatic"/>
+        <RadioButton
+            android:id="@+id/VitesseRB"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:checked="false"
+            android:text="@string/speed" />
+        <RadioButton
+            android:id="@+id/OuvertureRB"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:checked="false"
+            android:text="@string/aperture"/>
+    </RadioGroup>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical_centerline"

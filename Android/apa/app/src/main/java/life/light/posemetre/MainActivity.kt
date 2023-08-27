@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -41,6 +42,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+
+
+        val vitesses = ArrayList<String>()
+        vitesses.add("Vitesse 1")
+        vitesses.add("Vitesse 2")
+        val adapterVitesse = ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, vitesses)
+        viewBinding.vitesse.adapter = adapterVitesse
+
+        val ouvertures = ArrayList<String>()
+        ouvertures.add("Ouverture 1")
+        ouvertures.add("Ouverture 2")
+        val adapterOuverture = ArrayAdapter(baseContext, android.R.layout.simple_spinner_item, ouvertures)
+        viewBinding.ouverture.adapter = adapterOuverture
+
+        viewBinding.Sensitivity.text = "400 ISO"
+        viewBinding.cameraName.text = "Lubitel 2"
+
 
         // Demander les autorisations
         if (allPermissionsGranted()) {
