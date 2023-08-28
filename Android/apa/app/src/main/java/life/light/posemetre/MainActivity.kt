@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.sqrt
 
 
 typealias LumaListener = (luma: Double) -> Unit
@@ -41,6 +42,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
+    private var latitude: Double? = null
+    private var longitude: Double? = null
+    private var lux: Double = 0.0
+    private var iso: Double = 0.0
+    private var listeVitesse: ArrayList<String> = ArrayList()
+    private var listeOuverture: ArrayList<String> = ArrayList()
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +63,8 @@ class MainActivity : AppCompatActivity() {
             if (location == null) {
                 Toast.makeText(this, getString(R.string.check_provider), Toast.LENGTH_SHORT).show()
             } else {
-                Log.i(TAG, "Latitude: " + location.latitude)
-                Log.i(TAG, "Longitude: " + location.longitude)
+                latitude = location.latitude
+                longitude = location.longitude
             }
             startCamera()
         } else {
@@ -66,10 +73,169 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        // Configurer les auditeurs pour le bouton de prise de photo
+        // Configurer les auditeurs pour les boutons de prise de photo et de calcul
         viewBinding.imageCaptureButton.setOnClickListener { takePhoto() }
+        viewBinding.calculationButton.setOnClickListener { calcul() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
+    }
+
+    private fun calcul() {
+        // Pour une utilisation en lumière réfléchie,
+        // les paramètres d'exposition sont liés à la sensibilité ISO du film,
+        // à la luminance du sujet,
+        // à l'ouverture et au temps de pose.
+        // N² / t = (L*S)/K
+        // N est l'ouverture du diaphragme en indice (f-number)
+        // t est le temps d'exposition en secondes
+        // L est la luminance de la scène en cd/m²
+        // S est la sensibilité ISO du capteur
+        // K est la constante d'étalonnage du posemètre en lumière réfléchie
+        when (viewBinding.radioGroup.checkedRadioButtonId) {
+            viewBinding.OuvertureRB.id -> {
+                // N² * K = L * S * t
+                // N² = (L*S*t) / K
+                val constante = 8.0
+                val vitesse: Double
+                if (viewBinding.vitesses.getSelectedItem().toString().contains("1/")) {
+                    vitesse =
+                        1.0 / viewBinding.vitesses.getSelectedItem().toString()
+                            .replace("1/", "").toDouble()
+                } else {
+                    vitesse = viewBinding.vitesses.getSelectedItem().toString().toDouble()
+                }
+                val ouvertureCalcule = sqrt((lux * iso * vitesse) / constante)
+
+                // Recherche de l'ouveture la plus grande
+                var min = listeOuverture.get(0).toDouble()
+                var indexMin = 0
+                var ouvertureEstTrouve = false
+                for (index in listeOuverture.indices) {
+                    val ouverture = listeOuverture.get(index).toDouble()
+                    if (ouverture == ouvertureCalcule) {
+                        viewBinding.ouvertures.setSelection(index)
+                        ouvertureEstTrouve = true
+                        break
+                    } else if (ouverture.toInt() > ouvertureCalcule && ouvertureCalcule > min) {
+                        val avant = ouverture.toInt() - ouvertureCalcule
+                        val apres = ouvertureCalcule - min
+                        if (avant < apres) {
+                            viewBinding.ouvertures.setSelection(index)
+                            ouvertureEstTrouve = true
+                            break
+                        } else {
+                            viewBinding.ouvertures.setSelection(indexMin)
+                            ouvertureEstTrouve = true
+                            break
+                        }
+                    }
+                    min = ouverture
+                    indexMin = index
+                }
+                if (!ouvertureEstTrouve) {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.aperture_not_found) + ouvertureCalcule.toInt(),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+
+            viewBinding.VitesseRB.id -> {
+                // L * S * t = N² * K
+                // t = (N² * K) / (L * S)
+                val constante = 4.0
+                val ouvertureDuCalcul =
+                    viewBinding.ouvertures.getSelectedItem().toString().toDouble()
+                var vitesseCalcule =
+                    (ouvertureDuCalcul * ouvertureDuCalcul * constante) / (lux * iso)
+                // Convertion en division
+                var estInferireurALaSeconde = false
+                if (vitesseCalcule < 1) {
+                    vitesseCalcule = 1.0 / vitesseCalcule
+                    estInferireurALaSeconde = true
+                }
+                val index = rechercheIndexVitesse(vitesseCalcule.toInt(), estInferireurALaSeconde)
+                viewBinding.vitesses.setSelection(index)
+            }
+
+            else -> {
+                Toast.makeText(this, getString(R.string.error_calculation), Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
+    }
+
+    fun rechercheIndexVitesse(vitesseCalcule: Int, estInferireurALaSecondeCalcule: Boolean): Int {
+        // Récupération de la vitesse la plus lente de la liste des vitesses disponible trié
+        var min: Int
+        var indexMin: Int
+        var dernierIndex = listeVitesse.size - 1
+        var estInferireurALaSeconde = false
+        var bulb = false
+        // Si la liste se finit par la valeur B on prend la valeur précédente
+        if (listeVitesse.get(dernierIndex).equals("B")) {
+            dernierIndex = dernierIndex - 1
+            bulb = true
+        }
+        if (listeVitesse.get(dernierIndex).contains("1/")) {
+            min = listeVitesse.get(dernierIndex).replace("1/", "").toInt()
+            indexMin = dernierIndex
+            estInferireurALaSeconde = true
+        } else {
+            min = listeVitesse.get(dernierIndex).toInt()
+            indexMin = dernierIndex
+        }
+        if (!estInferireurALaSecondeCalcule && !estInferireurALaSeconde) {
+            if (bulb) {
+                return listeVitesse.size - 1
+            } else {
+                Toast.makeText(
+                    this,
+                    getString(R.string.speed_too_high) + vitesseCalcule + getString(R.string.seconds),
+                    Toast.LENGTH_LONG
+                ).show()
+                return listeVitesse.size - 1
+            }
+        }
+
+
+        // Recherche de la vitesse plus rapide donc on inverse la liste
+        for (index in listeVitesse.indices.reversed()) {
+            if (listeVitesse.get(index) != "B") {
+                var vitesse = listeVitesse.get(index)
+                if (vitesse.contains("1/")) {
+                    vitesse = vitesse.replace("1/", "")
+                    estInferireurALaSeconde = true
+                } else {
+                    estInferireurALaSeconde = false
+                }
+                if (estInferireurALaSecondeCalcule && estInferireurALaSeconde) {
+                    if (vitesse.toInt() == vitesseCalcule) {
+                        return index
+                    } else if (vitesse.toInt() > vitesseCalcule && vitesseCalcule < min) {
+                        val avant = vitesse.toInt() - vitesseCalcule
+                        val apres = vitesseCalcule - min
+                        if (avant < apres) {
+                            return index
+                        } else {
+                            return indexMin
+                        }
+                    } else {
+                        min = vitesse.toInt()
+                        indexMin = index
+                    }
+                }
+            }
+        }
+        val message: String
+        if (estInferireurALaSecondeCalcule) {
+            message = getString(R.string.calculated_speed) + vitesseCalcule + getString(R.string.second)
+        } else {
+            message = getString(R.string.calculated_speed_seconds) + vitesseCalcule + getString(R.string.seconds)
+        }
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        return 0
     }
 
     private fun takePhoto() {
@@ -115,6 +281,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    @SuppressLint("RestrictedApi")
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -135,7 +302,7 @@ class MainActivity : AppCompatActivity() {
                 .build()
                 .also {
                     it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                        Log.d(TAG, getString(R.string.average_luminosity) + luma)
+                        lux = luma
                     })
                 }
 
@@ -168,7 +335,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "Posemétre"
+        private const val TAG = "Posemètre"
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
@@ -209,7 +376,6 @@ class MainActivity : AppCompatActivity() {
         val mStringRequest = StringRequest(
             Request.Method.GET, url,
             { response ->
-                Log.i(TAG, "-----Response :$response")
                 val vueJsonObject = JSONObject(response)
                 val vueObject = vueJsonObject.getJSONArray("vues")
                 for (i in 0 until (vueObject.length())) {
@@ -219,10 +385,13 @@ class MainActivity : AppCompatActivity() {
                     androidVue.sensibilite = androidVueJSONObject.getString("sensibilite")
                     androidVue.vitesses =
                         jsonArrayToArrayList(androidVueJSONObject.getJSONArray("vitesses"))
+                    listeVitesse = androidVue.vitesses
                     androidVue.ouvertures =
                         jsonArrayToArrayList(androidVueJSONObject.getJSONArray("ouvertures"))
-                    viewBinding.Sensitivity.text = androidVue.sensibilite
-                    viewBinding.cameraName.text = androidVue.nomAppareilPhoto
+                    listeOuverture = androidVue.ouvertures
+                    iso = androidVue.sensibilite?.toDouble()!!
+                    viewBinding.Sensitivity.text = " ${androidVue.sensibilite} ISO "
+                    viewBinding.cameraName.text = " ${androidVue.nomAppareilPhoto} "
                     val adapterVitesse = ArrayAdapter(
                         baseContext,
                         android.R.layout.simple_spinner_item,

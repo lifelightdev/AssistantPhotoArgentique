@@ -14,4 +14,12 @@
     <string name="speed">Vitesse</string>
     <string name="automatic">Automatique</string>
     <string name="check_provider">Vérifier le mode de localisation</string>
+    <string name="locked">Verrouille : </string>
+    <string name="aperture_not_found">L\'ouverture n\'a pas été trouvé pour cette configutation F</string>
+    <string name="seconds"> secondes</string>
+    <string name="second"> seconde</string>
+    <string name="error_calculation">Il y a une erreur dans le choix du calcul</string>
+    <string name="speed_too_high">La vitesse est trop grande pour cette configuration </string>
+    <string name="calculated_speed">La vitesse calculé est de 1/</string>
+    <string name="calculated_speed_seconds">La vitesse calculé est de </string>
 </resources>
