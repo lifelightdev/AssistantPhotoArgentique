@@ -114,7 +114,9 @@ public class PriseDeVueController {
         priseDeVueService.miseAJourVue(id,
                 String.valueOf(allParams.get("valeurVitesse")),
                 String.valueOf(allParams.get("valeurOuverture")),
-                Long.valueOf(allParams.get("idStatut")));
+                Long.valueOf(allParams.get("idStatut")),
+                Double.valueOf(allParams.get("longitude")),
+                Double.valueOf(allParams.get("latitude")));
     }
 
 }

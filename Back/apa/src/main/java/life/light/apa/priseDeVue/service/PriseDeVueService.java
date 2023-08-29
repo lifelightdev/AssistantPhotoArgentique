@@ -7,7 +7,9 @@ import life.light.apa.priseDeVue.model.*;
 import life.light.apa.referentiel.dao.*;
 import life.light.apa.referentiel.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -175,9 +177,7 @@ public class PriseDeVueService {
         Set<AppareilPhoto> appareilsPhoto = new HashSet<>();
         for (Materiel materiel : materiels) {
             Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId());
-            if (appareilPhoto.isPresent()) {
-                appareilsPhoto.add(appareilPhoto.get());
-            }
+            appareilPhoto.ifPresent(appareilsPhoto::add);
         }
         return appareilsPhoto;
     }
@@ -194,7 +194,39 @@ public class PriseDeVueService {
         return films;
     }
 
-    public void miseAJourVue(long id, String valeurVitesse, String valeurOuverture, Long idStatut) {
+
+    public Position recherchePosition(Double latitude, Double longitude) {
+        if (latitude == 37.421998333333335 && longitude == -122.084) {
+            // C'est une position fixe du GPS virtuel d'Android : Google au USA
+            // Ja la remplace par la position de Notre Dame de Paris
+            latitude = 48.8529371;
+            longitude = 2.3500501;
+        }
+
+        String uri = "https://geo.api.gouv.fr/communes?lat=" + latitude + "&lon=" + longitude + "&fields=nom,codesPostaux&format=json&geometry=centre";
+        ResponseEntity<Commune[]> responseEntity = WebClient.create(uri)
+                .get()
+                .retrieve()
+                .toEntity(Commune[].class)
+                .block();
+
+        Position position = new Position();
+        position.setLatitude(latitude);
+        position.setLongitude(longitude);
+
+        if (responseEntity != null) {
+            Commune[] communes = responseEntity.getBody();
+            position.setCodePostal((communes != null ? communes[0].getCodesPostaux() : new String[0])[0]);
+            position.setVille(communes[0].getNom());
+            position.setNom(position.getVille());
+        }
+
+        return position;
+    }
+
+    public void miseAJourVue(long id, String valeurVitesse, String valeurOuverture, Long idStatut, Double longitude, Double latitude) {
+        Position position = recherchePosition(latitude, longitude);
+        position = positionRepository.save(position);
         Vue vue = vueRepository.findById(id).get();
         if (!vue.getStatutVue().getId().equals(idStatut)) {
             StatutVue statut = statutVueRepository.findById(idStatut).get();
@@ -209,6 +241,7 @@ public class PriseDeVueService {
         vue.setOuverture(ouverture);
         Vitesse vitesse = vitesseRepository.findByNom(valeurVitesse);
         vue.setVitesse(vitesse);
+        vue.setPosition(position);
         vue = vueRepository.save(vue);
         PriseDeVue priseDeVue = miseAJourPriseDeVue(vue.getPriseDeVue().getId());
         priseDeVueRepository.save(priseDeVue);

@@ -22,12 +22,14 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
+import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import life.light.posemetre.databinding.ActivityMainBinding
 import org.json.JSONArray
 import org.json.JSONObject
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
@@ -39,6 +41,7 @@ typealias LumaListener = (luma: Double) -> Unit
 
 class MainActivity : AppCompatActivity() {
 
+    private val urlServeur = "http://10.0.2.2:8081"
     private lateinit var viewBinding: ActivityMainBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
@@ -48,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private var iso: Double = 0.0
     private var listeVitesse: ArrayList<String> = ArrayList()
     private var listeOuverture: ArrayList<String> = ArrayList()
+    private var idVue: Long = 0
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +73,7 @@ class MainActivity : AppCompatActivity() {
             startCamera()
         } else {
             ActivityCompat.requestPermissions(
-                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+                    this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
 
@@ -81,16 +85,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calcul() {
-        // Pour une utilisation en lumière réfléchie,
-        // les paramètres d'exposition sont liés à la sensibilité ISO du film,
-        // à la luminance du sujet,
-        // à l'ouverture et au temps de pose.
-        // N² / t = (L*S)/K
-        // N est l'ouverture du diaphragme en indice (f-number)
-        // t est le temps d'exposition en secondes
-        // L est la luminance de la scène en cd/m²
-        // S est la sensibilité ISO du capteur
-        // K est la constante d'étalonnage du posemètre en lumière réfléchie
+        /*
+         Pour une utilisation en lumière réfléchie
+         Les paramètres d'exposition sont liés :
+         - à la sensibilité ISO du film,
+         - à la luminance du sujet,
+         - à l'ouverture et au temps de pose.
+
+         N² / t = (L*S)/K
+
+         N est l'ouverture du diaphragme en indice (f-number)
+         t est le temps d'exposition en secondes
+         L est la luminance de la scène en cd/m²
+         S est la sensibilité ISO du capteur
+         K est la constante d'étalonnage du posemètre en lumière réfléchie
+         */
+
         when (viewBinding.radioGroup.checkedRadioButtonId) {
             viewBinding.OuvertureRB.id -> {
                 // N² * K = L * S * t
@@ -99,8 +109,8 @@ class MainActivity : AppCompatActivity() {
                 val vitesse: Double
                 if (viewBinding.vitesses.getSelectedItem().toString().contains("1/")) {
                     vitesse =
-                        1.0 / viewBinding.vitesses.getSelectedItem().toString()
-                            .replace("1/", "").toDouble()
+                            1.0 / viewBinding.vitesses.getSelectedItem().toString()
+                                    .replace("1/", "").toDouble()
                 } else {
                     vitesse = viewBinding.vitesses.getSelectedItem().toString().toDouble()
                 }
@@ -134,9 +144,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 if (!ouvertureEstTrouve) {
                     Toast.makeText(
-                        this,
-                        getString(R.string.aperture_not_found) + ouvertureCalcule.toInt(),
-                        Toast.LENGTH_LONG
+                            this,
+                            getString(R.string.aperture_not_found) + ouvertureCalcule.toInt(),
+                            Toast.LENGTH_LONG
                     ).show()
                 }
             }
@@ -146,9 +156,9 @@ class MainActivity : AppCompatActivity() {
                 // t = (N² * K) / (L * S)
                 val constante = 4.0
                 val ouvertureDuCalcul =
-                    viewBinding.ouvertures.getSelectedItem().toString().toDouble()
+                        viewBinding.ouvertures.getSelectedItem().toString().toDouble()
                 var vitesseCalcule =
-                    (ouvertureDuCalcul * ouvertureDuCalcul * constante) / (lux * iso)
+                        (ouvertureDuCalcul * ouvertureDuCalcul * constante) / (lux * iso)
                 // Convertion en division
                 var estInferireurALaSeconde = false
                 if (vitesseCalcule < 1) {
@@ -161,7 +171,7 @@ class MainActivity : AppCompatActivity() {
 
             else -> {
                 Toast.makeText(this, getString(R.string.error_calculation), Toast.LENGTH_LONG)
-                    .show()
+                        .show()
             }
         }
     }
@@ -191,9 +201,9 @@ class MainActivity : AppCompatActivity() {
                 return listeVitesse.size - 1
             } else {
                 Toast.makeText(
-                    this,
-                    getString(R.string.speed_too_high) + vitesseCalcule + getString(R.string.seconds),
-                    Toast.LENGTH_LONG
+                        this,
+                        getString(R.string.speed_too_high) + vitesseCalcule + getString(R.string.seconds),
+                        Toast.LENGTH_LONG
                 ).show()
                 return listeVitesse.size - 1
             }
@@ -244,7 +254,7 @@ class MainActivity : AppCompatActivity() {
 
         // Créez un nom horodaté et une entrée MediaStore.
         val name = SimpleDateFormat(FILENAME_FORMAT, Locale.FRENCH)
-            .format(System.currentTimeMillis())
+                .format(System.currentTimeMillis())
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
@@ -255,30 +265,31 @@ class MainActivity : AppCompatActivity() {
 
         // Créer un objet d'options de sortie contenant un fichier + des métadonnées
         val outputOptions = ImageCapture.OutputFileOptions
-            .Builder(
-                contentResolver,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                contentValues
-            )
-            .build()
+                .Builder(
+                        contentResolver,
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        contentValues
+                )
+                .build()
 
         // Configurer l'écouteur de capture d'image, qui se déclenche après la prise de la photo
         imageCapture.takePicture(
-            outputOptions,
-            ContextCompat.getMainExecutor(this),
-            object : ImageCapture.OnImageSavedCallback {
-                override fun onError(exc: ImageCaptureException) {
-                    Log.e(TAG, getString(R.string.photo_failed) + exc.message, exc)
-                }
+                outputOptions,
+                ContextCompat.getMainExecutor(this),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onError(exc: ImageCaptureException) {
+                        Log.e(TAG, getString(R.string.photo_failed) + exc.message, exc)
+                    }
 
-                override fun
-                        onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val msg = getString(R.string.photo_success) + output.savedUri
-                    Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-                    Log.d(TAG, msg)
+                    override fun
+                            onImageSaved(output: ImageCapture.OutputFileResults) {
+                        val msg = getString(R.string.photo_success) + output.savedUri
+                        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+                        Log.d(TAG, msg)
+                    }
                 }
-            }
         )
+        setData()
     }
 
     @SuppressLint("RestrictedApi")
@@ -291,20 +302,20 @@ class MainActivity : AppCompatActivity() {
 
             // Aperçu
             val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
-                }
+                    .build()
+                    .also {
+                        it.setSurfaceProvider(viewBinding.viewFinder.surfaceProvider)
+                    }
 
             imageCapture = ImageCapture.Builder().build()
 
             val imageAnalyzer = ImageAnalysis.Builder()
-                .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
-                        lux = luma
-                    })
-                }
+                    .build()
+                    .also {
+                        it.setAnalyzer(cameraExecutor, LuminosityAnalyzer { luma ->
+                            lux = luma
+                        })
+                    }
 
             // Sélectionnez la caméra arrière par défaut
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
@@ -315,7 +326,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Lier les cas d'utilisation à la caméra
                 cameraProvider.bindToLifecycle(
-                    this, cameraSelector, preview, imageCapture, imageAnalyzer
+                        this, cameraSelector, preview, imageCapture, imageAnalyzer
                 )
             } catch (exc: Exception) {
                 Log.e(TAG, getString(R.string.binding), exc)
@@ -325,7 +336,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            baseContext, it
+                baseContext, it
         ) == PackageManager.PERMISSION_GRANTED
     }
 
@@ -339,20 +350,20 @@ class MainActivity : AppCompatActivity() {
         private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS =
-            mutableListOf(
-                Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ).apply {
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
-                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }.toTypedArray()
+                mutableListOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                ).apply {
+                    if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                        add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    }
+                }.toTypedArray()
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults:
-        IntArray
+            requestCode: Int, permissions: Array<String>, grantResults:
+            IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
@@ -360,8 +371,8 @@ class MainActivity : AppCompatActivity() {
                 startCamera()
             } else {
                 Toast.makeText(
-                    this, getString(R.string.permissions),
-                    Toast.LENGTH_SHORT
+                        this, getString(R.string.permissions),
+                        Toast.LENGTH_SHORT
                 ).show()
                 finish()
             }
@@ -369,47 +380,70 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getData() {
-        val url = "http://10.0.2.2:8081/android/vue"
+        val url = "$urlServeur/android/vue"
         val androidVue = AndroidVue()
         val mRequestQueue = Volley.newRequestQueue(baseContext)
 
         val mStringRequest = StringRequest(
-            Request.Method.GET, url,
-            { response ->
-                val vueJsonObject = JSONObject(response)
-                val vueObject = vueJsonObject.getJSONArray("vues")
-                for (i in 0 until (vueObject.length())) {
-                    val androidVueJSONObject = vueObject.getJSONObject(i)
-                    androidVue.id = androidVueJSONObject.getLong("id")
-                    androidVue.nomAppareilPhoto = androidVueJSONObject.getString("nomAppareilPhoto")
-                    androidVue.sensibilite = androidVueJSONObject.getString("sensibilite")
-                    androidVue.vitesses =
-                        jsonArrayToArrayList(androidVueJSONObject.getJSONArray("vitesses"))
-                    listeVitesse = androidVue.vitesses
-                    androidVue.ouvertures =
-                        jsonArrayToArrayList(androidVueJSONObject.getJSONArray("ouvertures"))
-                    listeOuverture = androidVue.ouvertures
-                    iso = androidVue.sensibilite?.toDouble()!!
-                    viewBinding.Sensitivity.text = " ${androidVue.sensibilite} ISO "
-                    viewBinding.cameraName.text = " ${androidVue.nomAppareilPhoto} "
-                    val adapterVitesse = ArrayAdapter(
-                        baseContext,
-                        android.R.layout.simple_spinner_item,
-                        androidVue.vitesses
-                    )
-                    viewBinding.vitesses.adapter = adapterVitesse
-                    val adapterOuverture = ArrayAdapter(
-                        baseContext,
-                        android.R.layout.simple_spinner_item,
-                        androidVue.ouvertures
-                    )
-                    viewBinding.ouvertures.adapter = adapterOuverture
+                Request.Method.GET, url,
+                { response ->
+                    val vueJsonObject = JSONObject(response)
+                    val vueObject = vueJsonObject.getJSONArray("vues")
+                    for (i in 0 until (vueObject.length())) {
+                        val androidVueJSONObject = vueObject.getJSONObject(i)
+                        androidVue.id = androidVueJSONObject.getLong("id")
+                        idVue = androidVue.id
+                        androidVue.nomAppareilPhoto = androidVueJSONObject.getString("nomAppareilPhoto")
+                        androidVue.sensibilite = androidVueJSONObject.getString("sensibilite")
+                        androidVue.vitesses =
+                                jsonArrayToArrayList(androidVueJSONObject.getJSONArray("vitesses"))
+                        listeVitesse = androidVue.vitesses
+                        androidVue.ouvertures =
+                                jsonArrayToArrayList(androidVueJSONObject.getJSONArray("ouvertures"))
+                        listeOuverture = androidVue.ouvertures
+                        iso = androidVue.sensibilite?.toDouble()!!
+                        viewBinding.Sensitivity.text = " ${androidVue.sensibilite} ISO "
+                        viewBinding.cameraName.text = " ${androidVue.nomAppareilPhoto} "
+                        val adapterVitesse = ArrayAdapter(
+                                baseContext,
+                                android.R.layout.simple_spinner_item,
+                                androidVue.vitesses
+                        )
+                        viewBinding.vitesses.adapter = adapterVitesse
+                        val adapterOuverture = ArrayAdapter(
+                                baseContext,
+                                android.R.layout.simple_spinner_item,
+                                androidVue.ouvertures
+                        )
+                        viewBinding.ouvertures.adapter = adapterOuverture
+                    }
                 }
-            }
         ) { error ->
             Log.e(TAG, "------Error :$error")
         }
         mRequestQueue.add(mStringRequest)
+    }
+
+    private fun setData() {
+        val queue = Volley.newRequestQueue(baseContext)
+        val url = "$urlServeur/vue/$idVue/photo"
+        val valeurOuverture = viewBinding.ouvertures.getSelectedItem().toString()
+        val valeurVitesse = viewBinding.vitesses.getSelectedItem().toString()
+        val requestBody = "valeurOuverture=$valeurOuverture&valeurVitesse=$valeurVitesse&idStatut=2&longitude=$longitude&latitude=$latitude"
+        val stringReq: StringRequest =
+                object : StringRequest(Method.POST, url,
+                        Response.Listener { response ->
+                            val strResp = response.toString()
+                        },
+                        Response.ErrorListener { error ->
+                            Log.e(TAG, "------Error :$error")
+                        }
+                ) {
+                    override fun getBody(): ByteArray {
+                        return requestBody.toByteArray(Charset.defaultCharset())
+                    }
+                }
+        queue.add(stringReq)
     }
 
     private fun jsonArrayToArrayList(jArray: JSONArray): ArrayList<String> {
