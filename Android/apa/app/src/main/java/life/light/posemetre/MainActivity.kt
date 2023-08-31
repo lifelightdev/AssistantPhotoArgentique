@@ -111,8 +111,15 @@ class MainActivity : AppCompatActivity() {
                     vitesse =
                             1.0 / viewBinding.vitesses.getSelectedItem().toString()
                                     .replace("1/", "").toDouble()
-                } else {
+                } else if (!viewBinding.vitesses.getSelectedItem().toString().equals("B")) {
                     vitesse = viewBinding.vitesses.getSelectedItem().toString().toDouble()
+                } else {
+                    Toast.makeText(
+                        this,
+                        getString(R.string.speed_bulb) ,
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return
                 }
                 val ouvertureCalcule = sqrt((lux * iso * vitesse) / constante)
 
@@ -220,7 +227,7 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     estInferireurALaSeconde = false
                 }
-                if (estInferireurALaSecondeCalcule && estInferireurALaSeconde) {
+                if (estInferireurALaSecondeCalcule || estInferireurALaSeconde) {
                     if (vitesse.toInt() == vitesseCalcule) {
                         return index
                     } else if (vitesse.toInt() > vitesseCalcule && vitesseCalcule < min) {
@@ -434,6 +441,7 @@ class MainActivity : AppCompatActivity() {
                 object : StringRequest(Method.POST, url,
                         Response.Listener { response ->
                             val strResp = response.toString()
+                            Log.i(TAG, "------Réponse :$strResp")
                         },
                         Response.ErrorListener { error ->
                             Log.e(TAG, "------Error :$error")

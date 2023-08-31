@@ -22,4 +22,5 @@
     <string name="speed_too_high">La vitesse est trop grande pour cette configuration </string>
     <string name="calculated_speed">La vitesse calculé est de 1/</string>
     <string name="calculated_speed_seconds">La vitesse calculé est de </string>
+    <string name="speed_bulb">Blub n\'est pas compatible avec le calcul de priorité à l\'ouverture</string>
 </resources>
