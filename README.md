@@ -9,7 +9,7 @@ Ce Projet est en cours de développement avec IntelliJ IDE et Android Studio.
 * 
 * Il faut créer l'utilistateur `AppareilPhoto` avec la mot de passe `AppareilPhoto` : 
 
-`create user if not exists AppareilPhoto@localhost;`
+`create user if not exists 'AppareilPhoto'@'localhost';`
 
 `grant alter, create, delete, drop, event,  index, insert, lock tables,  select, update on apa.* to AppareilPhoto@localhost;`
 
