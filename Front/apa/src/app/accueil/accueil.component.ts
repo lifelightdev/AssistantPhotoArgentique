@@ -10,7 +10,8 @@ import { HttpClient } from "@angular/common/http";
 
 export class AccueilComponent implements OnInit {
 
-  private serveurUrl = `http://127.0.0.1:8081`;
+  // TODO à déplacer en constante globale
+  private serveurUrl = `http://127.0.0.1:8181`;
 
   constructor(
     private http: HttpClient) {
