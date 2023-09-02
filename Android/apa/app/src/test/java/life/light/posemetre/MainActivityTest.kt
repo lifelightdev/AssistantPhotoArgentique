@@ -1,9 +1,15 @@
 package life.light.posemetre
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import org.junit.Test
 import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.jupiter.api.Assertions.assertTrue
 
 class MainActivityTest  {
+
+    @get:Rule
+    val rule = InstantTaskExecutorRule()
 
     @Test
     fun calcul() {
@@ -12,10 +18,14 @@ class MainActivityTest  {
 
     @Test
     fun rechercheIndexOuvertureTest() {
+
         /* Given */
-        val ouvertureCalcule = 0.0
+        val ouvertureCalcule = 22.0
         val indexOuvertureSelected = 0
         val listeOuverture: ArrayList<String> = ArrayList()
+        listeOuverture.add("4.5")
+        listeOuverture.add("11")
+        listeOuverture.add("22")
 
         /* When */
         val (index, trouve) = MainActivity().rechercheIndexOuverture(
@@ -25,7 +35,9 @@ class MainActivityTest  {
         )
 
         /* Then */
-        assertEquals(true, true)
+        assertEquals(index,2)
+        assertTrue(trouve)
+
     }
 
     @Test
