@@ -13,6 +13,8 @@ Ce Projet est en cours de développement avec IntelliJ IDE et Android Studio.
 
 `grant alter, create, delete, drop, event,  index, insert, lock tables,  select, update, references on apa.* to 'AppareilPhoto'@'localhost';`
 
+`FLUSH PRIVILEGES;`
+
 * Pour l'application Android, il faut créer un device : 
    * de type Pixel Pro 7 pro avec un écran de 6,71"
    * avec une API Level 34 
