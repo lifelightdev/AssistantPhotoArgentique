@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
-    fun calcul() {
+    private fun calcul() {
         /*
          Pour une utilisation en lumière réfléchie
          Les paramètres d'exposition sont liés :
@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity() {
                 // N² = (L*S*t) / K
                 val constante = 8.0
                 val indexOuvertureSelected = viewBinding.ouvertures.selectedItemId.toInt()
-                val vitesseSelected = viewBinding.vitesses.getSelectedItem().toString()
+                val vitesseSelected = viewBinding.vitesses.selectedItem.toString()
                 val vitesse: Double
                 if (vitesseSelected.contains("1/")) {
                     vitesse =
@@ -144,11 +144,31 @@ class MainActivity : AppCompatActivity() {
                 // t = (N² * K) / (L * S)
                 val constante = 4.0
                 val ouvertureDuCalcul =
-                    viewBinding.ouvertures.getSelectedItem().toString().toDouble()
+                    viewBinding.ouvertures.selectedItem.toString().toDouble()
                 val vitesseCalcule =
                     (ouvertureDuCalcul * ouvertureDuCalcul * constante) / (lux * iso)
-                val index = rechercheIndexVitesse(vitesseCalcule, listeVitesse)
-                viewBinding.vitesses.setSelection(index)
+                val indexVitesseSelected = viewBinding.vitesses.selectedItemId.toInt()
+                val (indexVitesseCalcule, vitesseEstTrouve) = rechercheIndexVitesse(
+                    vitesseCalcule,
+                    indexVitesseSelected,
+                    listeVitesse
+                )
+                if (!vitesseEstTrouve) {
+                    val message: String
+                    if (vitesseCalcule < 1) {
+                        message =
+                            getString(R.string.calculated_speed) + (1.0 / vitesseCalcule) + getString(
+                                R.string.second
+                            )
+                    } else {
+                        message =
+                            getString(R.string.calculated_speed_seconds) + vitesseCalcule + getString(
+                                R.string.seconds
+                            )
+                    }
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                }
+                viewBinding.vitesses.setSelection(indexVitesseCalcule)
             }
 
             else -> {
@@ -163,39 +183,55 @@ class MainActivity : AppCompatActivity() {
     ): Pair<Int, Boolean> {
         var indexOuvertureCalcule: Int = indexOuvertureSelected
         // Recherche de l'ouveture la plus grande
-        var min = listeOuverture.get(0).toDouble()
+        var min = listeOuverture[0].toDouble()
         var indexMin = 0
         var ouvertureEstTrouve = false
-        for (index in listeOuverture.indices) {
-            val ouverture = listeOuverture.get(index).toDouble()
-            if (ouverture == ouvertureCalcule) {
-                indexOuvertureCalcule = index
-                ouvertureEstTrouve = true
-                break
-            } else if (ouverture.toInt() > ouvertureCalcule && ouvertureCalcule > min) {
-                val avant = ouverture.toInt() - ouvertureCalcule
-                val apres = ouvertureCalcule - min
-                if (avant < apres) {
+        if (ouvertureCalcule >= min && ouvertureCalcule <= listeOuverture[listeOuverture.size - 1]
+                .toDouble()
+        ) {
+            for (index in listeOuverture.indices) {
+                val ouverture = listeOuverture[index].toDouble()
+                if (ouverture == ouvertureCalcule) {
                     indexOuvertureCalcule = index
                     ouvertureEstTrouve = true
                     break
-                } else {
-                    indexOuvertureCalcule = indexMin
-                    ouvertureEstTrouve = true
-                    break
+                } else if (ouverture.toInt() > ouvertureCalcule && ouvertureCalcule > min) {
+                    val avant = ouverture.toInt() - ouvertureCalcule
+                    val apres = ouvertureCalcule - min
+                    if (avant < apres) {
+                        indexOuvertureCalcule = index
+                        ouvertureEstTrouve = true
+                        break
+                    } else {
+                        indexOuvertureCalcule = indexMin
+                        ouvertureEstTrouve = true
+                        break
+                    }
                 }
+                min = ouverture
+                indexMin = index
             }
-            min = ouverture
-            indexMin = index
+        } else if (ouvertureCalcule < min) {
+            indexOuvertureCalcule = 0
+            ouvertureEstTrouve = false
+        } else if (ouvertureCalcule > listeOuverture[listeOuverture.size - 1].toDouble()) {
+            indexOuvertureCalcule = listeOuverture.size - 1
+            ouvertureEstTrouve = false
+        } else {
+            indexOuvertureCalcule = -1
+            ouvertureEstTrouve = false
         }
         return Pair(indexOuvertureCalcule, ouvertureEstTrouve)
     }
 
     fun rechercheIndexVitesse(
         vitesseCalcule: Double,
+        indexVitesseSelected: Int,
         listeVitesse: ArrayList<String>
-    ): Int {
+    ): Pair<Int, Boolean> {
         var vitesseCalculeInt = 0
+        var indexVitesseCalcule: Int = indexVitesseSelected
+        var vitesseEstTrouve = false
         // Convertion en division
         var estInferireurALaSecondeCalcule = false
         if (vitesseCalcule < 1) {
@@ -209,34 +245,27 @@ class MainActivity : AppCompatActivity() {
         var estInferireurALaSeconde = false
         var bulb = false
         // Si la liste se finit par la valeur B on prend la valeur précédente
-        if (listeVitesse.get(dernierIndex).equals("B")) {
-            dernierIndex = dernierIndex - 1
+        if (listeVitesse[dernierIndex] == "B") {
+            dernierIndex -= 1
             bulb = true
         }
-        if (listeVitesse.get(dernierIndex).contains("1/")) {
-            min = listeVitesse.get(dernierIndex).replace("1/", "").toInt()
+        if (listeVitesse[dernierIndex].contains("1/")) {
+            min = listeVitesse[dernierIndex].replace("1/", "").toInt()
             indexMin = dernierIndex
             estInferireurALaSeconde = true
         } else {
-            min = listeVitesse.get(dernierIndex).toInt()
+            min = listeVitesse[dernierIndex].toInt()
             indexMin = dernierIndex
         }
         if (!estInferireurALaSecondeCalcule && !estInferireurALaSeconde) {
             if (bulb) {
-                return listeVitesse.size - 1
-            } else {
-                Toast.makeText(
-                    this,
-                    getString(R.string.speed_too_high) + vitesseCalcule + getString(R.string.seconds),
-                    Toast.LENGTH_LONG
-                ).show()
-                return listeVitesse.size - 1
+                return Pair((listeVitesse.size - 1), false)
             }
         }
         // Recherche de la vitesse plus rapide donc on inverse la liste
         for (index in listeVitesse.indices.reversed()) {
-            if (listeVitesse.get(index) != "B") {
-                val vitesseString = listeVitesse.get(index)
+            if (listeVitesse[index] != "B") {
+                val vitesseString = listeVitesse[index]
                 var vitesseInt: Int
                 if (vitesseString.contains("1/")) {
                     vitesseInt = vitesseString.replace("1/", "").toInt()
@@ -247,14 +276,19 @@ class MainActivity : AppCompatActivity() {
                 }
                 if (estInferireurALaSecondeCalcule && estInferireurALaSeconde) {
                     if (vitesseInt == vitesseCalculeInt) {
-                        return index
-                    } else if (vitesseInt > vitesseCalculeInt && vitesseCalculeInt < min) {
+                        indexVitesseCalcule = index
+                        vitesseEstTrouve = true
+                    } else if (vitesseInt > vitesseCalculeInt && vitesseCalculeInt > min) {
                         val avant = vitesseInt - vitesseCalculeInt
                         val apres = vitesseCalculeInt - min
                         if (avant < apres) {
-                            return index
+                            indexVitesseCalcule = index
+                            vitesseEstTrouve = true
+                            break
                         } else {
-                            return indexMin
+                            indexVitesseCalcule = indexMin
+                            vitesseEstTrouve = true
+                            break
                         }
                     } else {
                         min = vitesseInt
@@ -263,16 +297,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-        val message: String
-        if (estInferireurALaSecondeCalcule) {
-            message =
-                getString(R.string.calculated_speed) + vitesseCalculeInt + getString(R.string.second)
-        } else {
-            message =
-                getString(R.string.calculated_speed_seconds) + vitesseCalculeInt + getString(R.string.seconds)
-        }
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        return 0
+        return Pair(indexVitesseCalcule, vitesseEstTrouve)
     }
 
     private fun takePhoto() {
@@ -407,6 +432,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun getData() {
         val url = "$urlServeur/android/vue"
         val androidVue = AndroidVue()
@@ -430,8 +456,8 @@ class MainActivity : AppCompatActivity() {
                         jsonArrayToArrayList(androidVueJSONObject.getJSONArray("ouvertures"))
                     listeOuverture = androidVue.ouvertures
                     iso = androidVue.sensibilite?.toDouble()!!
-                    viewBinding.Sensitivity.text = " ${androidVue.sensibilite} ISO "
-                    viewBinding.cameraName.text = " ${androidVue.nomAppareilPhoto} "
+                    viewBinding.Sensitivity.text = " " + androidVue.sensibilite + " ISO "
+                    viewBinding.cameraName.text = " " + androidVue.nomAppareilPhoto + " "
                     val adapterVitesse = ArrayAdapter(
                         baseContext,
                         android.R.layout.simple_spinner_item,
@@ -455,8 +481,8 @@ class MainActivity : AppCompatActivity() {
     private fun setData() {
         val queue = Volley.newRequestQueue(baseContext)
         val url = "$urlServeur/vue/$idVue/photo"
-        val valeurOuverture = viewBinding.ouvertures.getSelectedItem().toString()
-        val valeurVitesse = viewBinding.vitesses.getSelectedItem().toString()
+        val valeurOuverture = viewBinding.ouvertures.selectedItem.toString()
+        val valeurVitesse = viewBinding.vitesses.selectedItem.toString()
         val requestBody =
             "valeurOuverture=$valeurOuverture&valeurVitesse=$valeurVitesse&idStatut=2&longitude=$longitude&latitude=$latitude"
         val stringReq: StringRequest =
