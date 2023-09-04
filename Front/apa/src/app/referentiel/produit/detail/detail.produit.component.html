@@ -8,23 +8,23 @@
     <li>Modéle : {{produit?.modele?.nom}}</li>
     <li>Remaque : {{produit?.remarque}}</li>
     <li *ngIf="produit?.modeEmploie">Mode d'emploie :
-      <a  href="assets/ModeEmploie/{{produit?.nom}}.pdf" target="_blank"
+      <a href="assets/ModeEmploie/{{produit?.nom}}.pdf" target="_blank"
          rel="noopener noreferrer">
         Afficher le mode d'emploie
       </a>
     </li>
   </ul>
-  <img *ngIf="produit?.photo" class="photo" src="assets/Images/{{produit?.nom}}.jpg" alt="Photo de {{produit?.nom}}"/>
+  <img *ngIf="produit?.photo" class="photo" src="assets/Images/{{produit?.nom}}.jpg" alt="Photo de {{produit?.nom}}" />
 </div>
 <div *ngIf="film">
   <ul>
     <h2>Détail du film</h2>
     <li>Statut du film : {{film.statutFilm?.nom}}</li>
     <li>Taille du film : {{film.tailleFilm?.nom}}</li>
-    <li>Type du film :   {{film.tailleFilm?.nom}}</li>
-    <li>Taille des vue : {{film.tailleVue?.nom}}</li>
+    <li>Type du film : {{film.typeFilm?.nom}}</li>
+    <li>Taille des vues : {{film.tailleVue?.nom}}</li>
     <li>Nombre de vue possible : {{film.nbVuePossible}} </li>
-    <li>Nombre de vue déjà exposé :  {{film.nbVueExpose}}</li>
+    <li>Nombre de vue déjà exposé : {{film.nbVueExpose}}</li>
     <li>Sensibilité en ISO : {{film.sensibilite?.nom}}</li>
   </ul>
 </div>

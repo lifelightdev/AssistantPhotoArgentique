@@ -91,6 +91,8 @@ export class SaisiePriseDeVueComponent {
   onSubmit() {
     this.submitted = true;
     this.errorMessage = "";
+    let hour = "";
+    let minute = "";
     // @ts-ignore
     this.priseDeVue.statutPriseDeVue = this.statuts[this.selectedStatus - 1];
     // @ts-ignore
@@ -98,8 +100,10 @@ export class SaisiePriseDeVueComponent {
     if (this.datePriseDeVue != undefined || this.heurePriseDeVue != undefined) {
       // @ts-ignore
       const [day, month, year] = new Date(this.datePriseDeVue).toLocaleDateString().split("/");
-      // @ts-ignore
-      const [hour, minute] = this.heurePriseDeVue.split(":");
+      if (this.heurePriseDeVue) {
+        // @ts-ignore
+        [hour, minute] = this.heurePriseDeVue.split(":");
+      }
       // @ts-ignore
       this.priseDeVue.date = new Date(Date.UTC(year, month - 1, day, hour, minute, 0));
     }

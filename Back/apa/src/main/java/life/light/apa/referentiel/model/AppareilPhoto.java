@@ -31,6 +31,9 @@ public class AppareilPhoto {
     @JoinColumn(name = "chassis_id")
     private Chassis chassis;
     @ManyToOne
+    @JoinColumn(name = "dimension_chassis_id")
+    private DimensionChassis dimensionChassis;
+    @ManyToOne
     @JoinColumn(name = "film_id")
     private Film filmCharge;
     @ManyToOne
@@ -108,6 +111,14 @@ public class AppareilPhoto {
 
     public void setChassis(Chassis chassis) {
         this.chassis = chassis;
+    }
+
+    public DimensionChassis getDimensionChassis() {
+        return dimensionChassis;
+    }
+
+    public void setDimensionChassis(DimensionChassis dimensionChassis) {
+        this.dimensionChassis = dimensionChassis;
     }
 
     public Film getFilmCharge() {

@@ -5,6 +5,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "sous_type_materiel")
 public class SousTypeMateriel {
+
+    public static final long ID_APPAREIL_PHOTO_ARGENTIQUE = 1;
+    public static final long ID_CHASSIS_PRISE_DE_VUE = 3;
+    public static final long ID_PIED = 6;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

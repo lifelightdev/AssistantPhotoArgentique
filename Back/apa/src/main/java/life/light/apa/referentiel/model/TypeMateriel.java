@@ -6,6 +6,11 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "type_materiel")
 public class TypeMateriel {
+
+    public static final long ID_PRISE_DE_VUE = 1L;
+    public static final long DEVELOPPEMENT = 2L;
+    public static final long TIRAGE = 3L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

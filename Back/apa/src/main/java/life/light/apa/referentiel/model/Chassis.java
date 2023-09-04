@@ -18,6 +18,9 @@ public class Chassis {
     @JoinColumn(name = "dimension_chassis_id")
     private DimensionChassis dimensionChassis;
     @ManyToOne
+    @JoinColumn(name = "taille_film_id")
+    private TailleFilm tailleFilm;
+    @ManyToOne
     @JoinColumn(name = "film_id")
     private Film film;
 
@@ -51,6 +54,14 @@ public class Chassis {
 
     public void setDimensionChassis(DimensionChassis dimensionChassis) {
         this.dimensionChassis = dimensionChassis;
+    }
+
+    public TailleFilm getTailleFilm() {
+        return tailleFilm;
+    }
+
+    public void setTailleFilm(TailleFilm tailleFilm) {
+        this.tailleFilm = tailleFilm;
     }
 
     public Film getFilm() {

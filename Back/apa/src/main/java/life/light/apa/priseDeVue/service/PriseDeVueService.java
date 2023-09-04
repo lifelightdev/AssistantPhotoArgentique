@@ -45,6 +45,8 @@ public class PriseDeVueService {
     private ProduitRepository produitRepository;
     @Autowired
     private MaterielRepository materielRepository;
+    @Autowired
+    private ChassisRepository chassisRepository;
 
     public Optional<Vue> afficherUneVue(long id) {
         return vueRepository.findById(id);
@@ -184,6 +186,10 @@ public class PriseDeVueService {
 
     public Set<Film> listeDesFilmsDUnePriseDeVue(long id) {
         PriseDeVue priseDeVue = priseDeVueRepository.findById(id).get();
+        return getFilms(priseDeVue);
+    }
+
+    private Set<Film> getFilms(PriseDeVue priseDeVue) {
         Set<Film> films = new HashSet<>();
         for (Produit produit : priseDeVue.getProduits()) {
             if (filmRepository.findById(produit.getId()).isPresent()) {
@@ -248,11 +254,79 @@ public class PriseDeVueService {
     }
 
     public PriseDeVue EnregistreUnePriseDeVue(PriseDeVue priseDeVue) throws PriseDeVueException {
-        try {
-            return priseDeVueRepository.saveAndFlush(priseDeVue);
-        } catch (Exception e) {
-            throw new PriseDeVueException("Impossible d'ajouter une vue car il y a une erreur à la création d'un fichier.", e);
+        List<AppareilPhoto> listeDesAppareilsPhoto = new ArrayList<>();
+        List<Chassis> listeDesChassis = new ArrayList<>();
+        Set<AppareilPhoto> listeDesAppareilsPhotoCompatibleAvecUnChassis = new HashSet<>();
+        Set<Chassis> listeDesChassisCompatibleAvecUnAppareilPhoto = new HashSet<>();
+        // Vérification de la compatibilité des matériels
+        for (Materiel materiel : priseDeVue.getMateriels()) {
+            // Vérification de la présence exclusive de matériel de prise de vues
+            if (materiel.getTypeMateriel().getId() != TypeMateriel.ID_PRISE_DE_VUE) {
+                throw new PriseDeVueException("Impossible d'ajouter la prise de vue car le matériel " + materiel.getNom() + " n'est pas de type prise de vue.");
+            }
+            // Vérification de la présence d'appareils photo argentique
+            if (materiel.getSousType().getId() == SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE) {
+                AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
+                listeDesAppareilsPhoto.add(appareilPhoto);
+            }
+            // Vérification de la présence de châssis non intègré
+            if (materiel.getSousType().getId() == SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE) {
+                Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).get();
+                listeDesChassis.add(chassis);
+            }
         }
+        if (listeDesAppareilsPhoto.isEmpty()) {
+            throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il n'y a pas d'appareil photo dans la liste de matériel.");
+        }
+        // Vérification de la compatibilité des châssis non intègre avec les appareils photo
+        for (Chassis chassis : listeDesChassis) {
+            for (AppareilPhoto appareilPhoto : listeDesAppareilsPhoto) {
+                if (chassis.getDimensionChassis().getId().equals(appareilPhoto.getDimensionChassis().getId())) {
+                    listeDesAppareilsPhotoCompatibleAvecUnChassis.add(appareilPhoto);
+                    listeDesChassisCompatibleAvecUnAppareilPhoto.add(chassis);
+                } else {
+                    // Ce châssis n'est pas compatible avec cet appareil photo
+                }
+            }
+        }
+        if (getFilms(priseDeVue).isEmpty()) {
+            throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il n'y a pas de film.");
+        }
+        // Vérification de la compatibilité des films avec les appareils photo
+        for (AppareilPhoto appareilPhoto : listeDesAppareilsPhoto) {
+            if (appareilPhoto.getChassis() != null) {
+                // recherche des films
+                for (Film film : getFilms(priseDeVue)) {
+                    if (!film.getTailleFilm().getId().equals(appareilPhoto.getChassis().getTailleFilm().getId())) {
+                        throw new PriseDeVueException("Impossible d'ajouter la prise de vue " +
+                                "car l'appareil photo " + appareilPhoto.getMateriel().getNom() + " n'est pas compatible " +
+                                "avec un film de taille " + film.getTailleFilm().getNom() + ".");
+                    } else {
+                        // Le film est compatible avec cet appareil photo
+                    }
+                }
+            } else {
+                if (!listeDesAppareilsPhotoCompatibleAvecUnChassis.contains(appareilPhoto)) {
+                    throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il manque un châssis pour cet appareil photo : " + appareilPhoto.getMateriel().getNom());
+                }
+            }
+        }
+        // Vérification de la compatibilité des films avec les châssis
+        for (Chassis chassis : listeDesChassis)
+            if (listeDesChassisCompatibleAvecUnAppareilPhoto.contains(chassis)) {
+                for (Film film : getFilms(priseDeVue)) {
+                    if (!film.getTailleFilm().getId().equals(chassis.getTailleFilm().getId())) {
+                        throw new PriseDeVueException("Impossible d'ajouter la prise de vue " +
+                                "car le chassis " + chassis.getMateriel().getNom() + " n'est pas compatible " +
+                                "avec un film de taille " + film.getTailleFilm().getNom() + ".");
+                    } else {
+                        // Le film est compatible avec ce châssis
+                    }
+                }
+            } else {
+                throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il manque un appareil photo pour ce châssis : " + chassis.getMateriel().getNom());
+            }
+        return priseDeVueRepository.saveAndFlush(priseDeVue);
     }
 
     public Iterable<Materiel> listeDesMaterielsDisponiblePourUnePriseDeVue(long id) {
