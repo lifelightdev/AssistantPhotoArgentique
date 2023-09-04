@@ -108,45 +108,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.liquibase</groupId>
-                <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.23.0</version>
-                <configuration>
-                    <url>jdbc:mysql://localhost:3306/apa?serverTimezone=UTC</url>
-                    <changeLogFile>./src/main/resources/db/changelog/db.changelog-master.yaml</changeLogFile>
-                    <outputChangeLogFile>./src/main/resources/db/outputChangeLog/liquibase-outputChangeLog.xml</outputChangeLogFile>
-                    <username>AppareilPhoto</username>
-                    <password>AppareilPhoto</password>
-                    <changeSetAuthor>LifeLight</changeSetAuthor>
-                    <propertyFileWillOverride>true</propertyFileWillOverride>
-                    <propertyFile>liquibase.properties</propertyFile>
-                    <referenceUrl>hibernate:spring:br.com.beachpark.vacation.domain?dialect=org.hibernate.dialect.MySQL5Dialect</referenceUrl>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.mysql</groupId>
-                        <artifactId>mysql-connector-j</artifactId>
-                        <version>8.1.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.liquibase.ext</groupId>
-                        <artifactId>liquibase-hibernate6</artifactId>
-                        <version>4.18.0</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-starter-data-jpa</artifactId>
-                        <version>${project.parent.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>javax.validation</groupId>
-                        <artifactId>validation-api</artifactId>
-                        <version>2.0.1.Final</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-
         </plugins>
     </build>
 
