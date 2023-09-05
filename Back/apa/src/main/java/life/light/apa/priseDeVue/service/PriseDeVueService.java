@@ -254,78 +254,78 @@ public class PriseDeVueService {
     }
 
     public PriseDeVue EnregistreUnePriseDeVue(PriseDeVue priseDeVue) throws PriseDeVueException {
-        List<AppareilPhoto> listeDesAppareilsPhoto = new ArrayList<>();
-        List<Chassis> listeDesChassis = new ArrayList<>();
-        Set<AppareilPhoto> listeDesAppareilsPhotoCompatibleAvecUnChassis = new HashSet<>();
-        Set<Chassis> listeDesChassisCompatibleAvecUnAppareilPhoto = new HashSet<>();
+        Set<AppareilPhoto> listeDesAppareilsPhotoSansChassisIntege = new HashSet<>();
+        Set<AppareilPhoto> listeDesAppareilsPhotoAvecChassisIntege = new HashSet<>();
+        Set<Chassis> listeDesChassisNonIntegre = new HashSet<>();
+        Set<Chassis> listeDesChassisIntegre = new HashSet<>();
+
         // Vérification de la compatibilité des matériels
         for (Materiel materiel : priseDeVue.getMateriels()) {
-            // Vérification de la présence exclusive de matériel de prise de vues
-            if (materiel.getTypeMateriel().getId() != TypeMateriel.ID_PRISE_DE_VUE) {
-                throw new PriseDeVueException("Impossible d'ajouter la prise de vue car le matériel " + materiel.getNom() + " n'est pas de type prise de vue.");
-            }
-            // Vérification de la présence d'appareils photo argentique
-            if (materiel.getSousType().getId() == SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE) {
+            if (!estDeTypePriseDeVues(materiel)) {
+                throw new PriseDeVueException("Impossible d'ajouter la prise de vues," +
+                        " car le matériel " + materiel.getNom() + " n'est pas de type prise de vue.");
+            } else if (estUnAppareilPhotoArgentiqueAvecChassisIntegre(materiel)) {
                 AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
-                listeDesAppareilsPhoto.add(appareilPhoto);
-            }
-            // Vérification de la présence de châssis non intègré
-            if (materiel.getSousType().getId() == SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE) {
+                listeDesAppareilsPhotoAvecChassisIntege.add(appareilPhoto);
+                listeDesChassisIntegre.add(appareilPhoto.getChassis());
+            } else if (estUnChassisNonIntegre(materiel)) {
                 Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).get();
-                listeDesChassis.add(chassis);
+                listeDesChassisNonIntegre.add(chassis);
+            } else if (estUnAppareilPhotoArgentiqueSansChassisIntegre(materiel)) {
+                AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
+                listeDesAppareilsPhotoSansChassisIntege.add(appareilPhoto);
             }
         }
-        if (listeDesAppareilsPhoto.isEmpty()) {
-            throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il n'y a pas d'appareil photo dans la liste de matériel.");
+
+        if (listeDesAppareilsPhotoSansChassisIntege.isEmpty() && listeDesAppareilsPhotoAvecChassisIntege.isEmpty()) {
+            throw new PriseDeVueException("Impossible d'ajouter la prise de vues, car il n'y a pas d'appareil photo dans la liste de matériel.");
         }
-        // Vérification de la compatibilité des châssis non intègre avec les appareils photo
-        for (Chassis chassis : listeDesChassis) {
-            for (AppareilPhoto appareilPhoto : listeDesAppareilsPhoto) {
-                if (chassis.getDimensionChassis().getId().equals(appareilPhoto.getDimensionChassis().getId())) {
-                    listeDesAppareilsPhotoCompatibleAvecUnChassis.add(appareilPhoto);
-                    listeDesChassisCompatibleAvecUnAppareilPhoto.add(chassis);
-                } else {
-                    // Ce châssis n'est pas compatible avec cet appareil photo
+
+        Set<Chassis> listeDesChassisCompatibleMateriel = new HashSet<>();
+        if (!listeDesChassisIntegre.isEmpty()) {
+            listeDesChassisCompatibleMateriel.addAll(listeDesChassisIntegre);
+        }
+
+        // S'il y a des appareils photo sans châssis, on recherche les châssis compatible
+        if (!listeDesAppareilsPhotoSansChassisIntege.isEmpty()) {
+            for (AppareilPhoto appareilPhoto : listeDesAppareilsPhotoSansChassisIntege) {
+                boolean trouveChassis = false;
+                for (Chassis chassis : listeDesChassisNonIntegre) {
+                    if (estDimensionChassisCompatible(chassis, appareilPhoto)) {
+                        listeDesChassisCompatibleMateriel.add(chassis);
+                        trouveChassis = true;
+                        break;
+                    }
+                }
+                if (!trouveChassis) {
+                    throw new PriseDeVueException("Impossible d'ajouter la prise de vues, " +
+                            "car cet appareil photo " + appareilPhoto.getMateriel().getNom() + " n'a pas de châssis.");
                 }
             }
         }
+        if (listeDesChassisCompatibleMateriel.isEmpty()) {
+            throw new PriseDeVueException("Impossible d'ajouter la prise de vue, " +
+                    "car il n'y a aucun appareil photo compatible avec les châssis.");
+        }
+
         if (getFilms(priseDeVue).isEmpty()) {
             throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il n'y a pas de film.");
         }
-        // Vérification de la compatibilité des films avec les appareils photo
-        for (AppareilPhoto appareilPhoto : listeDesAppareilsPhoto) {
-            if (appareilPhoto.getChassis() != null) {
-                // recherche des films
-                for (Film film : getFilms(priseDeVue)) {
-                    if (!film.getTailleFilm().getId().equals(appareilPhoto.getChassis().getTailleFilm().getId())) {
-                        throw new PriseDeVueException("Impossible d'ajouter la prise de vue " +
-                                "car l'appareil photo " + appareilPhoto.getMateriel().getNom() + " n'est pas compatible " +
-                                "avec un film de taille " + film.getTailleFilm().getNom() + ".");
-                    } else {
-                        // Le film est compatible avec cet appareil photo
-                    }
+
+        // Vérification de la compatibilité des films avec les châssis
+        for (Chassis chassis : listeDesChassisCompatibleMateriel) {
+            boolean trouveFilm = false;
+            for (Film film : getFilms(priseDeVue)) {
+                if (estTailleDeFilmCompatible(chassis, film)) {
+                    trouveFilm = true;
                 }
-            } else {
-                if (!listeDesAppareilsPhotoCompatibleAvecUnChassis.contains(appareilPhoto)) {
-                    throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il manque un châssis pour cet appareil photo : " + appareilPhoto.getMateriel().getNom());
-                }
+            }
+            if (!trouveFilm) {
+                throw new PriseDeVueException("Impossible d'ajouter la prise de vues, " +
+                        "car le chassis " + chassis.getMateriel().getNom() + " n'a pas de film compatible.");
             }
         }
-        // Vérification de la compatibilité des films avec les châssis
-        for (Chassis chassis : listeDesChassis)
-            if (listeDesChassisCompatibleAvecUnAppareilPhoto.contains(chassis)) {
-                for (Film film : getFilms(priseDeVue)) {
-                    if (!film.getTailleFilm().getId().equals(chassis.getTailleFilm().getId())) {
-                        throw new PriseDeVueException("Impossible d'ajouter la prise de vue " +
-                                "car le chassis " + chassis.getMateriel().getNom() + " n'est pas compatible " +
-                                "avec un film de taille " + film.getTailleFilm().getNom() + ".");
-                    } else {
-                        // Le film est compatible avec ce châssis
-                    }
-                }
-            } else {
-                throw new PriseDeVueException("Impossible d'ajouter la prise de vue car il manque un appareil photo pour ce châssis : " + chassis.getMateriel().getNom());
-            }
+
         return priseDeVueRepository.saveAndFlush(priseDeVue);
     }
 
@@ -345,5 +345,45 @@ public class PriseDeVueService {
         Set<Produit> produits = priseDeVueRepository.findById(id).get().getProduits();
         produits.addAll(produitRepository.findAll(where(ProduitSpecification.idStatutLike(StatutProduit.DISPONIBLE))));
         return produits;
+    }
+
+    Boolean estDeTypePriseDeVues(Materiel materiel) {
+        return materiel.getTypeMateriel().getId() == TypeMateriel.ID_PRISE_DE_VUE;
+    }
+
+    Boolean estUnAppareilPhotoArgentiqueAvecChassisIntegre(Materiel materiel) {
+        if (materiel.getSousType().getId() == SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE) {
+            AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
+            if (appareilPhoto.getChassis() != null) {
+                return appareilPhoto.getChassis().getStatutChassis().getId() == StatutChassis.ID_INTEGRE;
+            }
+        }
+        return false;
+    }
+
+    Boolean estUnAppareilPhotoArgentiqueSansChassisIntegre(Materiel materiel) {
+        if (materiel.getSousType().getId() == SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE) {
+            AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
+            if (appareilPhoto.getChassis() == null) {
+                return true;
+            } else return appareilPhoto.getChassis().getStatutChassis().getId() != StatutChassis.ID_INTEGRE;
+        }
+        return false;
+    }
+
+    Boolean estUnChassisNonIntegre(Materiel materiel) {
+        if (materiel.getSousType().getId() == SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE) {
+            Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).get();
+            return chassis.getStatutChassis().getId() != StatutChassis.ID_INTEGRE;
+        }
+        return false;
+    }
+
+    Boolean estDimensionChassisCompatible(Chassis chassis, AppareilPhoto appareilPhoto) {
+        return chassis.getDimensionChassis().getId().equals(appareilPhoto.getDimensionChassis().getId());
+    }
+
+    Boolean estTailleDeFilmCompatible(Chassis chassis, Film film) {
+        return Objects.equals(film.getTailleFilm().getId(), chassis.getTailleFilm().getId());
     }
 }

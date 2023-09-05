@@ -28,6 +28,8 @@ databaseChangeLog:
   - include:
       - file: classpath:/db/changelog/1-initial/010-create-table-statut_chassis.sql
   - include:
+      - file: classpath:/db/changelog/1-initial/010-statut_chassis.sql
+  - include:
       - file: classpath:/db/changelog/1-initial/011-create-table-statut_chimie.sql
   - include:
       - file: classpath:/db/changelog/1-initial/011-statut_chimie.sql

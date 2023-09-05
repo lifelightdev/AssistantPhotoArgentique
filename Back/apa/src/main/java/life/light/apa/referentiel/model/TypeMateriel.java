@@ -8,8 +8,8 @@ import jakarta.persistence.*;
 public class TypeMateriel {
 
     public static final long ID_PRISE_DE_VUE = 1L;
-    public static final long DEVELOPPEMENT = 2L;
-    public static final long TIRAGE = 3L;
+    public static final long ID_DEVELOPPEMENT = 2L;
+    public static final long ID_TIRAGE = 3L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

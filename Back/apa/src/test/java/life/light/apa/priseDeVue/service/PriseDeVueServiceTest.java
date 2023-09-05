@@ -54,6 +54,56 @@ class PriseDeVueServiceTest {
     void tearDown() {
     }
 
+    private static TypeMateriel typeDeMaterielPriseDeVue() {
+        TypeMateriel typeMateriel = new TypeMateriel();
+        typeMateriel.setId(TypeMateriel.ID_PRISE_DE_VUE);
+        return typeMateriel;
+    }
+
+    private static SousTypeMateriel sousTypeMaterielPied() {
+        SousTypeMateriel sousTypeMateriel = new SousTypeMateriel();
+        sousTypeMateriel.setId(SousTypeMateriel.ID_PIED);
+        return sousTypeMateriel;
+    }
+
+    private static TailleFilm tailleFilm() {
+        TailleFilm tailleFilm = new TailleFilm();
+        tailleFilm.setId(1L);
+        tailleFilm.setNom("Taille du film");
+        return tailleFilm;
+    }
+
+    private static SousTypeMateriel sousTypeMaterielAppareilPhotoArgentique() {
+        SousTypeMateriel sousTypeMateriel = new SousTypeMateriel();
+        sousTypeMateriel.setId(SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE);
+        return sousTypeMateriel;
+    }
+
+    private static StatutChassis statutChassisIntegre() {
+        StatutChassis statutChassis = new StatutChassis();
+        statutChassis.setId(StatutChassis.ID_INTEGRE);
+        return statutChassis;
+    }
+
+    private static DimensionChassis dimensionChassis() {
+        DimensionChassis dimensionChassis = new DimensionChassis();
+        dimensionChassis.setId(1L);
+        dimensionChassis.setNom("Nom de la dimension du chassis");
+        return dimensionChassis;
+    }
+
+    private static StatutChassis statutChassisDisponible() {
+        StatutChassis statutChassis = new StatutChassis();
+        statutChassis.setId(StatutChassis.ID_DISPONIBLE);
+        return statutChassis;
+    }
+
+    private static SousTypeMateriel sousTypeMaterielChassisPriseDeVue() {
+        SousTypeMateriel sousTypeMaterielChassis = new SousTypeMateriel();
+        sousTypeMaterielChassis.setId(SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE);
+        return sousTypeMaterielChassis;
+    }
+
     @Test
     void ajouterUneVue() throws PriseDeVueException {
 
@@ -131,11 +181,11 @@ class PriseDeVueServiceTest {
     @Test
     void ajouterUnePriseDeVueAvecUnAgrandisseur() {
         PriseDeVue mockPriseDeVue = new PriseDeVue();
-        mockPriseDeVue.setNom("Nom de la prise de vue");
+        mockPriseDeVue.setNom("[Nom de la prise de vue]");
         Materiel materiel = new Materiel();
-        materiel.setNom("Nom de l'agrandisseur");
+        materiel.setNom("[Nom de l'agrandisseur]");
         TypeMateriel typeMateriel = new TypeMateriel();
-        typeMateriel.setId(TypeMateriel.TIRAGE);
+        typeMateriel.setId(TypeMateriel.ID_TIRAGE);
         materiel.setTypeMateriel(typeMateriel);
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materiel);
@@ -143,7 +193,7 @@ class PriseDeVueServiceTest {
 
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
 
-        String expectedMessage = "Impossible d'ajouter la prise de vue car le matériel " + materiel.getNom() + " n'est pas de type prise de vue.";
+        String expectedMessage = "Impossible d'ajouter la prise de vues, car le matériel " + materiel.getNom() + " n'est pas de type prise de vue.";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -152,23 +202,22 @@ class PriseDeVueServiceTest {
 
     @Test
     void ajouterUnePriseDeVueSansAppareilPhoto() {
-        PriseDeVue mockPriseDeVue = new PriseDeVue();
-        mockPriseDeVue.setNom("Nom de la prise de vue");
+
         Materiel materiel = new Materiel();
         materiel.setNom("Nom du pied");
-        TypeMateriel typeMateriel = new TypeMateriel();
-        typeMateriel.setId(TypeMateriel.ID_PRISE_DE_VUE);
-        materiel.setTypeMateriel(typeMateriel);
-        SousTypeMateriel sousTypeMateriel = new SousTypeMateriel();
-        sousTypeMateriel.setId(SousTypeMateriel.ID_PIED);
-        materiel.setSousType(sousTypeMateriel);
+        materiel.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materiel.setSousType(sousTypeMaterielPied());
+
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materiel);
+
+        PriseDeVue mockPriseDeVue = new PriseDeVue();
+        mockPriseDeVue.setNom("Nom de la prise de vue");
         mockPriseDeVue.setMateriels(materiels);
 
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
 
-        String expectedMessage = "Impossible d'ajouter la prise de vue car il n'y a pas d'appareil photo dans la liste de matériel.";
+        String expectedMessage = "Impossible d'ajouter la prise de vues, car il n'y a pas d'appareil photo dans la liste de matériel.";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -177,25 +226,25 @@ class PriseDeVueServiceTest {
 
     @Test
     void ajouterUnePriseDeVueSansFilm() {
+
         PriseDeVue mockPriseDeVue = new PriseDeVue();
         mockPriseDeVue.setNom("Nom de la prise de vue");
+
         Materiel materiel = new Materiel();
         materiel.setId(1L);
         materiel.setNom("Nom de l'appareil photo");
-        TypeMateriel typeMateriel = new TypeMateriel();
-        typeMateriel.setId(TypeMateriel.ID_PRISE_DE_VUE);
-        materiel.setTypeMateriel(typeMateriel);
-        SousTypeMateriel sousTypeMateriel = new SousTypeMateriel();
-        sousTypeMateriel.setId(SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE);
-        materiel.setSousType(sousTypeMateriel);
+        materiel.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materiel.setSousType(sousTypeMaterielAppareilPhotoArgentique());
+
+        Chassis chassis = new Chassis();
+        chassis.setTailleFilm(tailleFilm());
+        chassis.setStatutChassis(statutChassisIntegre());
+
         AppareilPhoto appareilPhoto = new AppareilPhoto();
         appareilPhoto.setId(1L);
         appareilPhoto.setMateriel(materiel);
-        Chassis chassis = new Chassis();
-        TailleFilm tailleFilmAppareilPhoto = new TailleFilm();
-        tailleFilmAppareilPhoto.setId(1L);
-        chassis.setTailleFilm(tailleFilmAppareilPhoto);
         appareilPhoto.setChassis(chassis);
+
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materiel);
         mockPriseDeVue.setMateriels(materiels);
@@ -213,47 +262,61 @@ class PriseDeVueServiceTest {
     @Test
     void ajouterUnePriseDeVueAvecUnFilmIncompatible() {
         PriseDeVue mockPriseDeVue = new PriseDeVue();
-        mockPriseDeVue.setNom("Nom de la prise de vue");
-        Materiel materiel = new Materiel();
-        materiel.setId(1L);
-        materiel.setNom("Nom de l'appareil photo");
-        TypeMateriel typeMateriel = new TypeMateriel();
-        typeMateriel.setId(TypeMateriel.ID_PRISE_DE_VUE);
-        materiel.setTypeMateriel(typeMateriel);
-        SousTypeMateriel sousTypeMateriel = new SousTypeMateriel();
-        sousTypeMateriel.setId(SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE);
-        materiel.setSousType(sousTypeMateriel);
+        mockPriseDeVue.setNom("[Nom de la prise de vue]");
+
+        Materiel materielChassis = new Materiel();
+        materielChassis.setId(2L);
+        materielChassis.setNom("[Nom du châssis intégré de l'appareil photo]");
+        materielChassis.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materielChassis.setSousType(sousTypeMaterielChassisPriseDeVue());
+
+        TailleFilm tailleFilmChassis = new TailleFilm();
+        tailleFilmChassis.setId(2L);
+        tailleFilmChassis.setNom("[Taille du film]");
+
+        Chassis chassis = new Chassis();
+        chassis.setTailleFilm(tailleFilmChassis);
+        chassis.setStatutChassis(statutChassisIntegre());
+        chassis.setMateriel(materielChassis);
+
+        Materiel materielAppareilPhoto = new Materiel();
+        materielAppareilPhoto.setId(2L);
+        materielAppareilPhoto.setNom("[Nom de l'appareil photo]");
+        materielAppareilPhoto.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materielAppareilPhoto.setSousType(sousTypeMaterielAppareilPhotoArgentique());
+
         AppareilPhoto appareilPhoto = new AppareilPhoto();
         appareilPhoto.setId(1L);
-        appareilPhoto.setMateriel(materiel);
-        Chassis chassis = new Chassis();
-        TailleFilm tailleFilmAppareilPhoto = new TailleFilm();
-        tailleFilmAppareilPhoto.setId(1L);
-        chassis.setTailleFilm(tailleFilmAppareilPhoto);
+        appareilPhoto.setMateriel(materielAppareilPhoto);
         appareilPhoto.setChassis(chassis);
+
         Produit produit = new Produit();
         produit.setId(1L);
-        produit.setNom("Nom du film");
+        produit.setNom("[Nom du film]");
+
         Film film = new Film();
         film.setId(1L);
         film.setProduit(produit);
-        TailleFilm tailleFilm = new TailleFilm();
-        tailleFilm.setId(2L);
-        tailleFilm.setNom("Taille du film");
-        film.setTailleFilm(tailleFilm);
+        film.setTailleFilm(tailleFilm());
+
         Set<Materiel> materiels = new HashSet<>();
-        materiels.add(materiel);
+        materiels.add(materielChassis);
+        materiels.add(materielAppareilPhoto);
         mockPriseDeVue.setMateriels(materiels);
+
         Set<Produit> produits = new HashSet<>();
         produits.add(produit);
         mockPriseDeVue.setProduits(produits);
 
-        when(appareilPhotoRepository.findAppareilPhotoByMaterielId(1L)).thenReturn(Optional.of(appareilPhoto));
-        when(filmRepository.findById(1L)).thenReturn(Optional.of(film));
+        when(appareilPhotoRepository.findAppareilPhotoByMaterielId(appareilPhoto.getMateriel().getId())).thenReturn(Optional.of(appareilPhoto));
+        when(filmRepository.findById(film.getId())).thenReturn(Optional.of(film));
+        when(chassisRepository.findChassisByMaterielId(materielChassis.getId())).thenReturn(Optional.of(chassis));
+        when(appareilPhotoRepository.findAppareilPhotoByMaterielId(materielAppareilPhoto.getId())).thenReturn(Optional.of(appareilPhoto));
+
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
 
-        String expectedMessage = "Impossible d'ajouter la prise de vue car l'appareil photo " + appareilPhoto.getMateriel().getNom()
-                + " n'est pas compatible avec un film de taille " + film.getTailleFilm().getNom() + ".";
+        String expectedMessage = "Impossible d'ajouter la prise de vues, " +
+                "car le chassis " + chassis.getMateriel().getNom() + " n'a pas de film compatible.";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
@@ -266,43 +329,28 @@ class PriseDeVueServiceTest {
         PriseDeVue mockPriseDeVue = new PriseDeVue();
         mockPriseDeVue.setNom("Nom de la prise de vue");
 
-        TypeMateriel typeMateriel = new TypeMateriel();
-        typeMateriel.setId(TypeMateriel.ID_PRISE_DE_VUE);
-
-        SousTypeMateriel sousTypeMateriel = new SousTypeMateriel();
-        sousTypeMateriel.setId(SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE);
-
-        SousTypeMateriel sousTypeMaterielChassis = new SousTypeMateriel();
-        sousTypeMaterielChassis.setId(SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE);
-
-        DimensionChassis dimensionChassis = new DimensionChassis();
-        dimensionChassis.setId(1L);
-        dimensionChassis.setNom("Nom de la dimension du chassis");
-
         Materiel materielAppareilPhoto = new Materiel();
         materielAppareilPhoto.setId(1L);
         materielAppareilPhoto.setNom("Nom de l'appareil photo avec un chassis");
-        materielAppareilPhoto.setTypeMateriel(typeMateriel);
-        materielAppareilPhoto.setSousType(sousTypeMateriel);
+        materielAppareilPhoto.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materielAppareilPhoto.setSousType(sousTypeMaterielAppareilPhotoArgentique());
 
         AppareilPhoto appareilPhoto = new AppareilPhoto();
         appareilPhoto.setId(1L);
         appareilPhoto.setMateriel(materielAppareilPhoto);
-        appareilPhoto.setDimensionChassis(dimensionChassis);
+        appareilPhoto.setDimensionChassis(dimensionChassis());
 
         Materiel materielChassis = new Materiel();
         materielChassis.setId(2L);
         materielChassis.setNom("Nom du chassis");
-        materielChassis.setTypeMateriel(typeMateriel);
-        materielChassis.setSousType(sousTypeMaterielChassis);
+        materielChassis.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materielChassis.setSousType(sousTypeMaterielChassisPriseDeVue());
 
         Chassis chassis = new Chassis();
-        TailleFilm tailleFilm = new TailleFilm();
-        tailleFilm.setId(1L);
-        tailleFilm.setNom("Taille du film");
-        chassis.setTailleFilm(tailleFilm);
+        chassis.setTailleFilm(tailleFilm());
         chassis.setMateriel(materielChassis);
-        chassis.setDimensionChassis(dimensionChassis);
+        chassis.setDimensionChassis(dimensionChassis());
+        chassis.setStatutChassis(statutChassisDisponible());
 
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materielAppareilPhoto);
@@ -316,7 +364,7 @@ class PriseDeVueServiceTest {
         Film film = new Film();
         film.setId(1L);
         film.setProduit(produit);
-        film.setTailleFilm(tailleFilm);
+        film.setTailleFilm(tailleFilm());
 
         Set<Produit> produits = new HashSet<>();
         produits.add(produit);
@@ -342,28 +390,15 @@ class PriseDeVueServiceTest {
         PriseDeVue mockPriseDeVue = new PriseDeVue();
         mockPriseDeVue.setNom("Nom de la prise de vue");
 
-        TypeMateriel typeMateriel = new TypeMateriel();
-        typeMateriel.setId(TypeMateriel.ID_PRISE_DE_VUE);
-
-        SousTypeMateriel sousTypeMateriel = new SousTypeMateriel();
-        sousTypeMateriel.setId(SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE);
-
-        SousTypeMateriel sousTypeMaterielChassis = new SousTypeMateriel();
-        sousTypeMaterielChassis.setId(SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE);
-
-        DimensionChassis dimensionChassis = new DimensionChassis();
-        dimensionChassis.setId(1L);
-        dimensionChassis.setNom("Nom de la dimension du chassis");
-
         DimensionChassis dimensionChassisAppareilPhoto = new DimensionChassis();
         dimensionChassisAppareilPhoto.setId(2L);
         dimensionChassisAppareilPhoto.setNom("Nom de la dimension du chassis de l'appareil photo");
 
         Materiel materielAppareilPhoto = new Materiel();
         materielAppareilPhoto.setId(1L);
-        materielAppareilPhoto.setNom("Nom de l'appareil photo avec un chassis");
-        materielAppareilPhoto.setTypeMateriel(typeMateriel);
-        materielAppareilPhoto.setSousType(sousTypeMateriel);
+        materielAppareilPhoto.setNom("[Nom de l'appareil photo sans un chassis]");
+        materielAppareilPhoto.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materielAppareilPhoto.setSousType(sousTypeMaterielAppareilPhotoArgentique());
 
         AppareilPhoto appareilPhoto = new AppareilPhoto();
         appareilPhoto.setId(1L);
@@ -373,16 +408,15 @@ class PriseDeVueServiceTest {
         Materiel materielChassis = new Materiel();
         materielChassis.setId(2L);
         materielChassis.setNom("Nom du chassis");
-        materielChassis.setTypeMateriel(typeMateriel);
-        materielChassis.setSousType(sousTypeMaterielChassis);
+        materielChassis.setTypeMateriel(typeDeMaterielPriseDeVue());
+        materielChassis.setSousType(sousTypeMaterielChassisPriseDeVue());
 
         Chassis chassis = new Chassis();
-        TailleFilm tailleFilm = new TailleFilm();
-        tailleFilm.setId(1L);
-        tailleFilm.setNom("Taille du film");
+        TailleFilm tailleFilm = tailleFilm();
         chassis.setTailleFilm(tailleFilm);
         chassis.setMateriel(materielChassis);
-        chassis.setDimensionChassis(dimensionChassis);
+        chassis.setDimensionChassis(dimensionChassis());
+        chassis.setStatutChassis(statutChassisDisponible());
 
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materielAppareilPhoto);
@@ -404,14 +438,14 @@ class PriseDeVueServiceTest {
 
         when(appareilPhotoRepository.findAppareilPhotoByMaterielId(materielAppareilPhoto.getId())).thenReturn(Optional.of(appareilPhoto));
         when(chassisRepository.findChassisByMaterielId(materielChassis.getId())).thenReturn(Optional.of(chassis));
-        when(filmRepository.findById(1L)).thenReturn(Optional.of(film));
 
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
 
-        String expectedMessage = "Impossible d'ajouter la prise de vue car il manque un châssis pour cet appareil photo : " + appareilPhoto.getMateriel().getNom();
+        String expectedMessage = "Impossible d'ajouter la prise de vues, car cet appareil photo " + appareilPhoto.getMateriel().getNom() + " n'a pas de châssis.";
         String actualMessage = exception.getMessage();
 
         assertTrue(actualMessage.contains(expectedMessage));
         assertThat(actualMessage).isEqualTo(expectedMessage);
     }
+
 }
