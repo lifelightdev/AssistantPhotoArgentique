@@ -45,7 +45,7 @@ typealias LumaListener = (luma: Double) -> Unit
 
 class MainActivity : AppCompatActivity() {
 
-    private val urlServeur = "http://10.0.2.2:8081"
+    private val urlServeur = "http://10.0.2.2:8181"
     private lateinit var viewBinding: ActivityMainBinding
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
@@ -113,29 +113,38 @@ class MainActivity : AppCompatActivity() {
                 val constante = 8.0
                 val indexOuvertureSelected = viewBinding.ouvertures.selectedItemId.toInt()
                 val vitesseSelected = viewBinding.vitesses.selectedItem.toString()
-                val vitesse: Double
+                var vitesse = 0.0
+                var calculPossible = true
                 if (vitesseSelected.contains("1/")) {
                     vitesse =
                         1.0 / vitesseSelected
                             .replace("1/", "").toDouble()
                 } else {
-                    vitesse = vitesseSelected.toDouble()
+                    if (vitesseSelected != "B") {
+                        vitesse = vitesseSelected.toDouble()
+                    } else {
+                        Toast.makeText(this, getString(R.string.speed_bulb), Toast.LENGTH_LONG)
+                            .show()
+                        calculPossible = false
+                    }
                 }
-                val ouvertureCalcule = sqrt((lux * iso * vitesse) / constante)
-                val (indexOuvertureCalculer, ouvertureEstTrouve) =
-                    rechercheIndexOuverture(
-                        ouvertureCalcule,
-                        indexOuvertureSelected,
-                        listeOuverture
-                    )
-                if (!ouvertureEstTrouve) {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.aperture_not_found) + ouvertureCalcule.toInt(),
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    viewBinding.ouvertures.setSelection(indexOuvertureCalculer)
+                if (calculPossible) {
+                    val ouvertureCalcule = sqrt((lux * iso * vitesse) / constante)
+                    val (indexOuvertureCalculer, ouvertureEstTrouve) =
+                        rechercheIndexOuverture(
+                            ouvertureCalcule,
+                            indexOuvertureSelected,
+                            listeOuverture
+                        )
+                    if (!ouvertureEstTrouve) {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.aperture_not_found) + ouvertureCalcule.toInt(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        viewBinding.ouvertures.setSelection(indexOuvertureCalculer)
+                    }
                 }
             }
 
@@ -148,6 +157,7 @@ class MainActivity : AppCompatActivity() {
                 val vitesseCalcule =
                     (ouvertureDuCalcul * ouvertureDuCalcul * constante) / (lux * iso)
                 val indexVitesseSelected = viewBinding.vitesses.selectedItemId.toInt()
+                Log.i(TAG, "vitesseCalcule = $vitesseCalcule indexVitesseSelected = $indexVitesseSelected ")
                 val (indexVitesseCalcule, vitesseEstTrouve) = rechercheIndexVitesse(
                     vitesseCalcule,
                     indexVitesseSelected,
@@ -167,8 +177,9 @@ class MainActivity : AppCompatActivity() {
                             )
                     }
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+                } else {
+                    viewBinding.vitesses.setSelection(indexVitesseCalcule)
                 }
-                viewBinding.vitesses.setSelection(indexVitesseCalcule)
             }
 
             else -> {
