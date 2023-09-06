@@ -157,7 +157,6 @@ class MainActivity : AppCompatActivity() {
                 val vitesseCalcule =
                     (ouvertureDuCalcul * ouvertureDuCalcul * constante) / (lux * iso)
                 val indexVitesseSelected = viewBinding.vitesses.selectedItemId.toInt()
-                Log.i(TAG, "vitesseCalcule = $vitesseCalcule indexVitesseSelected = $indexVitesseSelected ")
                 val (indexVitesseCalcule, vitesseEstTrouve) = rechercheIndexVitesse(
                     vitesseCalcule,
                     indexVitesseSelected,
@@ -244,16 +243,16 @@ class MainActivity : AppCompatActivity() {
         var indexVitesseCalcule: Int = indexVitesseSelected
         var vitesseEstTrouve = false
         // Convertion en division
-        var estInferireurALaSecondeCalcule = false
+        var laVitesseCalculeEstInferireurALaSeconde = false
         if (vitesseCalcule < 1) {
             vitesseCalculeInt = (1.0 / vitesseCalcule).toInt()
-            estInferireurALaSecondeCalcule = true
+            laVitesseCalculeEstInferireurALaSeconde = true
         }
         // Récupération de la vitesse la plus lente de la liste des vitesses disponible trié
         var min: Int
         var indexMin: Int
         var dernierIndex = listeVitesse.size - 1
-        var estInferireurALaSeconde = false
+        var laVitesseDeLaListeEstInferireurALaSeconde = false
         var bulb = false
         // Si la liste se finit par la valeur B on prend la valeur précédente
         if (listeVitesse[dernierIndex] == "B") {
@@ -263,12 +262,12 @@ class MainActivity : AppCompatActivity() {
         if (listeVitesse[dernierIndex].contains("1/")) {
             min = listeVitesse[dernierIndex].replace("1/", "").toInt()
             indexMin = dernierIndex
-            estInferireurALaSeconde = true
+            laVitesseDeLaListeEstInferireurALaSeconde = true
         } else {
             min = listeVitesse[dernierIndex].toInt()
             indexMin = dernierIndex
         }
-        if (!estInferireurALaSecondeCalcule && !estInferireurALaSeconde) {
+        if (!laVitesseCalculeEstInferireurALaSeconde && !laVitesseDeLaListeEstInferireurALaSeconde) {
             if (bulb) {
                 return Pair((listeVitesse.size - 1), false)
             }
@@ -280,12 +279,12 @@ class MainActivity : AppCompatActivity() {
                 var vitesseInt: Int
                 if (vitesseString.contains("1/")) {
                     vitesseInt = vitesseString.replace("1/", "").toInt()
-                    estInferireurALaSeconde = true
+                    laVitesseDeLaListeEstInferireurALaSeconde = true
                 } else {
-                    estInferireurALaSeconde = false
+                    laVitesseDeLaListeEstInferireurALaSeconde = false
                     vitesseInt = vitesseString.toInt()
                 }
-                if (estInferireurALaSecondeCalcule && estInferireurALaSeconde) {
+                if (laVitesseCalculeEstInferireurALaSeconde && laVitesseDeLaListeEstInferireurALaSeconde) {
                     if (vitesseInt == vitesseCalculeInt) {
                         indexVitesseCalcule = index
                         vitesseEstTrouve = true
