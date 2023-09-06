@@ -254,6 +254,45 @@ public class PriseDeVueService {
     }
 
     public PriseDeVue EnregistreUnePriseDeVue(PriseDeVue priseDeVue) throws PriseDeVueException {
+
+        String messageChampsObligatoire = "Impossible d'ajouter la prise de vues, car il manque : ";
+        if (priseDeVue.getNom() == null){
+            messageChampsObligatoire += "le nom";
+        }
+        if (priseDeVue.getStatutPriseDeVue() == null){
+            if (!messageChampsObligatoire.endsWith(" ")){
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "le statut";
+        }
+        if (priseDeVue.getDate() == null){
+            if (!messageChampsObligatoire.endsWith(" ")){
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "la date";
+        }
+        if (priseDeVue.getPosition() == null){
+            if (!messageChampsObligatoire.endsWith(" ")){
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "la position";
+        }
+        if (priseDeVue.getMateriels().isEmpty()){
+            if (!messageChampsObligatoire.endsWith(" ")){
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "un appareil photo";
+        }
+        if (priseDeVue.getProduits().isEmpty()){
+            if (!messageChampsObligatoire.endsWith(" ")){
+                messageChampsObligatoire += " et ";
+            }
+            messageChampsObligatoire += "un film";
+        }
+        if (messageChampsObligatoire.length() > 55){
+            throw new PriseDeVueException(messageChampsObligatoire);
+        }
+
         Set<AppareilPhoto> listeDesAppareilsPhotoSansChassisIntege = new HashSet<>();
         Set<AppareilPhoto> listeDesAppareilsPhotoAvecChassisIntege = new HashSet<>();
         Set<Chassis> listeDesChassisNonIntegre = new HashSet<>();

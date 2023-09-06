@@ -4,9 +4,7 @@ import life.light.apa.priseDeVue.PriseDeVueException;
 import life.light.apa.priseDeVue.dao.PriseDeVueRepository;
 import life.light.apa.priseDeVue.dao.StatutVueRepository;
 import life.light.apa.priseDeVue.dao.VueRepository;
-import life.light.apa.priseDeVue.model.PriseDeVue;
-import life.light.apa.priseDeVue.model.StatutVue;
-import life.light.apa.priseDeVue.model.Vue;
+import life.light.apa.priseDeVue.model.*;
 import life.light.apa.referentiel.dao.AppareilPhotoRepository;
 import life.light.apa.referentiel.dao.ChassisRepository;
 import life.light.apa.referentiel.dao.FilmRepository;
@@ -22,6 +20,7 @@ import static org.mockito.BDDMockito.*;
 
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
@@ -104,6 +103,31 @@ class PriseDeVueServiceTest {
         return sousTypeMaterielChassis;
     }
 
+    private static StatutPriseDeVue statutPriseDeVuePreparatoire(){
+        StatutPriseDeVue statutPriseDeVue = new StatutPriseDeVue();
+        statutPriseDeVue.setId(StatutPriseDeVue.ID_PREPARATOIRE);
+        statutPriseDeVue.setNom("Préparatoire");
+        return statutPriseDeVue;
+    }
+
+    private static Position position(){
+        Position position = new Position();
+        position.setId(1L);
+        position.setNom("Nom de la position");
+        return position;
+    }
+    private static Film film(){
+        Produit produit = new Produit();
+        produit.setId(1L);
+        produit.setNom("[Nom du film]");
+
+        Film film = new Film();
+        film.setId(1L);
+        film.setProduit(produit);
+        film.setTailleFilm(tailleFilm());
+        return film;
+    }
+
     @Test
     void ajouterUneVue() throws PriseDeVueException {
 
@@ -150,7 +174,6 @@ class PriseDeVueServiceTest {
 
         PriseDeVue mockPriseDeVue = new PriseDeVue();
         mockPriseDeVue.setId(idPriseDeVue);
-        mockPriseDeVue.setNom("Nom de la prise de vue");
         Film film = new Film();
         film.setId(idFilm);
         Materiel materiel = new Materiel();
@@ -179,9 +202,25 @@ class PriseDeVueServiceTest {
     }
 
     @Test
+    void ajouterUnePriseDeVueSansDonneesObligatoire(){
+        PriseDeVue mockPriseDeVue = new PriseDeVue();
+        Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
+
+        String expectedMessage = "Impossible d'ajouter la prise de vues, car il manque : le nom, le statut, la date, la position, un appareil photo et un film";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(actualMessage.contains(expectedMessage));
+        assertThat(actualMessage).isEqualTo(expectedMessage);
+
+    }
+
+    @Test
     void ajouterUnePriseDeVueAvecUnAgrandisseur() {
         PriseDeVue mockPriseDeVue = new PriseDeVue();
         mockPriseDeVue.setNom("[Nom de la prise de vue]");
+        mockPriseDeVue.setStatutPriseDeVue(statutPriseDeVuePreparatoire());
+        mockPriseDeVue.setPosition(position());
+        mockPriseDeVue.setDate(LocalDateTime.now());
         Materiel materiel = new Materiel();
         materiel.setNom("[Nom de l'agrandisseur]");
         TypeMateriel typeMateriel = new TypeMateriel();
@@ -190,6 +229,10 @@ class PriseDeVueServiceTest {
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materiel);
         mockPriseDeVue.setMateriels(materiels);
+
+        Set<Produit> produits = new HashSet<>();
+        produits.add(film().getProduit());
+        mockPriseDeVue.setProduits(produits);
 
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
 
@@ -211,9 +254,16 @@ class PriseDeVueServiceTest {
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materiel);
 
+        Set<Produit> produits = new HashSet<>();
+        produits.add(film().getProduit());
+
         PriseDeVue mockPriseDeVue = new PriseDeVue();
         mockPriseDeVue.setNom("Nom de la prise de vue");
         mockPriseDeVue.setMateriels(materiels);
+        mockPriseDeVue.setStatutPriseDeVue(statutPriseDeVuePreparatoire());
+        mockPriseDeVue.setPosition(position());
+        mockPriseDeVue.setDate(LocalDateTime.now());
+        mockPriseDeVue.setProduits(produits);
 
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
 
@@ -226,9 +276,6 @@ class PriseDeVueServiceTest {
 
     @Test
     void ajouterUnePriseDeVueSansFilm() {
-
-        PriseDeVue mockPriseDeVue = new PriseDeVue();
-        mockPriseDeVue.setNom("Nom de la prise de vue");
 
         Materiel materiel = new Materiel();
         materiel.setId(1L);
@@ -247,7 +294,20 @@ class PriseDeVueServiceTest {
 
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materiel);
+
+        Produit produit = new Produit();
+        produit.setId(1L);
+
+        Set<Produit> produits = new HashSet<>();
+        produits.add(produit);
+
+        PriseDeVue mockPriseDeVue = new PriseDeVue();
+        mockPriseDeVue.setNom("Nom de la prise de vue");
         mockPriseDeVue.setMateriels(materiels);
+        mockPriseDeVue.setStatutPriseDeVue(statutPriseDeVuePreparatoire());
+        mockPriseDeVue.setPosition(position());
+        mockPriseDeVue.setDate(LocalDateTime.now());
+        mockPriseDeVue.setProduits(produits);
 
         when(appareilPhotoRepository.findAppareilPhotoByMaterielId(1L)).thenReturn(Optional.of(appareilPhoto));
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.EnregistreUnePriseDeVue(mockPriseDeVue));
@@ -261,8 +321,6 @@ class PriseDeVueServiceTest {
 
     @Test
     void ajouterUnePriseDeVueAvecUnFilmIncompatible() {
-        PriseDeVue mockPriseDeVue = new PriseDeVue();
-        mockPriseDeVue.setNom("[Nom de la prise de vue]");
 
         Materiel materielChassis = new Materiel();
         materielChassis.setId(2L);
@@ -290,22 +348,21 @@ class PriseDeVueServiceTest {
         appareilPhoto.setMateriel(materielAppareilPhoto);
         appareilPhoto.setChassis(chassis);
 
-        Produit produit = new Produit();
-        produit.setId(1L);
-        produit.setNom("[Nom du film]");
-
-        Film film = new Film();
-        film.setId(1L);
-        film.setProduit(produit);
-        film.setTailleFilm(tailleFilm());
-
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materielChassis);
         materiels.add(materielAppareilPhoto);
-        mockPriseDeVue.setMateriels(materiels);
+
+        Film film = film();
 
         Set<Produit> produits = new HashSet<>();
-        produits.add(produit);
+        produits.add(film.getProduit());
+
+        PriseDeVue mockPriseDeVue = new PriseDeVue();
+        mockPriseDeVue.setNom("Nom de la prise de vue");
+        mockPriseDeVue.setMateriels(materiels);
+        mockPriseDeVue.setStatutPriseDeVue(statutPriseDeVuePreparatoire());
+        mockPriseDeVue.setPosition(position());
+        mockPriseDeVue.setDate(LocalDateTime.now());
         mockPriseDeVue.setProduits(produits);
 
         when(appareilPhotoRepository.findAppareilPhotoByMaterielId(appareilPhoto.getMateriel().getId())).thenReturn(Optional.of(appareilPhoto));
@@ -325,9 +382,6 @@ class PriseDeVueServiceTest {
 
     @Test
     void ajouterUnePriseDeVueAvecUnChassis() {
-
-        PriseDeVue mockPriseDeVue = new PriseDeVue();
-        mockPriseDeVue.setNom("Nom de la prise de vue");
 
         Materiel materielAppareilPhoto = new Materiel();
         materielAppareilPhoto.setId(1L);
@@ -355,7 +409,6 @@ class PriseDeVueServiceTest {
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materielAppareilPhoto);
         materiels.add(materielChassis);
-        mockPriseDeVue.setMateriels(materiels);
 
         Produit produit = new Produit();
         produit.setId(1L);
@@ -368,6 +421,13 @@ class PriseDeVueServiceTest {
 
         Set<Produit> produits = new HashSet<>();
         produits.add(produit);
+
+        PriseDeVue mockPriseDeVue = new PriseDeVue();
+        mockPriseDeVue.setNom("Nom de la prise de vue");
+        mockPriseDeVue.setMateriels(materiels);
+        mockPriseDeVue.setStatutPriseDeVue(statutPriseDeVuePreparatoire());
+        mockPriseDeVue.setPosition(position());
+        mockPriseDeVue.setDate(LocalDateTime.now());
         mockPriseDeVue.setProduits(produits);
 
         when(appareilPhotoRepository.findAppareilPhotoByMaterielId(materielAppareilPhoto.getId())).thenReturn(Optional.of(appareilPhoto));
@@ -386,9 +446,6 @@ class PriseDeVueServiceTest {
 
     @Test
     void ajouterUnePriseDeVueAvecUnChassisIncompatible() {
-
-        PriseDeVue mockPriseDeVue = new PriseDeVue();
-        mockPriseDeVue.setNom("Nom de la prise de vue");
 
         DimensionChassis dimensionChassisAppareilPhoto = new DimensionChassis();
         dimensionChassisAppareilPhoto.setId(2L);
@@ -421,7 +478,6 @@ class PriseDeVueServiceTest {
         Set<Materiel> materiels = new HashSet<>();
         materiels.add(materielAppareilPhoto);
         materiels.add(materielChassis);
-        mockPriseDeVue.setMateriels(materiels);
 
         Produit produit = new Produit();
         produit.setId(1L);
@@ -434,6 +490,13 @@ class PriseDeVueServiceTest {
 
         Set<Produit> produits = new HashSet<>();
         produits.add(produit);
+
+        PriseDeVue mockPriseDeVue = new PriseDeVue();
+        mockPriseDeVue.setNom("Nom de la prise de vue");
+        mockPriseDeVue.setMateriels(materiels);
+        mockPriseDeVue.setStatutPriseDeVue(statutPriseDeVuePreparatoire());
+        mockPriseDeVue.setPosition(position());
+        mockPriseDeVue.setDate(LocalDateTime.now());
         mockPriseDeVue.setProduits(produits);
 
         when(appareilPhotoRepository.findAppareilPhotoByMaterielId(materielAppareilPhoto.getId())).thenReturn(Optional.of(appareilPhoto));

@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "statut_prise_de_vue")
 public class StatutPriseDeVue {
+
+    public final static Long ID_PREPARATOIRE = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

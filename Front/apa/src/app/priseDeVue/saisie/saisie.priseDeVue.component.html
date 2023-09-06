@@ -4,27 +4,27 @@
   <div>
     <mat-form-field>
       <mat-label>Nom</mat-label>
-      <input matInput [(ngModel)]="priseDeVue.nom" name="nom">
+      <input matInput [(ngModel)]="priseDeVue.nom" name="nom" required>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
       <mat-label>Statut</mat-label>
-      <mat-select [(value)]="selectedStatus">
-        <mat-option [value]="statut.id" *ngFor="let statut of statuts">{{statut.nom}}</mat-option>
+      <mat-select [(value)]="selectedStatus" required>
+        <mat-option [value]="statut.id" *ngFor="let statut of statuts" >{{statut.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field>
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" name="Date" [(ngModel)]="datePriseDeVue">
+      <input matInput [matDatepicker]="picker" name="Date" [(ngModel)]="datePriseDeVue" required>
       <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
     <mat-form-field>
       <mat-label>Heure</mat-label>
-      <input matInput type="time" name="Heure" [(ngModel)]="heurePriseDeVue">
+      <input matInput type="time" name="Heure" [(ngModel)]="heurePriseDeVue" required>
     </mat-form-field>
   </div>
   <div>
@@ -36,7 +36,7 @@
   <div>
     <mat-form-field>
       <mat-label>Position</mat-label>
-      <mat-select [(value)]="selectedPosition">
+      <mat-select [(value)]="selectedPosition" required>
         <mat-option [value]="position.id" *ngFor="let position of positions">{{position.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -44,7 +44,7 @@
   <div>
     <mat-form-field>
       <mat-label>Materiels</mat-label>
-      <mat-select [(value)]="selectedMateriels" multiple>
+      <mat-select [(value)]="selectedMateriels" multiple required>
         <mat-option [value]="materiel.id" *ngFor="let materiel of materiels">{{materiel.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -52,7 +52,7 @@
   <div>
     <mat-form-field>
       <mat-label>Produits</mat-label>
-      <mat-select [(value)]="selectedProduits" multiple>
+      <mat-select [(value)]="selectedProduits" multiple required>
         <mat-option [value]="produit.id" *ngFor="let produit of produits">{{produit.nom}}</mat-option>
       </mat-select>
     </mat-form-field>
