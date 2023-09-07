@@ -53,19 +53,19 @@ public class MaterielController {
         return materielService.listeStatutMateriel();
     }
 
-    @RequestMapping(value = "/appareilPhoto/{id}")
-    public Optional<AppareilPhoto> afficherUnAppareilPhoto(@PathVariable Long id) {
-        return materielService.afficherUnAppareilPhoto(id);
+    @RequestMapping(value = "/appareilPhoto/{idMateriel}")
+    public Optional<AppareilPhoto> afficherUnAppareilPhoto(@PathVariable Long idMateriel) {
+        return materielService.afficherUnAppareilPhoto(idMateriel);
     }
 
-    @RequestMapping(value = "/objectif/{id}")
-    public Optional<Objectif> afficherUnObjectif(@PathVariable Long id) {
-        return materielService.afficherUnObjectif(id);
+    @RequestMapping(value = "/objectif/{idMateriel}")
+    public Optional<Objectif> afficherUnObjectif(@PathVariable Long idMateriel) {
+        return materielService.afficherUnObjectif(idMateriel);
     }
 
-    @RequestMapping(value = "/pied/{id}")
-    public Optional<Pied> afficherUnPied(@PathVariable Long id) {
-        return materielService.afficherUnPied(id);
+    @RequestMapping(value = "/pied/{idMateriel}")
+    public Optional<Pied> afficherUnPied(@PathVariable Long idMateriel) {
+        return materielService.afficherUnPied(idMateriel);
     }
 
     @RequestMapping(value = "/objectif/{id}/ouvertures")
@@ -77,4 +77,15 @@ public class MaterielController {
     public Iterable<Vitesse> listeVitesseDUnObjectif(@PathVariable Long id) {
         return materielService.listeVitesseDUnObjectif(id);
     }
+
+    @RequestMapping(value = "/chassis/{idMateriel}")
+    public Optional<Chassis> afficherUnChassis(@PathVariable Long idMateriel) {
+        return materielService.afficherUnChassis(idMateriel);
+    }
+
+    @RequestMapping(value = "/rotule/{idMateriel}")
+    public Optional<Rotule> afficherUneRotule(@PathVariable Long idMateriel) {
+        return materielService.afficherUneRotule(idMateriel);
+    }
+
 }

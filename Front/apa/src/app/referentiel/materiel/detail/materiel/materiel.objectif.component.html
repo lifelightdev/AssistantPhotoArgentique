@@ -1,0 +1,25 @@
+<h2>Détail de l'objectif</h2>
+<app-materiel [materiel]="objectif.materiel" *ngIf="objectif.materiel"></app-materiel>
+<li *ngIf="objectif.typeFixationObjectif?.nom">Le type de fixation de l'objectif
+  : {{objectif.typeFixationObjectif?.nom}}</li>
+<li *ngIf="objectif.typeFixationFlash?.nom">Le type de fixation du flash
+  : {{objectif.typeFixationFlash?.nom}}</li>
+<li *ngIf="objectif.typeFixationPied?.nom">Le type de fixation du pied
+  : {{objectif.typeFixationPied?.nom}}</li>
+<li *ngIf="objectif.typeFixationFiltre?.nom">Le type de fixation du filtre
+  : {{objectif.typeFixationFiltre?.nom}}</li>
+<li *ngIf="objectif.ouvertures">Liste des ouvertures :
+  <ul>
+    <li *ngFor="let ouverture of objectif.ouvertures">
+      <span>F{{ouverture.nom}} </span>
+    </li>
+  </ul>
+</li>
+<li *ngIf="objectif.vitesses">Liste des vitesses :
+  <ul>
+    <li *ngFor="let vitesse of objectif.vitesses">
+      <span>{{vitesse.nom}} </span>
+    </li>
+  </ul>
+</li>
+

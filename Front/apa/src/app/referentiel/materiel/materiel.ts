@@ -123,7 +123,7 @@ export class Pied {
   materiel: Materiel | undefined;
   dimensionOuvert: string | undefined;
   dimensionFerme: string | undefined;
-  pasDeVis: string | undefined;
+  typeFixationPied: TypeFixation | undefined;
   rotule: Rotule | undefined;
 }
 

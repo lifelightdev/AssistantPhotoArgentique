@@ -35,7 +35,10 @@ public class MaterielService {
     private MarqueRepository marque;
     @Autowired
     private StatutMaterielRepository statutMateriel;
-
+    @Autowired
+    private ChassisRepository chassisRepository;
+    @Autowired
+    private RotuleRepository rotuleRepository;
 
     public Optional<Materiel> afficherUnMateriel(long id) {
         return materielRepository.findById(id);
@@ -92,8 +95,8 @@ public class MaterielService {
         return statutMateriel.findAll();
     }
 
-    public Optional<AppareilPhoto> afficherUnAppareilPhoto(Long id) {
-        return appareilPhotoRepository.findAppareilPhotoByMaterielId(id);
+    public Optional<AppareilPhoto> afficherUnAppareilPhoto(Long idMateriel) {
+        return appareilPhotoRepository.findAppareilPhotoByMaterielId(idMateriel);
     }
 
     public Optional<Objectif> afficherUnObjectif(Long id) {
@@ -110,5 +113,13 @@ public class MaterielService {
 
     public Iterable<Vitesse> listeVitesseDUnObjectif(Long id) {
         return vitesseRepository.findVitesseByObjectif(id);
+    }
+
+    public Optional<Chassis> afficherUnChassis(Long idMateriel) {
+        return chassisRepository.findChassisByMaterielId(idMateriel);
+    }
+
+    public Optional<Rotule> afficherUneRotule(Long idMateriel) {
+        return rotuleRepository.findRotuleByMaterielId(idMateriel);
     }
 }

@@ -1,0 +1,5 @@
+<h2>Détail du pied</h2>
+<app-materiel [materiel]="pied.materiel" *ngIf="pied.materiel"></app-materiel>
+<li>Dimension ouvert : {{pied.dimensionOuvert}}</li>
+<li>Dimension fermé : {{pied.dimensionFerme}}</li>
+<li>Pas de vis : {{pied.typeFixationPied?.nom}}</li>
