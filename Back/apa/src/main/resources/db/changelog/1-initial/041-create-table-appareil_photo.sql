@@ -16,7 +16,6 @@ create table if not exists apa.appareil_photo
     constraint id_UNIQUE unique (id),
     constraint FK_APPAREIL_PHOTO_ON_CHASSIS foreign key (chassis_id) references apa.chassis (id),
     constraint FK_APPAREIL_PHOTO_ON_DIMENSION_CHASSIS foreign key (dimension_chassis_id) references apa.dimension_chassis (id),
-    constraint FK_APPAREIL_PHOTO_ON_FILM foreign key (film_id) references apa.film (id),
     constraint FK_APPAREIL_PHOTO_ON_MATERIEL foreign key (materiel_id) references apa.materiel (id),
     constraint FK_APPAREIL_PHOTO_ON_OBJECTIF foreign key (objectif_id) references apa.objectif (id),
     constraint FK_APPAREIL_PHOTO_ON_TYPE_APPAREIL_PHOTO foreign key (type_appareil_photo_id) references apa.type_appareil_photo (id),

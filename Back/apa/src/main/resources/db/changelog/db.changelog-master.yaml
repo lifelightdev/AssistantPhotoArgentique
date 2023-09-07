@@ -94,11 +94,11 @@ databaseChangeLog:
   - include:
       - file: classpath:/db/changelog/1-initial/030-create-table-rotule.sql
   - include:
-      - file: classpath:/db/changelog/1-initial/031-create-table-pied.sql
+      - file: classpath:/db/changelog/1-initial/031-create-table-type_fixation.sql
   - include:
-      - file: classpath:/db/changelog/1-initial/032-create-table-type_fixation.sql
+      - file: classpath:/db/changelog/1-initial/031-type_fixation.sql
   - include:
-      - file: classpath:/db/changelog/1-initial/032-type_fixation.sql
+      - file: classpath:/db/changelog/1-initial/032-create-table-pied.sql
   - include:
       - file: classpath:/db/changelog/1-initial/033-create-table-objectif.sql
   - include:
@@ -139,26 +139,30 @@ databaseChangeLog:
   - include:
       - file: classpath:/db/changelog/2-changes/001-demonstration/001-modele.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/002-materiel.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/002-produit.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/003-objectif.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/003-film.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/004-objectif_vitesse.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/004-materiel.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/005-objectif_ouverture.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/005-objectif.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/006-appareil_photo.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/006-objectif_vitesse.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/007-produit.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/007-objectif_ouverture.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/008-film.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/008-chassis.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/009-position.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/009-appareil_photo.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/010-prise_de_vue.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/010-pied.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/011-prise_de_vue_materiel.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/011-position.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/012-prise_de_vue_produit.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/012-prise_de_vue.sql
   - include:
-      - file: classpath:/db/changelog/2-changes/001-demonstration/013-vue.sql
+      - file: classpath:/db/changelog/2-changes/001-demonstration/013-prise_de_vue_materiel.sql
+  - include:
+      - file: classpath:/db/changelog/2-changes/001-demonstration/014-prise_de_vue_produit.sql
+  - include:
+      - file: classpath:/db/changelog/2-changes/001-demonstration/015-vue.sql

@@ -13,7 +13,9 @@ public class Pied {
     private Materiel materiel;
     private String dimensionOuvert;
     private String dimensionFerme;
-    private String pasDeVis;
+    @ManyToOne
+    @JoinColumn(name = "type_fixation_pied_id")
+    private TypeFixation typeFixationPied;
     @ManyToOne
     private Rotule rotule;
 
@@ -57,11 +59,11 @@ public class Pied {
         this.rotule = rotule;
     }
 
-    public String getPasDeVis() {
-        return pasDeVis;
+    public TypeFixation getTypeFixationPied() {
+        return typeFixationPied;
     }
 
-    public void setPasDeVis(String pasDeVis) {
-        this.pasDeVis = pasDeVis;
+    public void setTypeFixationPied(TypeFixation typeFixationPied) {
+        this.typeFixationPied = typeFixationPied;
     }
 }

@@ -204,9 +204,12 @@ public class PriseDeVueService {
     public Position recherchePosition(Double latitude, Double longitude) {
         if (latitude == 37.421998333333335 && longitude == -122.084) {
             // C'est une position fixe du GPS virtuel d'Android : Google au USA
-            // Ja la remplace par la position de Notre Dame de Paris
-            latitude = 48.8529371;
-            longitude = 2.3500501;
+            // Je la remplace par la position de Notre-Dame de Paris pour être en France
+            // latitude = 48.8529371;
+            // longitude = 2.3500501;
+            // Je la remplace par le château de Blois pour la démonstration
+            latitude = 47.5853918;
+            longitude = 1.328008;
         }
 
         String uri = "https://geo.api.gouv.fr/communes?lat=" + latitude + "&lon=" + longitude + "&fields=nom,codesPostaux&format=json&geometry=centre";
