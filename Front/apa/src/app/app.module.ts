@@ -16,8 +16,8 @@ import {MatInputModule} from "@angular/material/input";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {DetailMaterielComponent} from "./referentiel/materiel/detail/detail.materiel.component";
-import {MaterielAppareilPhotoComponent} from "./referentiel/materiel/detail/materiel/materiel.appareil.photo.component";
+import {MaterielComponent} from "./referentiel/materiel/detail/materiel.component";
+import {DetailAppareilPhotoComponent} from "./referentiel/materiel/detail/detail.appareil.photo.component";
 import {MaterielListComponent} from "./referentiel/materiel/materiel.list.component";
 import {ProduitListComponent} from "./referentiel/produit/produit.list.component";
 import {DetailProduitComponent} from "./referentiel/produit/detail/detail.produit.component";
@@ -33,19 +33,19 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {AccueilComponent} from "./accueil/accueil.component";
 import {SaisiePriseDeVueComponent} from './priseDeVue/saisie/saisie.priseDeVue.component';
-import { MaterielObjectifComponent } from './referentiel/materiel/detail/materiel/materiel.objectif.component';
-import { MaterielChassisComponent } from './referentiel/materiel/detail/materiel/materiel.chassis.component';
-import { MaterielComponent } from './referentiel/materiel/detail/materiel/materiel.component';
-import { MaterielPiedComponent } from './referentiel/materiel/detail/materiel/materiel.pied.component';
-import { MaterielRotuleComponent } from './referentiel/materiel/detail/materiel/materiel.rotule.component';
+import {DetailObjectifComponent} from './referentiel/materiel/detail/detail.objectif.component';
+import {DetailChassisComponent} from './referentiel/materiel/detail/detail.chassis.component';
+import {DetailMaterielComponent} from './referentiel/materiel/detail/detail.materiel.component';
+import {DetailPiedComponent} from './referentiel/materiel/detail/detail.pied.component';
+import {DetailRotuleComponent} from './referentiel/materiel/detail/detail.rotule.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     MaterielListComponent,
-    DetailMaterielComponent,
-    MaterielAppareilPhotoComponent,
+    MaterielComponent,
+    DetailAppareilPhotoComponent,
     ProduitListComponent,
     DetailProduitComponent,
     PriseDeVueListComponent,
@@ -53,11 +53,11 @@ import { MaterielRotuleComponent } from './referentiel/materiel/detail/materiel/
     MapComponent,
     AccueilComponent,
     SaisiePriseDeVueComponent,
-    MaterielObjectifComponent,
-    MaterielChassisComponent,
-    MaterielComponent,
-    MaterielPiedComponent,
-    MaterielRotuleComponent
+    DetailObjectifComponent,
+    DetailChassisComponent,
+    DetailMaterielComponent,
+    DetailPiedComponent,
+    DetailRotuleComponent
   ],
   imports: [
     BrowserModule,

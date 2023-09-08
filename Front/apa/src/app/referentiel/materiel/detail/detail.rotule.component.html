@@ -1,5 +1,5 @@
 <h2>Détail de la rotule</h2>
-<app-materiel [materiel]="rotule.materiel" *ngIf="rotule.materiel"></app-materiel>
+<app-detail-materiel [materiel]="rotule.materiel" *ngIf="rotule.materiel"></app-detail-materiel>
 <li>Pas de vis du matériel : {{rotule.pasDeVisMateriel}}</li>
 <li>Pas de vis du pied : {{rotule.pasDeVisPied}}</li>
 <li>Avec fixation rapide : {{String(rotule.avecFixationRapide) | translate}}</li>

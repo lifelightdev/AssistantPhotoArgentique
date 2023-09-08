@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
@@ -12,7 +11,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
@@ -26,7 +24,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.Response
-import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import life.light.posemetre.databinding.ActivityMainBinding
@@ -163,17 +160,14 @@ class MainActivity : AppCompatActivity() {
                     listeVitesse
                 )
                 if (!vitesseEstTrouve) {
-                    val message: String
-                    if (vitesseCalcule < 1) {
-                        message =
-                            getString(R.string.calculated_speed) + (1.0 / vitesseCalcule) + getString(
-                                R.string.second
-                            )
+                    val message: String = if (vitesseCalcule < 1) {
+                        getString(R.string.calculated_speed) + (1.0 / vitesseCalcule) + getString(
+                            R.string.second
+                        )
                     } else {
-                        message =
-                            getString(R.string.calculated_speed_seconds) + vitesseCalcule + getString(
-                                R.string.seconds
-                            )
+                        getString(R.string.calculated_speed_seconds) + vitesseCalcule + getString(
+                            R.string.seconds
+                        )
                     }
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show()
                 } else {
@@ -288,7 +282,7 @@ class MainActivity : AppCompatActivity() {
                     if (vitesseInt == vitesseCalculeInt) {
                         indexVitesseCalcule = index
                         vitesseEstTrouve = true
-                    } else if (vitesseInt > vitesseCalculeInt && vitesseCalculeInt > min) {
+                    } else if (vitesseCalculeInt in (min + 1)..<vitesseInt) {
                         val avant = vitesseInt - vitesseCalculeInt
                         val apres = vitesseCalculeInt - min
                         if (avant < apres) {
@@ -509,26 +503,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         queue.add(stringReq)
-    }
-
-    private fun setPhoto() {
-        val queue = Volley.newRequestQueue(baseContext)
-        val url = "$urlServeur/vue/$idVue/photoJPG"
-        // request a image response from the provided url
-        val imageRequest = ImageRequest(
-            url,
-            { bitmap -> // response listener
-                Log.i(TAG, "------Image downloaded successfully!")
-            },
-            0, // max width
-            0, // max height
-            ImageView.ScaleType.CENTER_CROP, // image scale type
-            Bitmap.Config.ARGB_8888, // decode config
-            { error -> // error listener
-                Log.e(TAG, "------Error :$error")
-            }
-        )
-        queue.add(imageRequest)
     }
 
     private fun jsonArrayToArrayList(jArray: JSONArray): ArrayList<String> {

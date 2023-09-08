@@ -1,4 +1,4 @@
 <h2>Détail du châssis</h2>
-<app-materiel [materiel]="chassis.materiel" *ngIf="chassis.materiel"></app-materiel>
+<app-detail-materiel [materiel]="chassis.materiel" *ngIf="chassis.materiel"></app-detail-materiel>
 <li *ngIf="chassis.statutChassis?.nom">Statut : {{chassis.statutChassis?.nom}}</li>
 <li *ngIf="chassis.dimensionChassis?.nom">Dimension : {{chassis.dimensionChassis?.nom}}</li>

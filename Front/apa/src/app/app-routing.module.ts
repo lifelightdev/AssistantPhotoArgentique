@@ -1,7 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { MaterielListComponent } from "./referentiel/materiel/materiel.list.component";
-import { DetailMaterielComponent } from "./referentiel/materiel/detail/detail.materiel.component";
+import { MaterielComponent } from "./referentiel/materiel/detail/materiel.component";
 import { ProduitListComponent } from "./referentiel/produit/produit.list.component";
 import { PriseDeVueListComponent } from "./priseDeVue/priseDeVue.list.component";
 import { MapComponent } from "./priseDeVue/detail/map/map.component";
@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: "", redirectTo: "/accueil", pathMatch: "full" },
   { path: "accueil", component: AccueilComponent },
   { path: "materiel/list", component: MaterielListComponent },
-  { path: "materiel/detail/:id", component: DetailMaterielComponent },
+  { path: "materiel/detail/:id", component: MaterielComponent },
   { path: "produit/list", component: ProduitListComponent },
   { path: "produit/detail/:id", component: DetailProduitComponent },
   { path: "priseDeVue/list", component: PriseDeVueListComponent },

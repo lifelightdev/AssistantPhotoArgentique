@@ -1,7 +1,15 @@
-<ul>
-  <app-materiel-appareil-photo [appareilPhoto]="appareilPhoto" *ngIf="appareilPhoto"></app-materiel-appareil-photo>
-  <app-materiel-objectif [objectif]="objectif" *ngIf="objectif"></app-materiel-objectif>
-  <app-materiel-chassis [chassis]="chassis" *ngIf="chassis"></app-materiel-chassis>
-  <app-materiel-pied [pied]="pied" *ngIf="pied"></app-materiel-pied>
-  <app-materiel-rotule [rotule]="rotule" *ngIf="rotule"></app-materiel-rotule>
-</ul>
+<li>Nom : {{materiel.nom}}</li>
+<li>Type : {{materiel.typeMateriel?.nom}}</li>
+<li>Sous type : {{materiel.sousType?.nom}}</li>
+<li>Statut : {{materiel.statutMateriel?.nom}}</li>
+<li *ngIf="materiel.modele?.marque">Marque : {{materiel.modele?.marque?.nom}}</li>
+<li *ngIf="materiel.modele?.nom">Modéle : {{materiel.modele?.nom}}</li>
+<li *ngIf="materiel.remarque">Remaque : {{materiel.remarque}}</li>
+<li *ngIf="materiel.modeEmploie">Mode d'emploie :
+  <a href="assets/ModeEmploie/{{materiel.nom}}.pdf" target="_blank" rel="noopener noreferrer">
+    Afficher le mode d'emploie
+  </a>
+</li>
+<br>
+<img *ngIf="materiel.photo" class="photo" src="assets/Images/{{materiel.nom}}.jpg"
+     alt="Photo de {{materiel.nom}}"/>

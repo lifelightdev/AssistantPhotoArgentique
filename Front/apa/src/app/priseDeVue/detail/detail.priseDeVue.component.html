@@ -4,41 +4,45 @@
     <li>Nom : {{priseDeVue?.nom}}</li>
     <li>Remarque : {{priseDeVue?.remarque}}</li>
     <li>Statut : {{priseDeVue?.statutPriseDeVue?.nom}}</li>
-    <h2>Position</h2>
-    <li>Latitude : {{priseDeVue?.position?.latitude}}</li>
-    <li>Longitude : {{priseDeVue?.position?.longitude}}</li>
-    <br />
+    <li>Position :</li>
+    <ul>
+      <li>Latitude : {{priseDeVue?.position?.latitude}}</li>
+      <li>Longitude : {{priseDeVue?.position?.longitude}}</li>
+    </ul>
     <li>Date indicative de la prochaine vue : {{priseDeVue?.date | date: 'HH:mm le dd/MM/yyyy'}}</li>
     <li *ngIf="priseDeVue?.position?.ville"><a
       href="https://meteofrance.com/previsions-meteo-france/{{priseDeVue?.position?.ville}}/{{priseDeVue?.position?.codePostal}}"
       target="_blank" rel="noopener noreferrer"> Afficher la météo </a>
     </li>
-    <li *ngIf="positionSoleil?.results?.sunrise">Le lever du soleil est à {{positionSoleil?.results?.sunrise | date:
-      'HH:mm le dd/MM/yyyy'}}</li>
-    <li *ngIf="positionSoleil?.results?.sunset">Le coucher du soleil est à {{positionSoleil?.results?.sunset | date:
-      'HH:mm le dd/MM/yyyy'}}</li>
-    <li *ngIf="positionSoleil?.results?.solar_noon">Le midi solaire est à
-      {{positionSoleil?.results?.solar_noon | date: 'HH:mm le dd/MM/yyyy'}}</li>
-    <li *ngIf="positionSoleil?.results?.day_length">La durée de la journée est de
-      {{positionSoleil?.results?.day_length}}</li>
-    <li *ngIf="positionSoleil?.results?.civil_twilight_begin">Le début du crépuscule civil est à
-      {{positionSoleil?.results?.civil_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
-    </li>
-    <li *ngIf="positionSoleil?.results?.civil_twilight_end">La fin du crépuscule civil est à
-      {{positionSoleil?.results?.civil_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
-    </li>
-    <li *ngIf="positionSoleil?.results?.nautical_twilight_begin">Le début du crépuscule nautique est à
-      {{positionSoleil?.results?.nautical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
-    </li>
-    <li *ngIf="positionSoleil?.results?.nautical_twilight_end">La fin du crépuscule nautique est à
-      {{positionSoleil?.results?.nautical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
-    </li>
-    <li *ngIf="positionSoleil?.results?.astronomical_twilight_begin">Le début du crépuscule astronomique est à
-      {{positionSoleil?.results?.astronomical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
-    </li>
-    <li *ngIf="positionSoleil?.results?.astronomical_twilight_end">Le fin du crépuscule astronomique est à
-      {{positionSoleil?.results?.astronomical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
-    </li>
+    <li *ngIf="positionSoleil">Position du soleil :</li>
+    <ul>
+      <li *ngIf="positionSoleil?.results?.sunrise">Le lever est à {{positionSoleil?.results?.sunrise | date:
+        'HH:mm le dd/MM/yyyy'}}</li>
+      <li *ngIf="positionSoleil?.results?.sunset">Le coucher est à {{positionSoleil?.results?.sunset | date:
+        'HH:mm le dd/MM/yyyy'}}</li>
+      <li *ngIf="positionSoleil?.results?.solar_noon">Le midi solaire est à
+        {{positionSoleil?.results?.solar_noon | date: 'HH:mm le dd/MM/yyyy'}}</li>
+      <li *ngIf="positionSoleil?.results?.day_length">La durée de la journée est de
+        {{positionSoleil?.results?.day_length}}</li>
+      <li *ngIf="positionSoleil?.results?.civil_twilight_begin">Le début du crépuscule civil est à
+        {{positionSoleil?.results?.civil_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
+      </li>
+      <li *ngIf="positionSoleil?.results?.civil_twilight_end">La fin du crépuscule civil est à
+        {{positionSoleil?.results?.civil_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
+      </li>
+      <li *ngIf="positionSoleil?.results?.nautical_twilight_begin">Le début du crépuscule nautique est à
+        {{positionSoleil?.results?.nautical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
+      </li>
+      <li *ngIf="positionSoleil?.results?.nautical_twilight_end">La fin du crépuscule nautique est à
+        {{positionSoleil?.results?.nautical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
+      </li>
+      <li *ngIf="positionSoleil?.results?.astronomical_twilight_begin">Le début du crépuscule astronomique est à
+        {{positionSoleil?.results?.astronomical_twilight_begin | date: 'HH:mm le dd/MM/yyyy'}}
+      </li>
+      <li *ngIf="positionSoleil?.results?.astronomical_twilight_end">Le fin du crépuscule astronomique est à
+        {{positionSoleil?.results?.astronomical_twilight_end | date: 'HH:mm le dd/MM/yyyy'}}
+      </li>
+    </ul>
     <li *ngIf="priseDeVue?.position?.latitude">
       <a
         href="https://www.mooncalc.org/#/{{priseDeVue?.position?.latitude}},{{priseDeVue?.position?.longitude}},8/{{priseDeVue?.date | date:
@@ -50,7 +54,7 @@
   <ul>
     <h1>Liste du matériel</h1>
     <li *ngFor="let materiel of priseDeVue?.materiels">
-      <a routerLink="/materiel/detail/{{materiel.id}}">{{materiel.nom}}</a> -
+      <a routerLink="/materiel/detail/{{materiel.id}}">{{materiel.nom}}</a>
       <a *ngIf="materiel?.modeEmploie" href="assets/ModeEmploie/{{materiel?.nom}}.pdf"> Afficher le mode d'emploie </a>
     </li>
   </ul>

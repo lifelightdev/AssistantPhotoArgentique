@@ -6,7 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "statut_materiel")
 public class StatutMateriel {
 
-    public static Long DISPONIBLE = 1L;
+    public static Long ID_DISPONIBLE = 1L;
+    public static Long ID_INDISSOCIABLE = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

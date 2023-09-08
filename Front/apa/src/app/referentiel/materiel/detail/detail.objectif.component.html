@@ -1,5 +1,5 @@
 <h2>Détail de l'objectif</h2>
-<app-materiel [materiel]="objectif.materiel" *ngIf="objectif.materiel"></app-materiel>
+<app-detail-materiel [materiel]="objectif.materiel" *ngIf="objectif.materiel"></app-detail-materiel>
 <li *ngIf="objectif.typeFixationObjectif?.nom">Le type de fixation de l'objectif
   : {{objectif.typeFixationObjectif?.nom}}</li>
 <li *ngIf="objectif.typeFixationFlash?.nom">Le type de fixation du flash

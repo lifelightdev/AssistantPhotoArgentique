@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MaterielRotuleComponent } from './materiel.rotule.component';
+import { DetailRotuleComponent } from './detail.rotule.component';
 
 describe('MaterielRotuleComponent', () => {
-  let component: MaterielRotuleComponent;
-  let fixture: ComponentFixture<MaterielRotuleComponent>;
+  let component: DetailRotuleComponent;
+  let fixture: ComponentFixture<DetailRotuleComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MaterielRotuleComponent]
+      declarations: [DetailRotuleComponent]
     });
-    fixture = TestBed.createComponent(MaterielRotuleComponent);
+    fixture = TestBed.createComponent(DetailRotuleComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

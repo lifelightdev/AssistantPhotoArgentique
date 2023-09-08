@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MaterielObjectifComponent } from './materiel.objectif.component';
+import { DetailObjectifComponent } from './detail.objectif.component';
 
 describe('MaterielObjectifComponent', () => {
-  let component: MaterielObjectifComponent;
-  let fixture: ComponentFixture<MaterielObjectifComponent>;
+  let component: DetailObjectifComponent;
+  let fixture: ComponentFixture<DetailObjectifComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MaterielObjectifComponent]
+      declarations: [DetailObjectifComponent]
     });
-    fixture = TestBed.createComponent(MaterielObjectifComponent);
+    fixture = TestBed.createComponent(DetailObjectifComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

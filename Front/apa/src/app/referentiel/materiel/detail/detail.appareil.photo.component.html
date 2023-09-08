@@ -1,5 +1,5 @@
 <h2>Détail de l'appareil photo</h2>
-<app-materiel [materiel]="appareilPhoto.materiel" *ngIf="appareilPhoto.materiel"></app-materiel>
+<app-detail-materiel [materiel]="appareilPhoto.materiel" *ngIf="appareilPhoto.materiel"></app-detail-materiel>
 <li>Le type d'appareil photo : {{appareilPhoto.typeAppareilPhoto?.nom}}</li>
 <li>Le type de fixation de l'objectif : {{appareilPhoto.typeFixationObjectif?.nom}}</li>
 <li>Nom de l'objectif : {{appareilPhoto.objectif?.materiel?.nom}}</li>
@@ -10,6 +10,6 @@
 <li *ngIf="appareilPhoto.film">Le film chargé : {{appareilPhoto.film}}</li>
 <li *ngIf="appareilPhoto.typeMiseAuPoint">Le type de mise au point : {{appareilPhoto.typeMiseAuPoint.nom}}</li>
 <br>
-<app-materiel-objectif [objectif]="appareilPhoto.objectif" *ngIf="appareilPhoto.objectif"></app-materiel-objectif>
+<app-detail-objectif [objectif]="appareilPhoto.objectif" *ngIf="appareilPhoto.objectif"></app-detail-objectif>
 <br>
-<app-materiel-chassis [chassis]="appareilPhoto.chassis" *ngIf="appareilPhoto.chassis"></app-materiel-chassis>
+<app-detail-chassis [chassis]="appareilPhoto.chassis" *ngIf="appareilPhoto.chassis"></app-detail-chassis>

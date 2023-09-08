@@ -202,7 +202,7 @@ public class PriseDeVueService {
 
 
     public Position recherchePosition(Double latitude, Double longitude) {
-        if (latitude == 37.421998333333335 && longitude == -122.084) {
+        if (latitude == 37.4226711 && longitude == -122.0849872) {
             // C'est une position fixe du GPS virtuel d'Android : Google au USA
             // Je la remplace par la position de Notre-Dame de Paris pour être en France
             // latitude = 48.8529371;
@@ -259,40 +259,40 @@ public class PriseDeVueService {
     public PriseDeVue EnregistreUnePriseDeVue(PriseDeVue priseDeVue) throws PriseDeVueException {
 
         String messageChampsObligatoire = "Impossible d'ajouter la prise de vues, car il manque : ";
-        if (priseDeVue.getNom() == null){
+        if (priseDeVue.getNom() == null) {
             messageChampsObligatoire += "le nom";
         }
-        if (priseDeVue.getStatutPriseDeVue() == null){
-            if (!messageChampsObligatoire.endsWith(" ")){
+        if (priseDeVue.getStatutPriseDeVue() == null) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
                 messageChampsObligatoire += ", ";
             }
             messageChampsObligatoire += "le statut";
         }
-        if (priseDeVue.getDate() == null){
-            if (!messageChampsObligatoire.endsWith(" ")){
+        if (priseDeVue.getDate() == null) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
                 messageChampsObligatoire += ", ";
             }
             messageChampsObligatoire += "la date";
         }
-        if (priseDeVue.getPosition() == null){
-            if (!messageChampsObligatoire.endsWith(" ")){
+        if (priseDeVue.getPosition() == null) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
                 messageChampsObligatoire += ", ";
             }
             messageChampsObligatoire += "la position";
         }
-        if (priseDeVue.getMateriels().isEmpty()){
-            if (!messageChampsObligatoire.endsWith(" ")){
+        if (priseDeVue.getMateriels().isEmpty()) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
                 messageChampsObligatoire += ", ";
             }
             messageChampsObligatoire += "un appareil photo";
         }
-        if (priseDeVue.getProduits().isEmpty()){
-            if (!messageChampsObligatoire.endsWith(" ")){
+        if (priseDeVue.getProduits().isEmpty()) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
                 messageChampsObligatoire += " et ";
             }
             messageChampsObligatoire += "un film";
         }
-        if (messageChampsObligatoire.length() > 55){
+        if (messageChampsObligatoire.length() > 55) {
             throw new PriseDeVueException(messageChampsObligatoire);
         }
 
@@ -373,7 +373,7 @@ public class PriseDeVueService {
 
     public Iterable<Materiel> listeDesMaterielsDisponiblePourUnePriseDeVue(long id) {
         Set<Materiel> materiels = priseDeVueRepository.findById(id).get().getMateriels();
-        materiels.addAll(materielRepository.findAll(where(MaterielSpecification.idStatutLike(StatutMateriel.DISPONIBLE))));
+        materiels.addAll(materielRepository.findAll(where(MaterielSpecification.idStatutLike(StatutMateriel.ID_DISPONIBLE))));
         return materiels;
     }
 
@@ -397,7 +397,7 @@ public class PriseDeVueService {
         if (materiel.getSousType().getId() == SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE) {
             AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
             if (appareilPhoto.getChassis() != null) {
-                return appareilPhoto.getChassis().getStatutChassis().getId() == StatutChassis.ID_INTEGRE;
+                return appareilPhoto.getChassis().getMateriel().getStatutMateriel().getId().equals(StatutMateriel.ID_INDISSOCIABLE);
             }
         }
         return false;
@@ -408,7 +408,8 @@ public class PriseDeVueService {
             AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
             if (appareilPhoto.getChassis() == null) {
                 return true;
-            } else return appareilPhoto.getChassis().getStatutChassis().getId() != StatutChassis.ID_INTEGRE;
+            } else
+                return (!appareilPhoto.getChassis().getMateriel().getStatutMateriel().getId().equals(StatutMateriel.ID_INDISSOCIABLE));
         }
         return false;
     }
@@ -416,7 +417,7 @@ public class PriseDeVueService {
     Boolean estUnChassisNonIntegre(Materiel materiel) {
         if (materiel.getSousType().getId() == SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE) {
             Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).get();
-            return chassis.getStatutChassis().getId() != StatutChassis.ID_INTEGRE;
+            return !chassis.getMateriel().getStatutMateriel().getId().equals(StatutMateriel.ID_INDISSOCIABLE);
         }
         return false;
     }

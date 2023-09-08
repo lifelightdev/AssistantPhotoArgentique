@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MaterielChassisComponent } from './materiel.chassis.component';
+import { DetailChassisComponent } from './detail.chassis.component';
 
 describe('MaterielChassisComponent', () => {
-  let component: MaterielChassisComponent;
-  let fixture: ComponentFixture<MaterielChassisComponent>;
+  let component: DetailChassisComponent;
+  let fixture: ComponentFixture<DetailChassisComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [MaterielChassisComponent]
+      declarations: [DetailChassisComponent]
     });
-    fixture = TestBed.createComponent(MaterielChassisComponent);
+    fixture = TestBed.createComponent(DetailChassisComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

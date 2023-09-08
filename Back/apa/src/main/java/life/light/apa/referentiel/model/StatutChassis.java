@@ -6,9 +6,6 @@ import jakarta.persistence.*;
 @Table(name = "statut_chassis")
 public class StatutChassis {
 
-    public static final long ID_INTEGRE = 1L;
-    public static final long ID_DISPONIBLE = 2L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
