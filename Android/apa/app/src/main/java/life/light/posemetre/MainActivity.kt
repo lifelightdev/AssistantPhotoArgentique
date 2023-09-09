@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
          */
 
         when (viewBinding.radioGroup.checkedRadioButtonId) {
-            viewBinding.OuvertureRB.id -> {
+            viewBinding.VitesseRB.id -> {
                 // N² * K = L * S * t
                 // N² = (L*S*t) / K
                 val constante = 8.0
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            viewBinding.VitesseRB.id -> {
+            viewBinding.OuvertureRB.id -> {
                 // L * S * t = N² * K
                 // t = (N² * K) / (L * S)
                 val constante = 4.0
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                 )
                 if (!vitesseEstTrouve) {
                     val message: String = if (vitesseCalcule < 1) {
-                        getString(R.string.calculated_speed) + (1.0 / vitesseCalcule) + getString(
+                        getString(R.string.calculated_speed) + (1.0 / vitesseCalcule).toInt() + " " + getString(
                             R.string.second
                         )
                     } else {
