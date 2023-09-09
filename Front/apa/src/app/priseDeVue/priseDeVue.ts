@@ -64,6 +64,7 @@ export class Vue {
   ouverture: Ouverture | undefined;
   vitesse: Vitesse | undefined;
   photo: undefined;
+  date: Date | undefined;
 }
 
 export class StatutVue {

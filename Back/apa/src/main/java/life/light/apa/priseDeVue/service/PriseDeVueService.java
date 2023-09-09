@@ -52,7 +52,7 @@ public class PriseDeVueService {
         return vueRepository.findById(id);
     }
 
-    public List<Vue> listeDesVuesDUnePriseDeVue(long id) throws IOException {
+    public Set<Vue> listeDesVuesDUnePriseDeVue(long id) throws IOException {
         return vueRepository.findVuesByPriseDeVueId(id);
     }
 
@@ -127,7 +127,7 @@ public class PriseDeVueService {
     public Vue ajouterUneVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws PriseDeVueException {
         Vue vue;
         // Il ne peut y avoir qu'une seule vue à réaliser car l'application Android cherche la vue à réaliser
-        if (vueRepository.findVueARealiser().isEmpty()) {
+        if (vueRepository.findVuesByStatutVueId(StatutVue.ARealiser).isEmpty()) {
             PriseDeVue priseDeVue = miseAJourPriseDeVue(idPriseDeVue);
             // Création de la vue au statut à réaliser
             vue = new Vue();
@@ -251,6 +251,7 @@ public class PriseDeVueService {
         Vitesse vitesse = vitesseRepository.findByNom(valeurVitesse);
         vue.setVitesse(vitesse);
         vue.setPosition(position);
+        vue.setDate(LocalDateTime.now());
         vue = vueRepository.save(vue);
         PriseDeVue priseDeVue = miseAJourPriseDeVue(vue.getPriseDeVue().getId());
         priseDeVueRepository.save(priseDeVue);

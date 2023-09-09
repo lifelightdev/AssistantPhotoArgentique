@@ -46,7 +46,7 @@ export class DetailPriseDeVueComponent implements OnInit, AfterViewInit {
     });
   }
 
-  displayedColumns = ["Nom", "Statut", "Sensibilite", "Ouverture", "Vitesse"];
+  displayedColumns = ["Nom", "Statut", "Sensibilite", "Ouverture", "Vitesse", "Date", "Aperçu"];
   dataSource = new MatTableDataSource<Vue>();
 
   // @ts-ignore

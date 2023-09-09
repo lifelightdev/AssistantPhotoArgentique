@@ -165,9 +165,9 @@ class PriseDeVueServiceTest {
         mockVue.setPriseDeVue(mockPriseDeVue);
         mockVue.setAppareilPhoto(appareilPhoto);
 
-        List<Vue> listVueVide = new ArrayList<>();
+        Set<Vue> listVueVide = new HashSet<>();
 
-        when(vueRepository.findVueARealiser()).thenReturn(listVueVide);
+        when(vueRepository.findVuesByStatutVueId(StatutVue.ARealiser)).thenReturn(listVueVide);
         when(vueRepository.save(any(Vue.class))).thenReturn(mockVue);
         when(priseDeVueRepository.findById(idPriseDeVue)).thenReturn(Optional.of(mockPriseDeVue));
         when(appareilPhotoRepository.findById(idAppareilPhoto)).thenReturn(Optional.of(appareilPhoto));
@@ -199,10 +199,10 @@ class PriseDeVueServiceTest {
         mockVue.setPriseDeVue(mockPriseDeVue);
         mockVue.setAppareilPhoto(appareilPhoto);
 
-        List<Vue> listVue = new ArrayList<>();
+        Set<Vue> listVue = new HashSet<>();
         listVue.add(mockVue);
 
-        when(vueRepository.findVueARealiser()).thenReturn(listVue);
+        when(vueRepository.findVuesByStatutVueId(StatutVue.ARealiser)).thenReturn(listVue);
 
         Exception exception = assertThrows(PriseDeVueException.class, () -> service.ajouterUneVue(idPriseDeVue, idAppareilPhoto, idFilm));
 

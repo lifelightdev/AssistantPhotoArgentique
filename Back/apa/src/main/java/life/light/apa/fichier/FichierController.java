@@ -1,12 +1,13 @@
 package life.light.apa.fichier;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import life.light.apa.priseDeVue.dao.PositionRepository;
+import life.light.apa.priseDeVue.dao.VueRepository;
 import life.light.apa.priseDeVue.dto.Feature;
 import life.light.apa.priseDeVue.dto.FeatureProperties;
 import life.light.apa.priseDeVue.dto.GeoJson;
 import life.light.apa.priseDeVue.dto.Geometry;
-import life.light.apa.priseDeVue.model.Position;
+import life.light.apa.priseDeVue.model.StatutVue;
+import life.light.apa.priseDeVue.model.Vue;
 import life.light.apa.referentiel.dao.MaterielRepository;
 import life.light.apa.referentiel.dao.ProduitRepository;
 import life.light.apa.referentiel.model.Materiel;
@@ -23,6 +24,7 @@ import javax.imageio.stream.FileImageOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://127.0.0.1:4200")
 @RestController
@@ -35,7 +37,7 @@ public class FichierController {
     @Autowired
     private ProduitRepository produitRepository;
     @Autowired
-    private PositionRepository positionRepository;
+    private VueRepository vueRepository;
 
     @GetMapping(value = "/fichiers")
     public void copieLesFichiersSurLeFront() {
@@ -55,6 +57,12 @@ public class FichierController {
             }
             if (null != produit.getModeEmploie()) {
                 ecrireUnFichierSurLeFront("\\ModeEmploie\\", produit.getNom() + ".pdf", produit.getModeEmploie());
+            }
+        }
+        Set<Vue> listeVue = vueRepository.findVuesByStatutVueId(StatutVue.Realiser);
+        for (Vue vue : listeVue){
+            if (null != vue.getPhoto()){
+                ecrireUnFichierSurLeFront("\\Images\\", vue.getNom() + ".jpg", vue.getPhoto());
             }
         }
     }
@@ -121,20 +129,21 @@ public class FichierController {
 
     @GetMapping(value = "/carte")
     public void copieLesCartesSurLeFront() {
-        List<Position> liste = positionRepository.findAll();
+        Set<Vue> liste = vueRepository.findVuesByStatutVueId(StatutVue.Realiser);
         GeoJson geoJson = new GeoJson();
         List<Feature> features = new ArrayList<>();
-        for (Position position : liste) {
+        for (Vue vue : liste) {
             Feature feature = new Feature();
             List<Double> coordinates = new ArrayList<>();
-            coordinates.add(position.getLongitude());
-            coordinates.add(position.getLatitude());
+            coordinates.add(vue.getPosition().getLongitude());
+            coordinates.add(vue.getPosition().getLatitude());
             Geometry geometry = new Geometry();
             geometry.setCoordinates(coordinates);
             feature.setGeometry(geometry);
             FeatureProperties featureProperties = new FeatureProperties();
-            featureProperties.setNom(position.getNom());
-            featureProperties.setAdresse(position.getVille() + " - " + position.getCodePostal());
+            featureProperties.setNom(vue.getPosition().getNom());
+            featureProperties.setAdresse(vue.getPosition().getVille() + " - " + vue.getPosition().getCodePostal());
+            featureProperties.setVue(vue.getNom());
             feature.setProperties(featureProperties);
             features.add(feature);
         }

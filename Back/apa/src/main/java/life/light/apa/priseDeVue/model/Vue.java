@@ -3,6 +3,8 @@ package life.light.apa.priseDeVue.model;
 import jakarta.persistence.*;
 import life.light.apa.referentiel.model.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "vue")
 public class Vue {
@@ -32,8 +34,9 @@ public class Vue {
     @JoinColumn(name = "ouverture_id")
     private Ouverture ouverture;
     @Lob
-    @Column(name = "photo", columnDefinition="BLOB")
+    @Column(name = "photo", columnDefinition="MEDIUMBLOB")
     private byte[] photo;
+    private LocalDateTime date;
 
     public Long getId() {
         return id;
@@ -113,5 +116,13 @@ public class Vue {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }

@@ -3,6 +3,7 @@ package life.light.apa.priseDeVue.dto;
 public class FeatureProperties {
     private String nom;
     private String adresse;
+    private String vue;
 
     public String getNom() {
         return nom;
@@ -18,5 +19,13 @@ public class FeatureProperties {
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
+    }
+
+    public String getVue() {
+        return vue;
+    }
+
+    public void setVue(String vue) {
+        this.vue = vue;
     }
 }

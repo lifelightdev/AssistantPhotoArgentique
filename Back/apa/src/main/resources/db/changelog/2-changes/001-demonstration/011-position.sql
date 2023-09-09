@@ -9,4 +9,5 @@ VALUES ('Blois', 'Blois', '41000', 47.5872494, 1.3324995),
        ('Fontaine de Corbigny', 'Blois', '41000', 47.5869739, 1.3282388),
        ('Fontaine Saint-Jacques', 'Blois', '41000', 47.5872494, 1.3324995),
        ('Blois', 'Blois', '41000', 47.5871117, 1.3365038),
-       ('Fontaine Louis XII', 'Blois', '41000', 47.5857168, 1.3342626);
+       ('Fontaine Louis XII', 'Blois', '41000', 47.5857168, 1.3342626),
+       ('Maison de la magie Robert-Houdin', 'Blois', '41000', 47.5864489, 1.3331073);
