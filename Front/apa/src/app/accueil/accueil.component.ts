@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { AppSettings } from "../AppSettings";
 
 @Component({
   selector: "app-accueil",
@@ -7,19 +8,15 @@ import { HttpClient } from "@angular/common/http";
   styleUrls: ["./accueil.component.css"]
 })
 
-
 export class AccueilComponent implements OnInit {
-
-  // TODO à déplacer en constante globale
-  private serveurUrl = `http://127.0.0.1:8181`;
 
   constructor(
     private http: HttpClient) {
   }
 
   ngOnInit(): void {
-    this.http.get(this.serveurUrl + `/fichiers`).subscribe();
-    this.http.get(this.serveurUrl + `/carte`).subscribe();
+    this.http.get(AppSettings.API_ENDPOINT + `/fichiers`).subscribe();
+    this.http.get(AppSettings.API_ENDPOINT + `/carte`).subscribe();
   }
 
 }
