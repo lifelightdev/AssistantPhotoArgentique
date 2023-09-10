@@ -55,7 +55,8 @@
     <h1>Liste du matériel</h1>
     <li *ngFor="let materiel of priseDeVue?.materiels">
       <a routerLink="/materiel/detail/{{materiel.id}}">{{materiel.nom}}</a>
-      <a *ngIf="materiel?.modeEmploie" href="assets/ModeEmploie/{{materiel?.nom}}.pdf"> Afficher le mode d'emploie </a>
+      <br>
+      <a *ngIf="materiel?.modeEmploie" href="assets/ModeEmploie/{{materiel?.nom}}.pdf" target="_blank" rel="noopener noreferrer"> Afficher le mode d'emploie </a>
     </li>
   </ul>
 </div>
@@ -64,6 +65,8 @@
     <h1>Liste des films</h1>
     <li *ngFor="let film of films">
       <a routerLink="/produit/detail/{{film.id}}">{{film.produit?.nom}}</a>
+      <br>
+      <a *ngIf="film.produit?.modeEmploie" href="assets/ModeEmploie/{{film.produit?.nom}}.pdf" target="_blank" rel="noopener noreferrer"> Afficher le mode d'emploie </a>
     </li>
   </ul>
 </div>
