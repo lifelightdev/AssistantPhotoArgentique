@@ -1,13 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AccueilComponent } from './accueil.component';
+import { AccueilComponent } from "./accueil.component";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 
-describe('AccueilComponent', () => {
+describe("AccueilComponent", () => {
   let component: AccueilComponent;
   let fixture: ComponentFixture<AccueilComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [AccueilComponent]
     });
     fixture = TestBed.createComponent(AccueilComponent);
@@ -15,7 +17,7 @@ describe('AccueilComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

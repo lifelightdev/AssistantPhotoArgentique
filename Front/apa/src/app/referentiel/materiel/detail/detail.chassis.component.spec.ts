@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DetailChassisComponent } from './detail.chassis.component';
+import { Chassis } from "../materiel";
 
 describe('MaterielChassisComponent', () => {
   let component: DetailChassisComponent;
@@ -12,6 +13,7 @@ describe('MaterielChassisComponent', () => {
     });
     fixture = TestBed.createComponent(DetailChassisComponent);
     component = fixture.componentInstance;
+    component.chassis = new Chassis();
     fixture.detectChanges();
   });
 

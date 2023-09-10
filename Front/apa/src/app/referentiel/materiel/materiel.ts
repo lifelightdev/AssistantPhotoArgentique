@@ -1,4 +1,4 @@
-import {Film} from "../produit/produit";
+import { Film, TailleFilm } from "../produit/produit";
 
 export class Materiel {
   id: number | undefined;
@@ -106,6 +106,7 @@ export class Chassis {
   statutChassis: StatutChassis | undefined;
   dimensionChassis: DimensionChassis | undefined;
   film: Film | undefined;
+  tailleFilm: TailleFilm | undefined;
 }
 
 export class StatutChassis {

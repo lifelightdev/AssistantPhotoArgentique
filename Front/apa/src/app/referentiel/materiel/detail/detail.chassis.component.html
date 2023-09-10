@@ -2,3 +2,6 @@
 <app-detail-materiel [materiel]="chassis.materiel" *ngIf="chassis.materiel"></app-detail-materiel>
 <li *ngIf="chassis.statutChassis?.nom">Statut : {{chassis.statutChassis?.nom}}</li>
 <li *ngIf="chassis.dimensionChassis?.nom">Dimension : {{chassis.dimensionChassis?.nom}}</li>
+<li *ngIf="chassis.tailleFilm">Taille du film : {{chassis.tailleFilm.nom}}</li>
+<li *ngIf="chassis.film">Film : {{chassis.film.produit?.nom}} <a *ngIf="chassis.film?.produit?.modeEmploie" href="assets/ModeEmploie/{{chassis.film.produit?.nom}}.pdf" target="_blank" rel="noopener noreferrer"> Afficher le mode d'emploie </a>
+</li>
