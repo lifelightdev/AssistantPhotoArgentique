@@ -25,5 +25,5 @@ jobs:
       uses: actions/setup-node@v3
     - run: npm install ./Front/apa
     - run: npm ci ./Front/apa
-    - run: npm run build ./Front/apa --if-present 
+    - run: npm run build ./Front/apa --if-present
     - run: npm test --prefix ./Front/apa
