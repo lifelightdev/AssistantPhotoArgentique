@@ -27,3 +27,4 @@ jobs:
     - run: npm ci ./Front/apa
     - run: npm run build ./Front/apa --if-present 
     - run: npm test --prefix ./Front/apa
+    - run: npm build --prefix ./Front/apa
