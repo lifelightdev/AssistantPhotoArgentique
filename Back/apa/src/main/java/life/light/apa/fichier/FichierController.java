@@ -30,7 +30,7 @@ import java.util.Set;
 @RestController
 public class FichierController {
 
-    public static final String PATH_ASSETS_FRONT = "F:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets";
+    public static final String PATH_ASSETS_FRONT = "D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets";
 
     @Autowired
     private MaterielRepository materielRepository;
