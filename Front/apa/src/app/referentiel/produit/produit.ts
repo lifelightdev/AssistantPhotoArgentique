@@ -5,7 +5,7 @@ export class Produit {
   statutProduit: StatutProduit | undefined;
   modele: Modele | undefined;
   photo: undefined;
-  modeEmploie: undefined;
+  modeEmploi: undefined;
   remarque: string | undefined;
 }
 

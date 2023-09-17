@@ -8,7 +8,7 @@ export class Materiel {
   statutMateriel: StatutMateriel | undefined;
   modele: Modele | undefined;
   photo: undefined;
-  modeEmploie: undefined;
+  modeEmploi: undefined;
   remarque: string | undefined;
 }
 

@@ -7,10 +7,10 @@
     <li>Marque : {{produit?.modele?.marque?.nom}}</li>
     <li>Modéle : {{produit?.modele?.nom}}</li>
     <li>Remaque : {{produit?.remarque}}</li>
-    <li *ngIf="produit?.modeEmploie">Mode d'emploie :
-      <a href="assets/ModeEmploie/{{produit?.nom}}.pdf" target="_blank"
+    <li *ngIf="produit?.modeEmploi">Mode d'emploi :
+      <a href="assets/ModeEmploi/{{produit?.nom}}.pdf" target="_blank"
          rel="noopener noreferrer">
-        Afficher le mode d'emploie
+        Afficher le mode d'emploi
       </a>
     </li>
   </ul>

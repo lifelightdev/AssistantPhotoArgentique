@@ -105,7 +105,7 @@
             <column name="statut_id" type="BIGINT"/>
             <column name="modele_id" type="BIGINT"/>
             <column name="photo" type="MEDIUMBLOB"/>
-            <column name="mode_emploie" type="MEDIUMBLOB"/>
+            <column name="mode_emploi" type="MEDIUMBLOB"/>
             <column name="remarque" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
@@ -234,7 +234,7 @@
             <column name="statut_id" type="BIGINT"/>
             <column name="modele_id" type="BIGINT"/>
             <column name="photo" type="MEDIUMBLOB"/>
-            <column name="mode_emploie" type="MEDIUMBLOB"/>
+            <column name="mode_emploi" type="MEDIUMBLOB"/>
             <column name="remarque" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>

@@ -7,7 +7,7 @@ create table if not exists apa.materiel
     statut_id    bigint       null,
     modele_id    bigint       null,
     photo        mediumblob   null,
-    mode_emploie mediumblob   null,
+    mode_emploi  mediumblob   null,
     remarque     varchar(255) null,
     constraint id_UNIQUE unique (id),
     constraint FK_MATERIEL_ON_MODELE foreign key (modele_id) references apa.modele (id),

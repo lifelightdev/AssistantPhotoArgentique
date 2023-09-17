@@ -50,7 +50,7 @@ export class ProduitListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  displayedColumns = ["Tâche", "Type", "Marque", "Modéle", "Photo", "Mode d'emploie"];
+  displayedColumns = ["Tâche", "Type", "Marque", "Modéle", "Photo", "Mode d'emploi"];
   dataSource = new MatTableDataSource<Produit>();
 
   // @ts-ignore

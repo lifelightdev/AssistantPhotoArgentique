@@ -53,7 +53,7 @@ export class MaterielListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  displayedColumns = ["Tâche", "Sous type", "Marque", "Modéle", "Photo", "Mode d'emploie"];
+  displayedColumns = ["Tâche", "Sous type", "Marque", "Modéle", "Photo", "Mode d'emploi"];
   dataSource = new MatTableDataSource<Materiel>();
 
   // @ts-ignore

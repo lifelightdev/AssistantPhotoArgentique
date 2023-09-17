@@ -22,8 +22,8 @@ public class Produit {
     @Column(name = "photo", columnDefinition="MEDIUMBLOB")
     private byte[] photo;
     @Lob
-    @Column(name = "mode_emploie", columnDefinition="MEDIUMBLOB")
-    private byte[] modeEmploie;
+    @Column(name = "mode_emploi", columnDefinition="MEDIUMBLOB")
+    private byte[] modeEmploi;
     private String remarque;
 
     public Long getId() {
@@ -74,12 +74,12 @@ public class Produit {
         this.photo = photo;
     }
 
-    public byte[] getModeEmploie() {
-        return modeEmploie;
+    public byte[] getModeEmploi() {
+        return modeEmploi;
     }
 
-    public void setModeEmploie(byte[] modeEmploie) {
-        this.modeEmploie = modeEmploie;
+    public void setModeEmploi(byte[] modeEmploi) {
+        this.modeEmploi = modeEmploi;
     }
 
     public String getRemarque() {

@@ -126,7 +126,7 @@ public class PriseDeVueService {
 
     public Vue ajouterUneVue(Long idPriseDeVue, Long idAppareilPhoto, Long idFilm) throws PriseDeVueException {
         Vue vue;
-        // Il ne peut y avoir qu'une seule vue à réaliser car l'application Android cherche la vue à réaliser
+        // Il ne peut y avoir qu'une seule vue à réaliser, car l'application Android cherche la vue à réaliser
         if (vueRepository.findVuesByStatutVueId(StatutVue.ARealiser).isEmpty()) {
             PriseDeVue priseDeVue = miseAJourPriseDeVue(idPriseDeVue);
             // Création de la vue au statut à réaliser
@@ -203,11 +203,11 @@ public class PriseDeVueService {
 
     public Position recherchePosition(Double latitude, Double longitude) {
         if (latitude == 37.4226711 && longitude == -122.0849872) {
-            // C'est une position fixe du GPS virtuel d'Android : Google au USA
-            // Je la remplace par la position de Notre-Dame de Paris pour être en France
-            // latitude = 48.8529371;
-            // longitude = 2.3500501;
-            // Je la remplace par le château de Blois pour la démonstration
+            // C'est une position fixe du GPS virtuel d'Android : Google au USA.
+            // Je la remplace par la position de Notre-Dame de Paris pour être en France.
+            // latitude = 48.8529371
+            // longitude = 2.3500501
+            // Je la remplace par le château de Blois pour la démonstration.
             latitude = 47.5853918;
             longitude = 1.328008;
         }
@@ -329,7 +329,7 @@ public class PriseDeVueService {
             listeDesChassisCompatibleMateriel.addAll(listeDesChassisIntegre);
         }
 
-        // S'il y a des appareils photo sans châssis, on recherche les châssis compatible
+        // S'il y a des appareils photo sans châssis, on recherche les châssis compatibles
         if (!listeDesAppareilsPhotoSansChassisIntege.isEmpty()) {
             for (AppareilPhoto appareilPhoto : listeDesAppareilsPhotoSansChassisIntege) {
                 boolean trouveChassis = false;

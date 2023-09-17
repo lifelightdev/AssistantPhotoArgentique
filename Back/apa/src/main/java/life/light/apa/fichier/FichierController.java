@@ -46,8 +46,8 @@ public class FichierController {
             if (null != materiel.getPhoto()) {
                 ecrireUnFichierSurLeFront("\\Images\\", materiel.getNom() + ".jpg", materiel.getPhoto());
             }
-            if (null != materiel.getModeEmploie()) {
-                ecrireUnFichierSurLeFront("\\ModeEmploie\\", materiel.getNom() + ".pdf", materiel.getModeEmploie());
+            if (null != materiel.getModeEmploi()) {
+                ecrireUnFichierSurLeFront("\\ModeEmploi\\", materiel.getNom() + ".pdf", materiel.getModeEmploi());
             }
         }
         List<Produit> listeProduit = produitRepository.findAll();
@@ -55,8 +55,8 @@ public class FichierController {
             if (null != produit.getPhoto()) {
                 ecrireUnFichierSurLeFront("\\Images\\", produit.getNom() + ".jpg", produit.getPhoto());
             }
-            if (null != produit.getModeEmploie()) {
-                ecrireUnFichierSurLeFront("\\ModeEmploie\\", produit.getNom() + ".pdf", produit.getModeEmploie());
+            if (null != produit.getModeEmploi()) {
+                ecrireUnFichierSurLeFront("\\ModeEmploi\\", produit.getNom() + ".pdf", produit.getModeEmploi());
             }
         }
         Set<Vue> listeVue = vueRepository.findVuesByStatutVueId(StatutVue.Realiser);
@@ -75,11 +75,11 @@ public class FichierController {
         }
     }
 
-    @GetMapping(value = "/materiel/modeEmploie/{id}")
-    public void copieLeModeEmploieDuMaterielSurLeFront(@PathVariable long id) {
+    @GetMapping(value = "/materiel/modeEmploi/{id}")
+    public void copieLeModeEmploiDuMaterielSurLeFront(@PathVariable long id) {
         Materiel materiel = materielRepository.findById(id).get();
-        if (null != materiel.getModeEmploie()) {
-            ecrireUnFichierSurLeFront("\\ModeEmploie\\", materiel.getNom() + ".pdf", materiel.getModeEmploie());
+        if (null != materiel.getModeEmploi()) {
+            ecrireUnFichierSurLeFront("\\ModeEmploi\\", materiel.getNom() + ".pdf", materiel.getModeEmploi());
         }
     }
 
@@ -91,11 +91,11 @@ public class FichierController {
         }
     }
 
-    @GetMapping(value = "/produit/modeEmploie/{id}")
-    public void copieLeModeEmploieDuProduitSurLeFront(@PathVariable long id) {
+    @GetMapping(value = "/produit/modeEmploi/{id}")
+    public void copieLeModeEmploiDuProduitSurLeFront(@PathVariable long id) {
         Produit produit = produitRepository.findById(id).get();
-        if (null != produit.getModeEmploie()) {
-            ecrireUnFichierSurLeFront("\\ModeEmploie\\", produit.getNom() + ".pdf", produit.getModeEmploie());
+        if (null != produit.getModeEmploi()) {
+            ecrireUnFichierSurLeFront("\\ModeEmploi\\", produit.getNom() + ".pdf", produit.getModeEmploi());
         }
     }
 

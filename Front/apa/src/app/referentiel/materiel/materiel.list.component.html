@@ -84,11 +84,11 @@
       <img *ngIf="materiel.photo" class="photo" src="assets/Images/{{ materiel.nom }}.jpg" alt="Photo" />
     </td>
   </ng-container>
-  <ng-container matColumnDef="Mode d'emploie">
-    <th mat-header-cell *matHeaderCellDef>Mode d'emploie</th>
+  <ng-container matColumnDef="Mode d'emploi">
+    <th mat-header-cell *matHeaderCellDef>Mode d'emploi</th>
     <td mat-cell *matCellDef="let materiel">
-      <a *ngIf="materiel.modeEmploie" href="assets/ModeEmploie/{{ materiel.nom }}.pdf" target="_blank"
-         rel="noopener noreferrer">Afficher le mode d'emploie</a>
+      <a *ngIf="materiel.modeEmploi" href="assets/ModeEmploi/{{ materiel.nom }}.pdf" target="_blank"
+         rel="noopener noreferrer">Afficher le mode d'emploi</a>
     </td>
   </ng-container>
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

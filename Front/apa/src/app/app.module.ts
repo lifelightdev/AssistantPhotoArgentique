@@ -40,6 +40,7 @@ import { DetailChassisComponent } from "./referentiel/materiel/detail/detail.cha
 import { DetailMaterielComponent } from "./referentiel/materiel/detail/detail.materiel.component";
 import { DetailPiedComponent } from "./referentiel/materiel/detail/detail.pied.component";
 import { DetailRotuleComponent } from "./referentiel/materiel/detail/detail.rotule.component";
+import {NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -61,37 +62,38 @@ import { DetailRotuleComponent } from "./referentiel/materiel/detail/detail.rotu
     DetailPiedComponent,
     DetailRotuleComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatButtonModule,
-    MatInputModule,
-    MatRippleModule,
-    MatMenuModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatListModule,
-    MatPaginatorModule,
-    MatTableModule,
-    MatProgressSpinnerModule,
-    MatSelectModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatDialogModule,
-    FormsModule,
-    ReactiveFormsModule,
-    // ngx-translate and the loader module
-    HttpClientModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatButtonModule,
+        MatInputModule,
+        MatRippleModule,
+        MatMenuModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatListModule,
+        MatPaginatorModule,
+        MatTableModule,
+        MatProgressSpinnerModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        // ngx-translate and the loader module
+        HttpClientModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        NgOptimizedImage
+    ],
   exports: [
     MatButtonModule,
     MatFormFieldModule,

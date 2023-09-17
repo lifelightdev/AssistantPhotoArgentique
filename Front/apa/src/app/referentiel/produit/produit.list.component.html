@@ -80,11 +80,11 @@
         <img *ngIf="produit.photo" class="photo" src="assets/Images/{{ produit.nom }}.jpg" alt="Photo" />
       </td>
     </ng-container>
-    <ng-container matColumnDef="Mode d'emploie">
-      <th mat-header-cell *matHeaderCellDef>Mode d'emploie</th>
+    <ng-container matColumnDef="Mode d'emploi">
+      <th mat-header-cell *matHeaderCellDef>Mode d'emploi</th>
       <td mat-cell *matCellDef="let produit">
-        <a *ngIf="produit.modeEmploie" href="assets/ModeEmploie/{{ produit.nom }}.pdf" target="_blank"
-           rel="noopener noreferrer">Afficher le mode d'emploie</a>
+        <a *ngIf="produit.modeEmploi" href="assets/ModeEmploi/{{ produit.nom }}.pdf" target="_blank"
+           rel="noopener noreferrer">Afficher le mode d'emploi</a>
       </td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
