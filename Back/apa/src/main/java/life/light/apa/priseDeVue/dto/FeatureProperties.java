@@ -5,6 +5,13 @@ public class FeatureProperties {
     private String adresse;
     private String vue;
 
+    public FeatureProperties(String nom, String adresse, String vue) {
+        super();
+        this.nom = nom;
+        this.adresse = adresse;
+        this.vue = vue;
+    }
+
     public String getNom() {
         return nom;
     }

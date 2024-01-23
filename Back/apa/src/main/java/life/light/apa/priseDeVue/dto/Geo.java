@@ -1,11 +1,20 @@
 package life.light.apa.priseDeVue.dto;
 
-import java.util.List;
+import life.light.apa.priseDeVue.model.Vue;
 
-public class GeoJson {
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+public class Geo {
 
     private String type = "FeatureCollection";
     private List<Feature> features;
+
+    public Geo(Set<Vue> listeDesVues) {
+        super();
+        this.features = (listeDesVues.stream().map(Feature::new).collect(Collectors.toList()));
+    }
 
     public String getType() {
         return type;

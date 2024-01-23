@@ -6,9 +6,9 @@ public class Geometry {
     private String type = "Point";
     private List<Double> coordinates;
 
-    public Geometry(double longitude, double lattitude) {
+    public Geometry(double longitude, double latitude) {
         super();
-        setCoordinates(List.of(longitude, lattitude));
+        setCoordinates(List.of(longitude, latitude));
     }
 
     public String getType() {

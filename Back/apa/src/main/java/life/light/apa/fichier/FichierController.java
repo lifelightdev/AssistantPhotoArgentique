@@ -2,10 +2,7 @@ package life.light.apa.fichier;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import life.light.apa.priseDeVue.dao.VueRepository;
-import life.light.apa.priseDeVue.dto.Feature;
-import life.light.apa.priseDeVue.dto.FeatureProperties;
-import life.light.apa.priseDeVue.dto.GeoJson;
-import life.light.apa.priseDeVue.dto.Geometry;
+import life.light.apa.priseDeVue.dto.Geo;
 import life.light.apa.priseDeVue.model.StatutVue;
 import life.light.apa.priseDeVue.model.Vue;
 import life.light.apa.referentiel.dao.MaterielRepository;
@@ -24,9 +21,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 // TODO trouver une meilleur solution la mise à disposition de ces fichiers
 @CrossOrigin(origins = "http://127.0.0.1:4200")
@@ -37,6 +31,7 @@ public class FichierController {
     public static final String MODE_EMPLOI = "ModeEmploi";
     public static final String IMAGES = "Images";
     public static final String JPG = ".jpg";
+    public static final String PDF = ".pdf";
 
     @Autowired
     private MaterielRepository materielRepository;
@@ -95,18 +90,17 @@ public class FichierController {
 
     private void ecrireUnModeEmploiSurLeFront(CopiableSousFormeDeFichier copiableSousFormeDeFichier) {
         if (null != copiableSousFormeDeFichier.getModeEmploi()) {
-            ecrireUnFichierSurLeFront(MODE_EMPLOI, copiableSousFormeDeFichier.getNom() + ".pdf", copiableSousFormeDeFichier.getModeEmploi());
+            ecrireUnFichierSurLeFront(MODE_EMPLOI, copiableSousFormeDeFichier.getNom() + PDF, copiableSousFormeDeFichier.getModeEmploi());
         }
     }
 
     private void ecrireUnePhotoSurLeFront(Vue vue) {
-        ecrireUnFichierSurLeFront(IMAGES, vue.getNom() + ".jpg", vue.getPhoto());
+        ecrireUnFichierSurLeFront(IMAGES, vue.getNom() + JPG, vue.getPhoto());
     }
 
     private void ecrireUnFichierSurLeFront(String path, String nomDuFichier, byte[] fichier) {
         File file = PATH_ASSETS_FRONT.resolve(path).resolve(nomDuFichier).toFile();
         try (FileImageOutputStream fos = new FileImageOutputStream(file)) {
-            file.createNewFile();
             fos.write(fichier);
         } catch (Exception e) {
             System.out.println("impossible d'écrire le fichier " + nomDuFichier + " sur le serveur front.");
@@ -116,26 +110,11 @@ public class FichierController {
 
     @GetMapping(value = "/carte")
     public void copieLesCartesSurLeFront() {
-        Set<Vue> liste = vueRepository.findVuesByStatutVueId(StatutVue.Realiser);
-        GeoJson geoJson = new GeoJson();
-        List<Feature> features = new ArrayList<>();
-        for (Vue vue : liste) {
-            // TODO => Creer des constructeurs
-            Geometry geometry = new Geometry(vue.getPosition().getLongitude(), vue.getPosition().getLatitude());
-            Feature feature = new Feature();
-            feature.setGeometry(geometry);
-            FeatureProperties featureProperties = new FeatureProperties();
-            featureProperties.setNom(vue.getPosition().getNom());
-            featureProperties.setAdresse(vue.getPosition().getVille() + " - " + vue.getPosition().getCodePostal());
-            featureProperties.setVue(vue.getNom());
-            feature.setProperties(featureProperties);
-            features.add(feature);
-        }
-        geoJson.setFeatures(features);
+        Geo geo = new Geo(vueRepository.findVuesByStatutVueId(StatutVue.Realiser));
         Path path = PATH_ASSETS_FRONT.resolve("Data").resolve("photo.geojson");
         ObjectMapper mapper = new ObjectMapper();
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            mapper.writeValue(writer, geoJson);
+            mapper.writeValue(writer, geo);
         } catch (Exception e) {
             System.out.println("impossible d'écrire le fichier photo.geojson sur le serveur front.");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
