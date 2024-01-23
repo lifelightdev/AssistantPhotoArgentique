@@ -6,6 +6,11 @@ public class Android {
 
     private List<AndroidVue> vues;
 
+    public Android(List<AndroidVue> vues) {
+        super();
+        this.vues = vues;
+    }
+
     public List<AndroidVue> getVues() {
         return vues;
     }

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import static org.springframework.data.jpa.domain.Specification.where;
 
 
-// TODO mettre ne parique la principe SRP (de SOLID)
+// TODO mettre ne pratique la principe SRP (de SOLID)
 // TODO Faut-il créer une classe de Validation ?
 // TODO Faut-il créer un classe GenerateurDeVue ?
 
@@ -62,27 +62,9 @@ public class PriseDeVueService {
     }
 
     public Android getAndroid() {
+        // TODO Ne gère qu'une seule vue  ID 1L !!!!
         Vue vue = vueRepository.findVueByStatutVueId(1L);
-        List<AndroidVue> listeAndroidVue = new ArrayList<>();
-        AndroidVue androidVue = new AndroidVue();
-        androidVue.setId(vue.getId());
-        androidVue.setSensibilite(vue.getFilm().getSensibilite().getNom());
-        androidVue.setNomAppareilPhoto(vue.getAppareilPhoto().getMateriel().getNom());
-        List<String> ouvetures = new ArrayList<>();
-        for (Ouverture o : vue.getAppareilPhoto().getObjectif().getOuvertures()) {
-            ouvetures.add(o.getNom());
-        }
-
-        androidVue.setOuvertures(ouvetures);
-        List<String> vitesses = new ArrayList<>();
-        for (Vitesse v : vue.getAppareilPhoto().getObjectif().getVitesses()) {
-            vitesses.add(v.getNom());
-        }
-        androidVue.setVitesses(vitesses);
-        listeAndroidVue.add(androidVue);
-        Android android = new Android();
-        android.setVues(listeAndroidVue);
-        return android;
+        return new Android(List.of(new AndroidVue(vue)));
     }
 
     public Optional<PriseDeVue> afficherUnePriseDeVue(long id) {

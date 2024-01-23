@@ -1,6 +1,11 @@
 package life.light.apa.priseDeVue.dto;
 
+import life.light.apa.priseDeVue.model.Vue;
+import life.light.apa.referentiel.model.Ouverture;
+import life.light.apa.referentiel.model.Vitesse;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AndroidVue {
 
@@ -9,6 +14,19 @@ public class AndroidVue {
     private String sensibilite;
     private List<String> vitesses;
     private List<String> ouvertures;
+
+    public AndroidVue(Vue vue) {
+        super();
+        this.id = vue.getId();
+        this.nomAppareilPhoto = vue.getAppareilPhoto().getMateriel().getNom();
+        this.sensibilite = vue.getFilm().getSensibilite().getNom();
+        this.ouvertures = vue.getAppareilPhoto().getObjectif().getOuvertures().stream()
+                .map(Ouverture::getNom)
+                .collect(Collectors.toList());
+        this.vitesses = vue.getAppareilPhoto().getObjectif().getVitesses().stream()
+                .map(Vitesse::getNom)
+                .collect(Collectors.toList());
+    }
 
     public Long getId() {
         return id;
