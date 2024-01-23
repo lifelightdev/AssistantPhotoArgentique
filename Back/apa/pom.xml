@@ -15,7 +15,7 @@
     <name>apa</name>
     <description>Assistant de photo argentique</description>
     <properties>
-        <java.version>20</java.version>
+        <java.version>21</java.version>
         <diffChangeLogFile>src/main/resources/db/changelog/to-be-changed.yaml</diffChangeLogFile>
     </properties>
     <dependencies>

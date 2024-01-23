@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "materiel")
-public class Materiel {
+public class Materiel implements CopiableSousFormeDeFichier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,10 +22,10 @@ public class Materiel {
     @JoinColumn(name = "modele_id")
     private Modele modele;
     @Lob
-    @Column(name = "photo", columnDefinition="MEDIUMBLOB")
+    @Column(name = "photo", columnDefinition = "MEDIUMBLOB")
     private byte[] photo;
     @Lob
-    @Column(name = "mode_emploi", columnDefinition="MEDIUMBLOB")
+    @Column(name = "mode_emploi", columnDefinition = "MEDIUMBLOB")
     private byte[] modeEmploi;
     private String remarque;
 
@@ -37,6 +37,7 @@ public class Materiel {
         this.id = id;
     }
 
+    @Override
     public String getNom() {
         return nom;
     }
@@ -77,6 +78,7 @@ public class Materiel {
         this.modele = modele;
     }
 
+    @Override
     public byte[] getPhoto() {
         return photo;
     }
@@ -85,6 +87,7 @@ public class Materiel {
         this.photo = photo;
     }
 
+    @Override
     public byte[] getModeEmploi() {
         return modeEmploi;
     }

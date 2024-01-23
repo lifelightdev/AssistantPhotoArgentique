@@ -98,4 +98,8 @@ public class PriseDeVue {
         this.produits = produits;
     }
 
+    public void initialiserDate() {
+        this.date=LocalDateTime.now();
+    }
+
 }

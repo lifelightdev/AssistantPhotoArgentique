@@ -10,8 +10,7 @@ import life.light.apa.priseDeVue.model.StatutVue;
 import life.light.apa.priseDeVue.model.Vue;
 import life.light.apa.referentiel.dao.MaterielRepository;
 import life.light.apa.referentiel.dao.ProduitRepository;
-import life.light.apa.referentiel.model.Materiel;
-import life.light.apa.referentiel.model.Produit;
+import life.light.apa.referentiel.model.CopiableSousFormeDeFichier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,16 +20,23 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.imageio.stream.FileImageOutputStream;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+// TODO trouver une meilleur solution la mise à disposition de ces fichiers
 @CrossOrigin(origins = "http://127.0.0.1:4200")
 @RestController
 public class FichierController {
 
-    public static final String PATH_ASSETS_FRONT = "D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets";
+    public static final Path PATH_ASSETS_FRONT = Path.of("D:\\IdeaProjects\\AssistantPhotoArgentique\\Front\\apa\\src\\assets");
+    public static final String MODE_EMPLOI = "ModeEmploi";
+    public static final String IMAGES = "Images";
+    public static final String JPG = ".jpg";
 
     @Autowired
     private MaterielRepository materielRepository;
@@ -41,91 +47,72 @@ public class FichierController {
 
     @GetMapping(value = "/fichiers")
     public void copieLesFichiersSurLeFront() {
-        List<Materiel> listeMateriel = materielRepository.findAll();
-        for (Materiel materiel : listeMateriel) {
-            if (null != materiel.getPhoto()) {
-                ecrireUnFichierSurLeFront("\\Images\\", materiel.getNom() + ".jpg", materiel.getPhoto());
-            }
-            if (null != materiel.getModeEmploi()) {
-                ecrireUnFichierSurLeFront("\\ModeEmploi\\", materiel.getNom() + ".pdf", materiel.getModeEmploi());
-            }
-        }
-        List<Produit> listeProduit = produitRepository.findAll();
-        for (Produit produit : listeProduit) {
-            if (null != produit.getPhoto()) {
-                ecrireUnFichierSurLeFront("\\Images\\", produit.getNom() + ".jpg", produit.getPhoto());
-            }
-            if (null != produit.getModeEmploi()) {
-                ecrireUnFichierSurLeFront("\\ModeEmploi\\", produit.getNom() + ".pdf", produit.getModeEmploi());
-            }
-        }
-        Set<Vue> listeVue = vueRepository.findVuesByStatutVueId(StatutVue.Realiser);
-        for (Vue vue : listeVue){
-            if (null != vue.getPhoto()){
-                ecrireUnFichierSurLeFront("\\Images\\", vue.getNom() + ".jpg", vue.getPhoto());
-            }
-        }
+        copieFichierMateriel();
+        copieFichierProduit();
+        vueRepository.findVuesByStatutVueId(StatutVue.Realiser)
+                .forEach(this::ecrireUnePhotoSurLeFront);
+    }
+
+    private void copieFichierProduit() {
+        produitRepository.findAll()
+                .forEach(this::ecrireUnePhotoSurLeFront);
+        produitRepository.findAll()
+                .forEach(this::ecrireUnModeEmploiSurLeFront);
+    }
+
+    private void copieFichierMateriel() {
+        materielRepository.findAll()
+                .forEach(this::ecrireUnePhotoSurLeFront);
+        materielRepository.findAll()
+                .forEach(this::ecrireUnModeEmploiSurLeFront);
     }
 
     @GetMapping(value = "/materiel/photo/{id}")
     public void copieLaPhotoDuMaterielSurLeFront(@PathVariable long id) {
-        Materiel materiel = materielRepository.findById(id).get();
-        if (null != materiel.getPhoto()) {
-            ecrireUnFichierSurLeFront("\\Images\\", materiel.getNom() + ".jpg", materiel.getPhoto());
-        }
+        ecrireUnePhotoSurLeFront(materielRepository.findById(id).orElseThrow());
     }
 
     @GetMapping(value = "/materiel/modeEmploi/{id}")
     public void copieLeModeEmploiDuMaterielSurLeFront(@PathVariable long id) {
-        Materiel materiel = materielRepository.findById(id).get();
-        if (null != materiel.getModeEmploi()) {
-            ecrireUnFichierSurLeFront("\\ModeEmploi\\", materiel.getNom() + ".pdf", materiel.getModeEmploi());
-        }
+        ecrireUnModeEmploiSurLeFront(materielRepository.findById(id).orElseThrow());
     }
 
     @GetMapping(value = "/produit/photo/{id}")
     public void copieLaPhotoDuProduitSurLeFront(@PathVariable long id) {
-        Produit produit = produitRepository.findById(id).get();
-        if (null != produit.getPhoto()) {
-            ecrireUnFichierSurLeFront("\\Images\\", produit.getNom() + ".jpg", produit.getPhoto());
-        }
+        ecrireUnePhotoSurLeFront(produitRepository.findById(id).orElseThrow());
     }
 
     @GetMapping(value = "/produit/modeEmploi/{id}")
     public void copieLeModeEmploiDuProduitSurLeFront(@PathVariable long id) {
-        Produit produit = produitRepository.findById(id).get();
-        if (null != produit.getModeEmploi()) {
-            ecrireUnFichierSurLeFront("\\ModeEmploi\\", produit.getNom() + ".pdf", produit.getModeEmploi());
+        ecrireUnModeEmploiSurLeFront(produitRepository.findById(id).orElseThrow());
+    }
+
+    private void ecrireUnePhotoSurLeFront(CopiableSousFormeDeFichier copiableSousFormeDeFichier) {
+        if (null != copiableSousFormeDeFichier.getPhoto()) {
+            ecrireUnFichierSurLeFront(IMAGES, copiableSousFormeDeFichier.getNom() + JPG, copiableSousFormeDeFichier.getPhoto());
         }
     }
 
+    private void ecrireUnModeEmploiSurLeFront(CopiableSousFormeDeFichier copiableSousFormeDeFichier) {
+        if (null != copiableSousFormeDeFichier.getModeEmploi()) {
+            ecrireUnFichierSurLeFront(MODE_EMPLOI, copiableSousFormeDeFichier.getNom() + ".pdf", copiableSousFormeDeFichier.getModeEmploi());
+        }
+    }
+
+    private void ecrireUnePhotoSurLeFront(Vue vue) {
+        ecrireUnFichierSurLeFront(IMAGES, vue.getNom() + ".jpg", vue.getPhoto());
+    }
+
     private void ecrireUnFichierSurLeFront(String path, String nomDuFichier, byte[] fichier) {
-        try {
-            File file = new File(PATH_ASSETS_FRONT + path + nomDuFichier);
-            if (lesFichiersSontSimilaire(fichier, file)) {
-                file.createNewFile();
-                FileImageOutputStream fos = new FileImageOutputStream(file);
-                fos.write(fichier);
-                fos.close();
-            }
+        File file = PATH_ASSETS_FRONT.resolve(path).resolve(nomDuFichier).toFile();
+        try (FileImageOutputStream fos = new FileImageOutputStream(file)) {
+            file.createNewFile();
+            fos.write(fichier);
         } catch (Exception e) {
             System.out.println("impossible d'écrire le fichier " + nomDuFichier + " sur le serveur front.");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
-
-    private static boolean lesFichiersSontSimilaire(byte[] fichier, File file) {
-        boolean creerLeFichier = false;
-        if (file.exists()) {
-            if (file.length() != fichier.length) {
-                creerLeFichier = true;
-            }
-        } else {
-            creerLeFichier = true;
-        }
-        return creerLeFichier;
-    }
-
 
     @GetMapping(value = "/carte")
     public void copieLesCartesSurLeFront() {
@@ -133,12 +120,9 @@ public class FichierController {
         GeoJson geoJson = new GeoJson();
         List<Feature> features = new ArrayList<>();
         for (Vue vue : liste) {
+            // TODO => Creer des constructeurs
+            Geometry geometry = new Geometry(vue.getPosition().getLongitude(), vue.getPosition().getLatitude());
             Feature feature = new Feature();
-            List<Double> coordinates = new ArrayList<>();
-            coordinates.add(vue.getPosition().getLongitude());
-            coordinates.add(vue.getPosition().getLatitude());
-            Geometry geometry = new Geometry();
-            geometry.setCoordinates(coordinates);
             feature.setGeometry(geometry);
             FeatureProperties featureProperties = new FeatureProperties();
             featureProperties.setNom(vue.getPosition().getNom());
@@ -148,10 +132,10 @@ public class FichierController {
             features.add(feature);
         }
         geoJson.setFeatures(features);
-        String path = PATH_ASSETS_FRONT + "\\Data\\photo.geojson";
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(new File(path), geoJson);
+        Path path = PATH_ASSETS_FRONT.resolve("Data").resolve("photo.geojson");
+        ObjectMapper mapper = new ObjectMapper();
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            mapper.writeValue(writer, geoJson);
         } catch (Exception e) {
             System.out.println("impossible d'écrire le fichier photo.geojson sur le serveur front.");
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());

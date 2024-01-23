@@ -16,9 +16,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
+
+// TODO mettre ne parique la principe SRP (de SOLID)
+// TODO Faut-il créer une classe de Validation ?
+// TODO Faut-il créer un classe GenerateurDeVue ?
 
 @Service
 public class PriseDeVueService {
@@ -67,6 +72,7 @@ public class PriseDeVueService {
         for (Ouverture o : vue.getAppareilPhoto().getObjectif().getOuvertures()) {
             ouvetures.add(o.getNom());
         }
+
         androidVue.setOuvertures(ouvetures);
         List<String> vitesses = new ArrayList<>();
         for (Vitesse v : vue.getAppareilPhoto().getObjectif().getVitesses()) {
@@ -93,32 +99,32 @@ public class PriseDeVueService {
 
     public Iterable<PriseDeVue> listeDesPrisesDeVues(String nom, String statut, String date, String heure, String position, String remarque) {
         Set<PriseDeVue> liste = new HashSet<>();
-        boolean trouver = false;
-        if ((null != nom) && (!"undefined".equals(nom)) && (!nom.trim().isEmpty())) {
+        boolean trouverCritereDeRecherche = false;
+        if ((null != nom) && (!"undefined".equals(nom)) && (!nom.isBlank())) {
             liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.nomLike(nom))));
-            trouver = true;
+            trouverCritereDeRecherche = true;
         }
-        if ((null != statut) && (!"undefined".equals(statut)) && (!"0".equals(statut.trim()))) {
+        if (null != statut && !"undefined".equals(statut)) {
             liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.idStatutLike(Long.valueOf(statut)))));
-            trouver = true;
+            trouverCritereDeRecherche = true;
         }
-        if ((null != date) && (!"undefined".equals(date)) && (!date.trim().isEmpty())) {
+        if ((null != date) && (!"undefined".equals(date)) && (!date.isBlank())) {
             liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.dateLike(LocalDate.parse(date)))));
-            trouver = true;
+            trouverCritereDeRecherche = true;
         }
-        if ((null != heure) && (!"undefined".equals(heure)) && (!heure.trim().isEmpty())) {
+        if ((null != heure) && (!"undefined".equals(heure)) && (!heure.isBlank())) {
             liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.heureLike(LocalTime.parse(heure)))));
-            trouver = true;
+            trouverCritereDeRecherche = true;
         }
-        if ((null != position) && (!"undefined".equals(position)) && (!"0".equals(position.trim()))) {
+        if (null != position && !"undefined".equals(position)) {
             liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.positionLike(position))));
-            trouver = true;
+            trouverCritereDeRecherche = true;
         }
         if ((null != remarque) && (!"undefined".equals(remarque))) {
             liste.addAll(priseDeVueRepository.findAll(where(PriseDeVueSpecification.remarqueLike(remarque))));
-            trouver = true;
+            trouverCritereDeRecherche = true;
         }
-        if (!trouver) {
+        if (!trouverCritereDeRecherche) {
             liste.addAll(priseDeVueRepository.findAll());
         }
         return liste;
@@ -132,10 +138,10 @@ public class PriseDeVueService {
             // Création de la vue au statut à réaliser
             vue = new Vue();
             vue.setPriseDeVue(priseDeVue);
-            vue.setAppareilPhoto(appareilPhotoRepository.findById(idAppareilPhoto).get());
-            vue.setFilm(filmRepository.findById(idFilm).get());
+            vue.setAppareilPhoto(appareilPhotoRepository.findById(idAppareilPhoto).orElseThrow());
+            vue.setFilm(filmRepository.findById(idFilm).orElseThrow());
             vue.setNom(generationDuNomDeLaVue(vue));
-            vue.setStatutVue(statutVueRepository.findById(StatutVue.ARealiser).get());
+            vue.setStatutVue(statutVueRepository.findById(StatutVue.ARealiser).orElseThrow());
             // Sauvegarde de la nouvelle vue
             vue = vueRepository.save(vue);
             // Mise à jour de la prise de vue
@@ -167,25 +173,24 @@ public class PriseDeVueService {
      */
     private PriseDeVue miseAJourPriseDeVue(Long idPriseDeVue) {
         // Récupération de la prise de vue
-        PriseDeVue priseDeVue = priseDeVueRepository.findById(idPriseDeVue).get();
-        // Mise à jour de la date
-        priseDeVue.setDate(LocalDateTime.now());
+        PriseDeVue priseDeVue = priseDeVueRepository.findById(idPriseDeVue).orElseThrow();
+        priseDeVue.initialiserDate();
         return priseDeVue;
     }
 
     public Set<AppareilPhoto> listeDesAppareilsPhotoDUnePriseDeVue(long id) {
-        PriseDeVue priseDeVue = priseDeVueRepository.findById(id).get();
-        Set<Materiel> materiels = priseDeVue.getMateriels();
-        Set<AppareilPhoto> appareilsPhoto = new HashSet<>();
-        for (Materiel materiel : materiels) {
-            Optional<AppareilPhoto> appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId());
-            appareilPhoto.ifPresent(appareilsPhoto::add);
-        }
-        return appareilsPhoto;
+        PriseDeVue priseDeVue = priseDeVueRepository.findById(id).orElseThrow();
+
+        return priseDeVue.getMateriels().stream()
+                .map(materiel -> appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+
     }
 
     public Set<Film> listeDesFilmsDUnePriseDeVue(long id) {
-        PriseDeVue priseDeVue = priseDeVueRepository.findById(id).get();
+        PriseDeVue priseDeVue = priseDeVueRepository.findById(id).orElseThrow();
         return getFilms(priseDeVue);
     }
 
@@ -236,11 +241,11 @@ public class PriseDeVueService {
     public void miseAJourVue(long id, String valeurVitesse, String valeurOuverture, Long idStatut, Double longitude, Double latitude) {
         Position position = recherchePosition(latitude, longitude);
         position = positionRepository.save(position);
-        Vue vue = vueRepository.findById(id).get();
+        Vue vue = vueRepository.findById(id).orElseThrow();
         if (!vue.getStatutVue().getId().equals(idStatut)) {
-            StatutVue statut = statutVueRepository.findById(idStatut).get();
+            StatutVue statut = statutVueRepository.findById(idStatut).orElseThrow();
             vue.setStatutVue(statut);
-            if (idStatut.equals(StatutVue.Realiser)) {
+            if (StatutVue.Realiser.equals(idStatut)) {
                 Film film = vue.getFilm();
                 film.setNbVueExpose(film.getNbVueExpose() + 1);
                 filmRepository.save(film);
@@ -259,43 +264,7 @@ public class PriseDeVueService {
 
     public PriseDeVue EnregistreUnePriseDeVue(PriseDeVue priseDeVue) throws PriseDeVueException {
 
-        String messageChampsObligatoire = "Impossible d'ajouter la prise de vues, car il manque : ";
-        if (priseDeVue.getNom() == null) {
-            messageChampsObligatoire += "le nom";
-        }
-        if (priseDeVue.getStatutPriseDeVue() == null) {
-            if (!messageChampsObligatoire.endsWith(" ")) {
-                messageChampsObligatoire += ", ";
-            }
-            messageChampsObligatoire += "le statut";
-        }
-        if (priseDeVue.getDate() == null) {
-            if (!messageChampsObligatoire.endsWith(" ")) {
-                messageChampsObligatoire += ", ";
-            }
-            messageChampsObligatoire += "la date";
-        }
-        if (priseDeVue.getPosition() == null) {
-            if (!messageChampsObligatoire.endsWith(" ")) {
-                messageChampsObligatoire += ", ";
-            }
-            messageChampsObligatoire += "la position";
-        }
-        if (priseDeVue.getMateriels().isEmpty()) {
-            if (!messageChampsObligatoire.endsWith(" ")) {
-                messageChampsObligatoire += ", ";
-            }
-            messageChampsObligatoire += "un appareil photo";
-        }
-        if (priseDeVue.getProduits().isEmpty()) {
-            if (!messageChampsObligatoire.endsWith(" ")) {
-                messageChampsObligatoire += " et ";
-            }
-            messageChampsObligatoire += "un film";
-        }
-        if (messageChampsObligatoire.length() > 55) {
-            throw new PriseDeVueException(messageChampsObligatoire);
-        }
+        ValidationDesChamps(priseDeVue);
 
         Set<AppareilPhoto> listeDesAppareilsPhotoSansChassisIntege = new HashSet<>();
         Set<AppareilPhoto> listeDesAppareilsPhotoAvecChassisIntege = new HashSet<>();
@@ -308,14 +277,14 @@ public class PriseDeVueService {
                 throw new PriseDeVueException("Impossible d'ajouter la prise de vues," +
                         " car le matériel " + materiel.getNom() + " n'est pas de type prise de vue.");
             } else if (estUnAppareilPhotoArgentiqueAvecChassisIntegre(materiel)) {
-                AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
+                AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).orElseThrow();
                 listeDesAppareilsPhotoAvecChassisIntege.add(appareilPhoto);
                 listeDesChassisIntegre.add(appareilPhoto.getChassis());
             } else if (estUnChassisNonIntegre(materiel)) {
-                Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).get();
+                Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).orElseThrow();
                 listeDesChassisNonIntegre.add(chassis);
             } else if (estUnAppareilPhotoArgentiqueSansChassisIntegre(materiel)) {
-                AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
+                AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).orElseThrow();
                 listeDesAppareilsPhotoSansChassisIntege.add(appareilPhoto);
             }
         }
@@ -357,13 +326,10 @@ public class PriseDeVueService {
 
         // Vérification de la compatibilité des films avec les châssis
         for (Chassis chassis : listeDesChassisCompatibleMateriel) {
-            boolean trouveFilm = false;
-            for (Film film : getFilms(priseDeVue)) {
-                if (estTailleDeFilmCompatible(chassis, film)) {
-                    trouveFilm = true;
-                }
-            }
-            if (!trouveFilm) {
+            Set<Film> listeDesFilmsDeLaPriseDeVue = getFilms(priseDeVue);
+            long nombreDeFilmCompatibleTrouve = listeDesFilmsDeLaPriseDeVue.stream()
+                    .filter(f -> estTailleDeFilmCompatible(chassis, f)).count();
+            if (nombreDeFilmCompatibleTrouve == 0) {
                 throw new PriseDeVueException("Impossible d'ajouter la prise de vues, " +
                         "car le chassis " + chassis.getMateriel().getNom() + " n'a pas de film compatible.");
             }
@@ -372,8 +338,48 @@ public class PriseDeVueService {
         return priseDeVueRepository.saveAndFlush(priseDeVue);
     }
 
+    private static void ValidationDesChamps(PriseDeVue priseDeVue) throws PriseDeVueException {
+        String messageChampsObligatoire = "Impossible d'ajouter la prise de vues, car il manque : ";
+        if (priseDeVue.getNom() == null) {
+            messageChampsObligatoire += "le nom";
+        }
+        if (priseDeVue.getStatutPriseDeVue() == null) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "le statut";
+        }
+        if (priseDeVue.getDate() == null) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "la date";
+        }
+        if (priseDeVue.getPosition() == null) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "la position";
+        }
+        if (priseDeVue.getMateriels().isEmpty()) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
+                messageChampsObligatoire += ", ";
+            }
+            messageChampsObligatoire += "un appareil photo";
+        }
+        if (priseDeVue.getProduits().isEmpty()) {
+            if (!messageChampsObligatoire.endsWith(" ")) {
+                messageChampsObligatoire += " et ";
+            }
+            messageChampsObligatoire += "un film";
+        }
+        if (messageChampsObligatoire.length() > 55) {
+            throw new PriseDeVueException(messageChampsObligatoire);
+        }
+    }
+
     public Iterable<Materiel> listeDesMaterielsDisponiblePourUnePriseDeVue(long id) {
-        Set<Materiel> materiels = priseDeVueRepository.findById(id).get().getMateriels();
+        Set<Materiel> materiels = priseDeVueRepository.findById(id).orElseThrow().getMateriels();
         materiels.addAll(materielRepository.findAll(where(MaterielSpecification.idStatutLike(StatutMateriel.ID_DISPONIBLE))));
         return materiels;
     }
@@ -385,7 +391,7 @@ public class PriseDeVueService {
     }
 
     public Iterable<Produit> listeDesProduitsDisponiblePourUnePriseDeVue(long id) {
-        Set<Produit> produits = priseDeVueRepository.findById(id).get().getProduits();
+        Set<Produit> produits = priseDeVueRepository.findById(id).orElseThrow().getProduits();
         produits.addAll(produitRepository.findAll(where(ProduitSpecification.idStatutLike(StatutProduit.DISPONIBLE))));
         return produits;
     }
@@ -396,8 +402,8 @@ public class PriseDeVueService {
 
     Boolean estUnAppareilPhotoArgentiqueAvecChassisIntegre(Materiel materiel) {
         if (materiel.getSousType().getId() == SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE) {
-            AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
-            if (appareilPhoto.getChassis() != null) {
+            AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).orElseThrow();
+            if (null != appareilPhoto.getChassis()) {
                 return appareilPhoto.getChassis().getMateriel().getStatutMateriel().getId().equals(StatutMateriel.ID_INDISSOCIABLE);
             }
         }
@@ -406,8 +412,8 @@ public class PriseDeVueService {
 
     Boolean estUnAppareilPhotoArgentiqueSansChassisIntegre(Materiel materiel) {
         if (materiel.getSousType().getId() == SousTypeMateriel.ID_APPAREIL_PHOTO_ARGENTIQUE) {
-            AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).get();
-            if (appareilPhoto.getChassis() == null) {
+            AppareilPhoto appareilPhoto = appareilPhotoRepository.findAppareilPhotoByMaterielId(materiel.getId()).orElseThrow();
+            if (null == appareilPhoto.getChassis()) {
                 return true;
             } else
                 return (!appareilPhoto.getChassis().getMateriel().getStatutMateriel().getId().equals(StatutMateriel.ID_INDISSOCIABLE));
@@ -417,7 +423,7 @@ public class PriseDeVueService {
 
     Boolean estUnChassisNonIntegre(Materiel materiel) {
         if (materiel.getSousType().getId() == SousTypeMateriel.ID_CHASSIS_PRISE_DE_VUE) {
-            Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).get();
+            Chassis chassis = chassisRepository.findChassisByMaterielId(materiel.getId()).orElseThrow();
             return !chassis.getMateriel().getStatutMateriel().getId().equals(StatutMateriel.ID_INDISSOCIABLE);
         }
         return false;
@@ -428,6 +434,6 @@ public class PriseDeVueService {
     }
 
     Boolean estTailleDeFilmCompatible(Chassis chassis, Film film) {
-        return Objects.equals(film.getTailleFilm().getId(), chassis.getTailleFilm().getId());
+        return film.getTailleFilm().getId().equals(chassis.getTailleFilm().getId());
     }
 }

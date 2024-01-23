@@ -6,6 +6,11 @@ public class Geometry {
     private String type = "Point";
     private List<Double> coordinates;
 
+    public Geometry(double longitude, double lattitude) {
+        super();
+        setCoordinates(List.of(longitude, lattitude));
+    }
+
     public String getType() {
         return type;
     }

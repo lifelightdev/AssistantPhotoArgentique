@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "produit")
-public class Produit {
+public class Produit implements CopiableSousFormeDeFichier{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

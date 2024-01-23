@@ -49,25 +49,32 @@ public class MaterielService {
         Set<Materiel> liste = new HashSet<>();
         boolean trouver = false;
         if ((null != nom) && (!"undefined".equals(nom)) && (!nom.trim().isEmpty())) {
-            liste.addAll(materielRepository.findAll(where(nomLike(nom))));trouver = true;
+            liste.addAll(materielRepository.findAll(where(nomLike(nom))));
+            trouver = true;
         }
         if ((null != typeMateriel) && (!"undefined".equals(typeMateriel)) && (!typeMateriel.trim().isEmpty())) {
-            liste.addAll(materielRepository.findAll(where(idTypeLike(Long.valueOf(typeMateriel)))));trouver = true;
+            liste.addAll(materielRepository.findAll(where(idTypeLike(Long.valueOf(typeMateriel)))));
+            trouver = true;
         }
         if ((null != sousType) && (!"undefined".equals(sousType)) && (!sousType.trim().isEmpty())) {
-            liste.addAll(materielRepository.findAll(where(idSousTypeLike(Long.valueOf(sousType)))));trouver = true;
+            liste.addAll(materielRepository.findAll(where(idSousTypeLike(Long.valueOf(sousType)))));
+            trouver = true;
         }
         if ((null != statutMateriel) && (!"undefined".equals(statutMateriel)) && (!statutMateriel.trim().isEmpty())) {
-            liste.addAll(materielRepository.findAll(where(idStatutLike(Long.valueOf(statutMateriel)))));trouver = true;
+            liste.addAll(materielRepository.findAll(where(idStatutLike(Long.valueOf(statutMateriel)))));
+            trouver = true;
         }
         if ((null != marque) && (!"undefined".equals(marque)) && (!marque.trim().isEmpty())) {
-            liste.addAll(materielRepository.findAll(where(idMarqueLike(Long.valueOf(marque)))));trouver = true;
+            liste.addAll(materielRepository.findAll(where(idMarqueLike(Long.valueOf(marque)))));
+            trouver = true;
         }
         if ((null != modele) && (!"undefined".equals(modele)) && (!modele.trim().isEmpty())) {
-            liste.addAll(materielRepository.findAll(where(idModeleLike(Long.valueOf(modele)))));trouver = true;
+            liste.addAll(materielRepository.findAll(where(idModeleLike(Long.valueOf(modele)))));
+            trouver = true;
         }
         if ((null != remarque) && (!"undefined".equals(remarque)) && (!remarque.trim().isEmpty())) {
-            liste.addAll(materielRepository.findAll(where(remarqueLike(remarque))));trouver = true;
+            liste.addAll(materielRepository.findAll(where(remarqueLike(remarque))));
+            trouver = true;
         }
         if (!trouver) {
             liste.addAll(materielRepository.findAll());
